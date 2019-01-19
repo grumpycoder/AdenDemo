@@ -19,5 +19,9 @@ namespace AdenDemo.Web.Models
         public ReportState ReportState { set; get; }
         public List<WorkItem> WorkItems { set; get; }
 
+        public Report()
+        {
+            WorkItems = new List<WorkItem>();
+        }
     }
 }

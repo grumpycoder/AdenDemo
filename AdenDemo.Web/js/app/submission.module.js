@@ -226,22 +226,25 @@
 
 
     function startWorkFlow(container, data) {
-        window.$toggleWorkingButton(container);
-
+        var id = data.id; 
+        console.log('id', id);
         $.ajax({
             url: '/api/submission/start/' + id,
-            type: 'POST'
-        })
-            .done(function () {
-                $grid.refresh().done(function (e) { console.log('done', e) });
-                window.$log.success('Created assignment');
-            })
-            .fail(function (err) {
-                window.$log.error('Something went wrong: ' + err.responseJSON.message);
-            })
-            .always(function () {
-                window.$toggleWorkingButton(btn, 'off');
-            });
+            type: 'POST',
+            success: function (response) {
+                //TODO: toast success
+                console.log('success', response);
+                $grid.refresh();
+            },
+            error: function (error) {
+                //TODO: toast error
+                console.log('error', error);
+            },
+            complete: function (status) {
+                console.log('complete', status);
+            }
+        });
+        
 
     }
 
@@ -377,7 +380,7 @@
                 }
             ]
         });
-        
+
     }
 
-})
+}); 

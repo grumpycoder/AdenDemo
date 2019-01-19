@@ -56,5 +56,39 @@ namespace AdenDemo.Web.Controllers.api
             return Ok("Success");
         }
 
+        [HttpPost, Route("start/{id}")]
+        public async Task<object> Start(int id)
+        {
+            var submission = await _context.Submissions.Include(f => f.FileSpecification).FirstOrDefaultAsync(x => x.Id == id);
+            if (submission == null) return NotFound();
+
+            if (string.IsNullOrWhiteSpace(submission.FileSpecification.GenerationUserGroup))
+                return BadRequest($"No generation group defined for File { submission.FileSpecification.FileNumber }");
+
+            //TODO: Get next assignee
+            var assignee = "mark";
+
+            //Change state
+            submission.SubmissionState = SubmissionState.AssignedForGeneration;
+            submission.CurrentAssignee = assignee;
+            submission.LastUpdated = DateTime.Now;
+
+            //Create report
+            var report = new Report() { SubmissionId = submission.Id, DataYear = submission.DataYear, ReportState = ReportState.AssignedForGeneration };
+            submission.Reports.Add(report);
+
+            //Create work item
+            var workItem = new WorkItem()
+            {
+                WorkItemAction = WorkItemAction.Generate,
+                WorkItemState = WorkItemState.NotStarted,
+                AssignedUser = assignee
+            };
+            report.WorkItems.Add(workItem);
+
+            _context.SaveChanges();
+
+            return Ok(submission);
+        }
     }
 }
