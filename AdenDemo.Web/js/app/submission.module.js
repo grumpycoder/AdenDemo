@@ -15,19 +15,19 @@
         columnMinWidth: 50,
         columnAutoWidth: true,
         columns: [
-            {
-                width: 50,
-                type: "buttons",
-                buttons: ["edit", "delete", {
-                    text: "History",
-                    icon: "fa fa-history",
-                    hint: "History",
-                    onClick: function (e) {
-                        // Execute your command here
-                        showHistory(e);
-                    }
-                }]
-            },
+            //{
+            //    width: 50,
+            //    type: "buttons",
+            //    buttons: ["edit", "delete", {
+            //        text: "History",
+            //        icon: "fa fa-history",
+            //        hint: "History",
+            //        onClick: function (e) {
+            //            // Execute your command here
+            //            showHistory(e);
+            //        }
+            //    }]
+            //},
             { dataField: 'fileNumber', caption: 'File Number' },
             { dataField: 'fileName', caption: 'File Name' },
             { dataField: 'submissionStateDisplay', caption: 'Status' },
@@ -153,7 +153,7 @@
             visible: true
         },
         scrolling: {
-            mode: "infinite",
+            mode: "virtual",
             rowRenderingMode: "virtual",
         },
         paging: {
@@ -337,58 +337,72 @@
         var postUrl = '/api/submission/waiver/' + data.id;
 
         $.ajax({
-            url: url,
-            type: 'GET',
-            success: function (data) {
-                window.BootstrapDialog.show({
-                    size: window.BootstrapDialog.SIZE_WIDE,
-                    draggable: true,
-                    title: title,
-                    message: $('<div></div>').load(url, function (resp, status, xhr) {
-                        if (status === 'error') {
-                            window.$log.error('Error showing history');
-                        }
-                    }),
-                    buttons: [
-                        {
-                            label: 'Close',
-                            action: function (dialogRef) {
-                                dialogRef.close();
-                            }
-                        },
-                        {
-                            label: 'Save',
-                            cssClass: 'btn-primary',
-                            action: function (dialogRef) {
-                                window.$showModalWorking();
-                                $.ajax({
-                                    type: "POST",
-                                    url: postUrl,
-                                    data: $('form').serialize(),
-                                    dataType: 'json',
-                                    success: function (response) {
-                                        $grid.refresh().done(function (e) { console.log('done', e) });
-                                        window.$log.success('Waived submission');
-                                    },
-                                    error: function (error) {
-                                        window.$log.error('Error: ' + error.responseJSON.message);
-                                    },
-                                    complete: function () {
-                                        dialogRef.close();
-                                        window.$hideModalWorking();
-                                    }
-                                });
-
-                            }
-                        }
-                    ]
-                });
-
+            type: "POST",
+            url: postUrl,
+            success: function (response) {
+                console.log('success', response);
             },
-            error: function (err) {
-                window.$log.error('Error showing audit entry');
+            error: function (error) {
+                console.log('error', error);
+            },
+            complete: function (status) {
+                console.log('complete', status);
             }
         });
+
+        //$.ajax({
+        //    url: url,
+        //    type: 'GET',
+        //    success: function (data) {
+        //        window.BootstrapDialog.show({
+        //            size: window.BootstrapDialog.SIZE_WIDE,
+        //            draggable: true,
+        //            title: title,
+        //            message: $('<div></div>').load(url, function (resp, status, xhr) {
+        //                if (status === 'error') {
+        //                    window.$log.error('Error showing history');
+        //                }
+        //            }),
+        //            buttons: [
+        //                {
+        //                    label: 'Close',
+        //                    action: function (dialogRef) {
+        //                        dialogRef.close();
+        //                    }
+        //                },
+        //                {
+        //                    label: 'Save',
+        //                    cssClass: 'btn-primary',
+        //                    action: function (dialogRef) {
+        //                        window.$showModalWorking();
+        //                        $.ajax({
+        //                            type: "POST",
+        //                            url: postUrl,
+        //                            data: $('form').serialize(),
+        //                            dataType: 'json',
+        //                            success: function (response) {
+        //                                $grid.refresh().done(function (e) { console.log('done', e) });
+        //                                window.$log.success('Waived submission');
+        //                            },
+        //                            error: function (error) {
+        //                                window.$log.error('Error: ' + error.responseJSON.message);
+        //                            },
+        //                            complete: function () {
+        //                                dialogRef.close();
+        //                                window.$hideModalWorking();
+        //                            }
+        //                        });
+
+        //                    }
+        //                }
+        //            ]
+        //        });
+
+        //    },
+        //    error: function (err) {
+        //        window.$log.error('Error showing audit entry');
+        //    }
+        //});
     }
 
 })
