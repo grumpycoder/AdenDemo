@@ -226,7 +226,7 @@
 
 
     function startWorkFlow(container, data) {
-        var id = data.id; 
+        var id = data.id;
         console.log('id', id);
         $.ajax({
             url: '/api/submission/start/' + id,
@@ -244,29 +244,30 @@
                 console.log('complete', status);
             }
         });
-        
+
 
     }
 
     function cancelWorkFlow(container, data) {
         var id = data.id;
-
-        window.$toggleWorkingButton(container);
-
+        
         $.ajax({
             url: '/api/submission/cancel/' + id,
-            type: 'POST'
-        })
-            .done(function () {
-                $grid.refresh().done(function (e) { console.log('done', e) });
-                window.$log.success('Cancelled assignments');
-            })
-            .fail(function (err) {
-                window.$log.error('Something went wrong: ' + err.responseJSON.message);
-            })
-            .always(function () {
-                window.$toggleWorkingButton(container, 'off');
-            });
+            type: 'POST',
+            success: function (response) {
+                //TODO: toast success
+                console.log('success', response);
+                $grid.refresh();
+            },
+            error: function (error) {
+                //TODO: toast error
+                console.log('error', error);
+            },
+            complete: function (status) {
+                console.log('complete', status);
+            }
+        });
+
     }
 
     function reopenSubmission(container, data) {

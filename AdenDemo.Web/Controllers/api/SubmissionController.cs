@@ -90,5 +90,41 @@ namespace AdenDemo.Web.Controllers.api
 
             return Ok(submission);
         }
+
+        [HttpPost, Route("cancel/{id}")]
+        public async Task<object> Cancel(int id)
+        {
+            var submission = await _context.Submissions.Include(f => f.FileSpecification).FirstOrDefaultAsync(x => x.Id == id);
+            if (submission == null) return NotFound();
+
+            //Set Submission State and clear assignee
+            submission.SubmissionState = SubmissionState.NotStarted;
+            submission.CurrentAssignee = string.Empty;
+
+            //Create Audit record
+            var user = "mark";
+            var message = $"Cancelled by {user}";
+            var audit = new SubmissionAudit(submission.Id, message);
+            submission.SubmissionAudits.Add(audit);
+
+            //Remove Reports/Documents/WorkItems
+            var report = await _context.Reports.FirstOrDefaultAsync(r => r.SubmissionId == id);
+            if (report != null)
+            {
+                var workItems = _context.WorkItems.Where(w => w.ReportId == report.Id);
+                _context.WorkItems.RemoveRange(workItems);
+
+                var docs = _context.ReportDocuments.Where(d => d.ReportId == report.Id);
+                _context.ReportDocuments.RemoveRange(docs);
+
+                _context.Reports.Remove(report);
+            }
+
+            _context.SaveChanges();
+
+            return Ok();
+
+        }
+
     }
 }
