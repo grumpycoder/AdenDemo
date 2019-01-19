@@ -1,4 +1,5 @@
 ﻿using AdenDemo.Web.Data;
+using AdenDemo.Web.Models;
 using AdenDemo.Web.ViewModels;
 using AutoMapper.QueryableExtensions;
 using DevExtreme.AspNet.Data;
@@ -13,23 +14,40 @@ namespace AdenDemo.Web.Controllers.api
     [RoutePrefix("api/submission")]
     public class SubmissionController : ApiController
     {
+        private AdenContext _context;
+        public SubmissionController()
+        {
+            _context = new AdenContext();
+        }
+
         [HttpGet]
         public async Task<object> Get(DataSourceLoadOptions loadOptions)
         {
-            var _context = new AdenContext();
-
             var dto = await _context.Submissions.ProjectTo<SubmissionViewDto>().ToListAsync();
 
             return Ok(DataSourceLoader.Load(dto.OrderBy(x => x.DueDate).ThenByDescending(x => x.Id), loadOptions));
         }
 
         [HttpPost, Route("waiver/{id}")]
-        public async Task<object> Waiver(int id)
+        public async Task<object> Waiver(int id, SubmissionAuditEntryDto model)
         {
-            var _context = new AdenContext();
-            var submission = await _context.Submissions.FirstOrDefaultAsync(x => x.Id == id);
+            var submission = await _context.Submissions.FirstOrDefaultAsync(s => s.Id == id);
+            if (submission == null) return NotFound();
+
+            //TODO: Complete Waiver processing
+            //Change state
+            submission.SubmissionState = SubmissionState.Waived;
+
+            //Create report
+            //var report = submission.CreateReport();
+
+            //Create Audit record
+
+            //Save changes
+            //_context.SaveChanges();
 
             return Ok(submission);
         }
+
     }
 }

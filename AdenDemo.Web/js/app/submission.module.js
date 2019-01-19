@@ -333,22 +333,63 @@
 
     function waiverWorkFlow(container, data) {
         var title = 'Waiver Reason';
-        var url = '/audit/' + data.id;
+        var url = '/home/audit/' + data.id;
         var postUrl = '/api/submission/waiver/' + data.id;
 
-        $.ajax({
-            type: "POST",
-            url: postUrl,
-            success: function (response) {
-                console.log('success', response);
-            },
-            error: function (error) {
-                console.log('error', error);
-            },
-            complete: function (status) {
-                console.log('complete', status);
-            }
+        BootstrapDialog.show({
+            size: window.BootstrapDialog.SIZE_WIDE,
+            draggable: true,
+            title: title,
+            message: $('<div></div>').load(url, function (resp, status, xhr) {
+                if (status === 'error') {
+                    window.$log.error('Error showing history');
+                }
+            }),
+            buttons: [
+                {
+                    label: 'Close',
+                    action: function (dialogRef) {
+                        dialogRef.close();
+                    }
+                },
+                {
+                    label: 'Save', 
+                    cssClass: 'btn-primary',
+                    action: function (dialogRef) {
+                        console.log('save');
+                        $.ajax({
+                            type: "POST",
+                            url: postUrl,
+                            data: $('form').serialize(),
+                            dataType: 'json',
+                            success: function (response) {
+                                console.log('success', response);
+                            },
+                            error: function (error) {
+                                console.log('error', error);
+                            },
+                            complete: function (status) {
+                                console.log('complete', status);
+                            }
+                        });
+                    }
+                }
+            ]
         });
+
+        //$.ajax({
+        //    type: "POST",
+        //    url: postUrl,
+        //    success: function (response) {
+        //        console.log('success', response);
+        //    },
+        //    error: function (error) {
+        //        console.log('error', error);
+        //    },
+        //    complete: function (status) {
+        //        console.log('complete', status);
+        //    }
+        //});
 
         //$.ajax({
         //    url: url,

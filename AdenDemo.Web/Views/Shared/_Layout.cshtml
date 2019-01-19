@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="~/css/dx.common.css" />
     <link rel="stylesheet" type="text/css" href="~/css/dx.light.css" />
     <link href="~/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/css/bootstrap-dialog.min.css" rel="stylesheet" />
 
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -35,7 +36,7 @@
             </div>
         </div>
     </div>
-    <div class="container body-content">
+    <div class="container-fluid">
         @RenderBody()
         <hr />
         <footer>
@@ -48,6 +49,7 @@
     <!-- DevExtreme library -->
     <script type="text/javascript" src="js/dx.all.js"></script>
     <script src="~/js/dx.aspnet.data.js"></script>
+    <script src="~/js/bootstrap-dialog.min.js"></script>
     @*@Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")*@
     @RenderSection("scripts", required: false)

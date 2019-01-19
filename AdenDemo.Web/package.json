@@ -2,6 +2,7 @@
   "name": "myproject",
   "version": "1.0.0",
   "devDependencies": {
+    "bootstrap3-dialog": "1.35.4",
     "devextreme": "18.2.4",
     "devextreme-aspnet-data": "2.1.1",
     "font-awesome": "4.7.0"
