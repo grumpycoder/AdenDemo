@@ -15,19 +15,19 @@
         columnMinWidth: 50,
         columnAutoWidth: true,
         columns: [
-            //{
-            //    width: 50,
-            //    type: "buttons",
-            //    buttons: ["edit", "delete", {
-            //        text: "History",
-            //        icon: "fa fa-history",
-            //        hint: "History",
-            //        onClick: function (e) {
-            //            // Execute your command here
-            //            showHistory(e);
-            //        }
-            //    }]
-            //},
+            {
+                width: 50,
+                type: "buttons",
+                buttons: ["edit", "delete", {
+                    text: "History",
+                    icon: "fa fa-history",
+                    hint: "History",
+                    onClick: function (e) {
+                        // Execute your command here
+                        showHistory(e);
+                    }
+                }]
+            },
             { dataField: 'fileNumber', caption: 'File Number' },
             { dataField: 'fileName', caption: 'File Name' },
             { dataField: 'submissionStateDisplay', caption: 'Status' },
@@ -84,8 +84,6 @@
                             .text('Start')
                             .on('dxclick',
                                 function (e) {
-                                    //Do something with options.data;
-                                    console.log('container', container);
                                     startWorkFlow($(this), options.data);
                                 })
                             .appendTo(container);
@@ -104,7 +102,7 @@
                     if (options.data.canReview) {
                         $('<a/>').addClass('btn btn-default btn-sm btn-grid')
                             .text('Review File')
-                            .attr('href', '/report/' + options.data.dataYear + '/' + options.data.fileNumber)
+                            .attr('href', '/review/' + options.data.dataYear + '/' + options.data.fileNumber)
                             .attr('target', '_blank')
                             .appendTo(container);
                     }
@@ -154,7 +152,7 @@
         },
         scrolling: {
             mode: "virtual",
-            //rowRenderingMode: "virtual",
+            rowRenderingMode: "virtual",
         },
         paging: {
             pageSize: 20
