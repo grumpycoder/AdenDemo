@@ -4,6 +4,7 @@ using AdenDemo.Web.ViewModels;
 using AutoMapper.QueryableExtensions;
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,25 +29,31 @@ namespace AdenDemo.Web.Controllers.api
             return Ok(DataSourceLoader.Load(dto.OrderBy(x => x.DueDate).ThenByDescending(x => x.Id), loadOptions));
         }
 
-        [HttpPost, Route("waiver/{id}")]
-        public async Task<object> Waiver(int id, SubmissionAuditEntryDto model)
+        [HttpPost, Route("waive/{id}")]
+        public async Task<object> Waive(int id, SubmissionAuditEntryDto model)
         {
             var submission = await _context.Submissions.FirstOrDefaultAsync(s => s.Id == id);
             if (submission == null) return NotFound();
 
-            //TODO: Complete Waiver processing
+            //TODO: Refactor model
             //Change state
             submission.SubmissionState = SubmissionState.Waived;
+            submission.LastUpdated = DateTime.Now;
 
-            //Create report
-            //var report = submission.CreateReport();
+            //Create waived report
+            var report = new Report() { SubmissionId = submission.Id, DataYear = submission.DataYear, ReportState = ReportState.Waived };
+            submission.Reports.Add(report);
 
             //Create Audit record
+            var user = "mark";
+            var message = $"Waived by {user}: {model.Message}";
+            var audit = new SubmissionAudit(submission.Id, message);
+            submission.SubmissionAudits.Add(audit);
 
             //Save changes
-            //_context.SaveChanges();
+            _context.SaveChanges();
 
-            return Ok(submission);
+            return Ok("Success");
         }
 
     }
