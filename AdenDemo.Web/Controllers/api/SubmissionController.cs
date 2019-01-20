@@ -88,6 +88,10 @@ namespace AdenDemo.Web.Controllers.api
 
             _context.SaveChanges();
 
+            submission.CurrentReportId = report.Id;
+
+            _context.SaveChanges();
+
             return Ok(submission);
         }
 

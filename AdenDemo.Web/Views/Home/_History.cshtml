@@ -1,7 +1,4 @@
-﻿
-
-
-
+﻿ReportId: @ViewBag.CurrentReportId
 <div id="historyGrid">
 
 </div>
@@ -10,7 +7,7 @@
 
 
     console.log('work history ready');
-    var uri = '/api/workitem/history/' + @ViewBag.CurrentReportId; 
+    var uri = '/api/workitem/history/' + @ViewBag.CurrentReportId;
     var $historyGrid = $('#historyGrid').dxDataGrid(
         {
             dataSource: DevExpress.data.AspNet.createStore({
@@ -31,7 +28,7 @@
                 { dataField: 'assignedUser', caption: 'Assigned' },
                 { dataField: 'status', caption: 'Status' },
                 {
-                    
+
                     alignment: 'center',
                     cellTemplate: function (container, options) {
                         if (options.data.canReassign) {
@@ -43,16 +40,16 @@
                                     })
                                 .appendTo(container);
                         }
-                        
+
                     }
-                }, 
-            ], 
-        }); 
+                },
+            ],
+        });
 
     function ShowReassign(container, data) {
         console.log('reassign');
         var title = 'Reassign Task';
-      
+
         var url = '/reassign/' + data.id;
         $.ajax({
             url: url,
@@ -103,9 +100,9 @@
                 window.$log.error('Error showing reassignment');
             }
         });
-    }; 
+    };
 
     (function () {
-  
+
     })
 </script>
