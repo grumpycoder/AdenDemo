@@ -28,20 +28,8 @@ namespace AdenDemo.Web.Controllers
         {
             //TODO: Set SectionAction variable
             ViewBag.IsSectionAdmin = true;
-
-            //var report = _context.Reports.OrderByDescending(r => r.Id).FirstOrDefault(x => x.SubmissionId == id);
-
-            //var workItems = _context.WorkItems.OrderByDescending(o => o.Id).Where(w => w.ReportId == report.Id)
-            //                .ProjectTo<WorkItemHistoryDto>().Future().ToList();
-
-            //var audits = _context.SubmissionAudits.OrderByDescending(x => x.Id).Where(a => a.SubmissionId == id)
-            //    .Future().ToList();
-
-            //var dto = new HistoryViewDto()
-            //{
-            //    WorkItemHistory = workItems,
-            //    SubmissionAudits = audits
-            //};
+            
+            //TODO: Refactor using ViewBag for CurrentReport
             var dto = _context.Submissions.FirstOrDefault(x => x.Id == id);
             ViewBag.CurrentReportId = dto.CurrentReportId;
             return PartialView("_History");
