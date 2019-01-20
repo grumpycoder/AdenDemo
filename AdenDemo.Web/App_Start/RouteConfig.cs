@@ -10,6 +10,20 @@ namespace AdenDemo.Web
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute
+                            (
+                            name: "Reassign",
+                            url: "reassign/{id}",
+                            defaults: new { controller = "Home", action = "Reassign", id = UrlParameter.Optional }
+                            );
+
+            routes.MapRoute
+                (
+                name: "History",
+                url: "history/{id}",
+                defaults: new { controller = "Home", action = "History", id = UrlParameter.Optional }
+                );
+
+            routes.MapRoute
                 (
                 name: "Review",
                 url: "review/{datayear}/{filenumber}",

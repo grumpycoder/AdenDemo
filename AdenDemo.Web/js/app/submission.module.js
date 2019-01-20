@@ -221,9 +221,29 @@
     }).dxDataGrid("instance");
 
     function showHistory(e) {
-        console.log('showHistory', e);
-    }
+        var title = 'History';
+        var url = '/history/' + e.row.data.id;
+        console.log(e.row.data);
+        BootstrapDialog.show({
+            size: window.BootstrapDialog.SIZE_WIDE,
+            draggable: true,
+            title: title,
+            message: $('<div></div>').load(url, function (resp, status, xhr) {
+                if (status === 'error') {
+                    window.$log.error('Error showing history');
+                }
+            }),
+            buttons: [
+                {
+                    label: 'Close',
+                    action: function (dialogRef) {
+                        dialogRef.close();
+                    }
+                }
+            ]
+        });
 
+    }
 
     function startWorkFlow(container, data) {
         var id = data.id;
@@ -272,64 +292,54 @@
 
     function reopenSubmission(container, data) {
 
-        var url = '/reopenaudit/' + data.id;
+        var url = '/home/audit/' + data.id;
         var title = 'Reopen Reason';
-        var postUrl = '/api/submission/reopen/' + data.id;
+        var postUrl = '/api/submission/restart/' + data.id;
 
-        $.ajax({
-            url: url,
-            type: 'GET',
-            success: function (data) {
-                window.BootstrapDialog.show({
-                    size: window.BootstrapDialog.SIZE_WIDE,
-                    draggable: true,
-                    title: title,
-                    message: $('<div></div>').load(url,
-                        function (resp, status, xhr) {
-                            if (status === 'error') {
-                                window.$log.error('Error showing history');
-                            }
-                        }),
-                    buttons: [
-                        {
-                            label: 'Close',
-                            action: function (dialogRef) {
+        BootstrapDialog.show({
+            size: window.BootstrapDialog.SIZE_WIDE,
+            draggable: true,
+            title: title,
+            message: $('<div></div>').load(url, function (resp, status, xhr) {
+                if (status === 'error') {
+                    window.$log.error('Error showing history');
+                }
+            }),
+            buttons: [
+                {
+                    label: 'Close',
+                    action: function (dialogRef) {
+                        dialogRef.close();
+                    }
+                },
+                {
+                    label: 'Save',
+                    cssClass: 'btn-primary',
+                    action: function (dialogRef) {
+                        $.ajax({
+                            contentType: 'application/json; charset=utf-8',
+                            type: "POST",
+                            url: postUrl,
+                            data: JSON.stringify({ 'model': $('form').serialize() }),
+                            dataType: 'json',
+                            success: function (response) {
+                                console.log('success', response);
+                                //TODO: toast success
                                 dialogRef.close();
+                                $grid.refresh();
+                            },
+                            error: function (error) {
+                                //TODO: toast error
+                                console.log('error', error);
+                            },
+                            complete: function (status) {
+                                console.log('complete', status);
                             }
-                        },
-                        {
-                            label: 'Save',
-                            cssClass: 'btn-primary',
-                            action: function (dialogRef) {
-                                window.$showModalWorking();
-                                $.ajax({
-                                    type: "POST",
-                                    url: postUrl,
-                                    data: $('form').serialize(),
-                                    dataType: 'json',
-                                    success: function (response) {
-                                        $grid.refresh().done(function (e) { console.log('done', e) });
-                                        window.$log.success('ReOpened submission');
-                                    },
-                                    error: function (error) {
-                                        console.log('error', error);
-                                        window.$log.error('Error: ' + error.responseJSON.message);
-                                    },
-                                    complete: function () {
-                                        dialogRef.close();
-                                        window.$hideModalWorking();
-                                    }
-                                });
-
-                            }
-                        }
-                    ]
-                });
-            },
-            error: function (err) {
-                window.$log.error('Error showing audit entry');
-            }
-        })
+                        });
+                    }
+                }
+            ]
+        });
 
     }
 
@@ -383,5 +393,65 @@
         });
 
     }
+    
+    //$(document).on('click', '[data-reassign]', function (e) {
+    //    e.preventDefault();
+    //    var id = $(this).data('workitem-id');
+    //    var title = 'Reassign Task';
+    //    //var url = $(this).attr('href') + '/' + id;
+    //    console.log('id', id);
+    //    console.log('url', url);
+    //    var url = '/reassign/' + id; 
+    //    $.ajax({
+    //        url: url,
+    //        type: 'POST',
+    //        success: function (data) {
+    //            BootstrapDialog.show({
+    //                size: BootstrapDialog.SIZE_WIDE,
+    //                draggable: true,
+    //                title: title,
+    //                message: $('<div></div>').load(url, function (resp, status, xhr) {
+    //                    if (status === 'error') {
+    //                        //window.$log.error('Error showing history');
+    //                    }
+    //                }),
+    //                buttons: [
+    //                    {
+    //                        label: 'Close',
+    //                        action: function (dialogRef) {
+    //                            dialogRef.close();
+    //                        }
+    //                    },
+    //                    {
+    //                        label: 'Save',
+    //                        cssClass: 'btn-primary',
+    //                        action: function (dialogRef) {
+    //                            //window.$showModalWorking();
+    //                            var formData = $('form').serialize();
+    //                            $.ajax({
+    //                                type: "POST",
+    //                                url: '/api/workitem/assign',
+    //                                data: model = formData
+    //                            }).done(function (data) {
+    //                                //window.$log.success('Reassigned task');
+    //                            }).fail(function (err) {
+    //                                //window.$log.error('Failed to reassign task. ' + error);
+    //                            }).always(function () {
+    //                                dialogRef.close();
+    //                                //window.$hideModalWorking();
+    //                            });
+
+    //                        }
+    //                    }
+    //                ]
+    //            });
+
+    //        },
+    //        error: function (err) {
+    //            window.$log.error('Error showing reassignment');
+    //        }
+    //    });
+
+    //});
 
 }); 

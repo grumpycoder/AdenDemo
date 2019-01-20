@@ -70,5 +70,6 @@ namespace AdenDemo.Web.ViewModels
             }
         }
 
+        public int? CurrentReportId { get; set; }
     }
 }

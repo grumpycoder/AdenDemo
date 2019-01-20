@@ -126,5 +126,49 @@ namespace AdenDemo.Web.Controllers.api
 
         }
 
+        [HttpPost, Route("restart/{id}")]
+        public async Task<object> Restart(int id, SubmissionReOpenAuditEntryDto model)
+        {
+            var submission = await _context.Submissions.Include(f => f.FileSpecification).FirstOrDefaultAsync(x => x.Id == id);
+            if (submission == null) return NotFound();
+
+            if (string.IsNullOrWhiteSpace(submission.FileSpecification.GenerationUserGroup))
+                return BadRequest($"No generation group defined for File { submission.FileSpecification.FileNumber }");
+
+            //Create Audit record
+            var user = "mark";
+            var message = $"ReOpened by { user}: { model.Message }";
+            var audit = new SubmissionAudit(submission.Id, message);
+            submission.SubmissionAudits.Add(audit);
+
+            //TODO: Get next assignee
+            var assignee = "mark";
+
+            //Change state
+            submission.SubmissionState = SubmissionState.AssignedForGeneration;
+            submission.CurrentAssignee = assignee;
+            submission.LastUpdated = DateTime.Now;
+            submission.NextDueDate = model.NextSubmissionDate;
+
+            //Create report
+            var report = new Report() { SubmissionId = submission.Id, DataYear = submission.DataYear, ReportState = ReportState.AssignedForGeneration };
+            submission.Reports.Add(report);
+
+            //Create work item
+            var workItem = new WorkItem()
+            {
+                WorkItemAction = WorkItemAction.Generate,
+                WorkItemState = WorkItemState.NotStarted,
+                AssignedUser = assignee
+            };
+            report.WorkItems.Add(workItem);
+
+            _context.SaveChanges();
+
+            return Ok("Successfully repopened");
+
+        }
+
+
     }
 }

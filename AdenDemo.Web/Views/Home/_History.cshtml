@@ -1,0 +1,111 @@
+﻿
+
+
+
+<div id="historyGrid">
+
+</div>
+
+<script>
+
+
+    console.log('work history ready');
+    var uri = '/api/workitem/history/' + @ViewBag.CurrentReportId; 
+    var $historyGrid = $('#historyGrid').dxDataGrid(
+        {
+            dataSource: DevExpress.data.AspNet.createStore({
+                key: 'id',
+                loadUrl: uri,
+                updateUrl: uri,
+            }),
+            remoteOperations: true,
+            allowColumnResizing: true,
+            showBorders: true,
+            columnResizingMode: "nextColumn",
+            columnMinWidth: 50,
+            columnAutoWidth: true,
+            columns: [
+                { dataField: 'actionDescription', caption: 'Task' },
+                { dataField: 'assignedDate', caption: 'Assigned Date', dataType: 'datetime' },
+                { dataField: 'completedDate', caption: 'Completed Date', dataType: 'datetime' },
+                { dataField: 'assignedUser', caption: 'Assigned' },
+                { dataField: 'status', caption: 'Status' },
+                {
+                    
+                    alignment: 'center',
+                    cellTemplate: function (container, options) {
+                        if (options.data.canReassign) {
+                            $('<a/>').addClass('btn btn-default btn-sm btn-grid')
+                                .text('Reassign')
+                                .on('dxclick',
+                                    function (e) {
+                                        ShowReassign($(this), options.data);
+                                    })
+                                .appendTo(container);
+                        }
+                        
+                    }
+                }, 
+            ], 
+        }); 
+
+    function ShowReassign(container, data) {
+        console.log('reassign');
+        var title = 'Reassign Task';
+      
+        var url = '/reassign/' + data.id;
+        $.ajax({
+            url: url,
+            type: 'POST',
+            success: function (data) {
+                BootstrapDialog.show({
+                    size: BootstrapDialog.SIZE_WIDE,
+                    draggable: true,
+                    title: title,
+                    message: $('<div></div>').load(url, function (resp, status, xhr) {
+                        if (status === 'error') {
+                            //window.$log.error('Error showing history');
+                        }
+                    }),
+                    buttons: [
+                        {
+                            label: 'Close',
+                            action: function (dialogRef) {
+                                dialogRef.close();
+                            }
+                        },
+                        {
+                            label: 'Save',
+                            cssClass: 'btn-primary',
+                            action: function (dialogRef) {
+                                //window.$showModalWorking();
+                                var formData = $('form').serialize();
+                                $.ajax({
+                                    type: "POST",
+                                    url: '/api/workitem/assign',
+                                    data: model = formData
+                                }).done(function (data) {
+                                    //window.$log.success('Reassigned task');
+                                }).fail(function (err) {
+                                    //window.$log.error('Failed to reassign task. ' + error);
+                                }).always(function () {
+                                    dialogRef.close();
+                                    //window.$hideModalWorking();
+                                });
+
+                            }
+                        }
+                    ]
+                });
+
+            },
+            error: function (err) {
+                window.$log.error('Error showing reassignment');
+            }
+        });
+    }; 
+
+    (function () {
+  
+    })
+</script>

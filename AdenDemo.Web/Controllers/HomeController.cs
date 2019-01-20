@@ -1,5 +1,7 @@
 ﻿using AdenDemo.Web.Data;
 using AdenDemo.Web.ViewModels;
+using AutoMapper;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace AdenDemo.Web.Controllers
@@ -15,6 +17,34 @@ namespace AdenDemo.Web.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+
+        public ActionResult Assignments()
+        {
+            return View();
+        }
+
+        public ActionResult History(int id)
+        {
+            //TODO: Set SectionAction variable
+            ViewBag.IsSectionAdmin = true;
+
+            //var report = _context.Reports.OrderByDescending(r => r.Id).FirstOrDefault(x => x.SubmissionId == id);
+
+            //var workItems = _context.WorkItems.OrderByDescending(o => o.Id).Where(w => w.ReportId == report.Id)
+            //                .ProjectTo<WorkItemHistoryDto>().Future().ToList();
+
+            //var audits = _context.SubmissionAudits.OrderByDescending(x => x.Id).Where(a => a.SubmissionId == id)
+            //    .Future().ToList();
+
+            //var dto = new HistoryViewDto()
+            //{
+            //    WorkItemHistory = workItems,
+            //    SubmissionAudits = audits
+            //};
+            var dto = _context.Submissions.FirstOrDefault(x => x.Id == id);
+            ViewBag.CurrentReportId = dto.CurrentReportId;
+            return PartialView("_History");
         }
 
         public ActionResult Review(int dataYear, string fileNumber)
@@ -36,5 +66,13 @@ namespace AdenDemo.Web.Controllers
             return View();
         }
 
+        public ActionResult Reassign(int id)
+        {
+            var workItem = _context.WorkItems.FirstOrDefault(x => x.Id == id);
+
+            var dto = Mapper.Map<AssignmentDto>(workItem);
+            //TODO: Display typeahead selection for assignment field
+            return PartialView("_WorkItemAssignment", dto);
+        }
     }
 }

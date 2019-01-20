@@ -1,0 +1,23 @@
+﻿@model SubmissionAuditEntryDto
+
+<div class="row">
+    <div class="col-md-12">
+
+        <form id="form" name="form" role="form">
+            @Html.HiddenFor(m => m.SubmissionId)
+            <div class="form-group">
+                <label class="control-label">
+                    New Submission Deadline
+                    <input type="date" class="form-control" id="nextSubmissionDate" name="nextSubmissionDate" />
+                </label>
+            </div>
+            <div class="form-group">
+                <label for="description" class="control-label">Description:</label>
+                <textarea class="form-control" id="description" name="message" placeholder="Enter details here..." autofocus="autofocus">Test</textarea>
+            </div>
+
+        </form>
+
+
+    </div>
+</div>

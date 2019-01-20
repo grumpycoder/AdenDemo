@@ -31,6 +31,7 @@ namespace AdenDemo.Web.Data.Profiles
                 //.ForMember(d => d.SubmissionStateId, opt => opt.MapFrom(s => s.SubmissionState))
                 .ForMember(d => d.SubmissionState, opt => opt.MapFrom(s => s.SubmissionState))
                 .ForMember(d => d.CurrentAssignee, opt => opt.MapFrom(s => s.CurrentAssignee))
+                .ForMember(d => d.CurrentReportId, opt => opt.MapFrom(s => s.CurrentReportId))
                 //.ForMember(d => d.SubmissionStateKey, opt => opt.MapFrom(s => s.SubmissionState.GetShortName()))
                 ;
         }
