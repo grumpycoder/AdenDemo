@@ -24,8 +24,7 @@
 
     <div class="form-horizontal">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @*@Html.HiddenFor(model => model.Id)*@
-        @Html.TextBoxFor(model => model.Id)
+        @Html.HiddenFor(model => model.Id)
     </div>
 
     <div class="row">
@@ -133,7 +132,8 @@
     </fieldset>
 
 
-    @*<fieldset class="@(User.IsInRole(Constants.ApplicationProgrammerGroup) ? "show" : "hidden")">
+    @*<fieldset class="@(User.IsInRole(Constants.ApplicationProgrammerGroup) ? "show" : "hidden")">*@
+    <fieldset>
         <legend>Responsible User Groups</legend>
 
         <div class="row">
@@ -168,36 +168,36 @@
             </div>
         </div>
 
-    </fieldset>*@
+    </fieldset>
 
 
     @*<fieldset class="@(User.IsInRole(Constants.ApplicationProgrammerGroup) ? "show" : "hidden")">
-        <legend>Generation Properties</legend>
+            <legend>Generation Properties</legend>
 
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
 
-                    <label class="control-label full-width">
-                        File Name Format
-                        @Html.TextBoxFor(model => model.FileNameFormat, new { @class = "form-control", autofocus = "autofocus" })
-                    </label>
-                    @Html.ValidationMessageFor(model => model.FileNameFormat, "", new { @class = "text-danger" })
+                        <label class="control-label full-width">
+                            File Name Format
+                            @Html.TextBoxFor(model => model.FileNameFormat, new { @class = "form-control", autofocus = "autofocus" })
+                        </label>
+                        @Html.ValidationMessageFor(model => model.FileNameFormat, "", new { @class = "text-danger" })
+                    </div>
                 </div>
-            </div>
 
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label class="control-label full-width">
-                        Report Action
-                        @Html.TextBoxFor(model => model.ReportAction, new { @class = "form-control" })
-                    </label>
-                    @Html.ValidationMessageFor(model => model.ReportAction, "", new { @class = "text-danger" })
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label full-width">
+                            Report Action
+                            @Html.TextBoxFor(model => model.ReportAction, new { @class = "form-control" })
+                        </label>
+                        @Html.ValidationMessageFor(model => model.ReportAction, "", new { @class = "text-danger" })
+                    </div>
                 </div>
-            </div>
 
-        </div>
-    </fieldset>*@
+            </div>
+        </fieldset>*@
 
 
 </form>

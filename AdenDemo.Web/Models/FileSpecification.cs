@@ -38,15 +38,6 @@ namespace AdenDemo.Web.Models
             return $"{FileNumber} {FileName}";
         }
 
-        public void Retire()
-        {
-            IsRetired = true;
-        }
-
-        public void Activate()
-        {
-            IsRetired = false;
-        }
 
     }
 }

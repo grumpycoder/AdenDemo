@@ -17,6 +17,7 @@
         columns: [
             { dataField: 'fileNumber', caption: 'File Number' },
             { dataField: 'fileName', caption: 'File Name' },
+            { dataField: 'isRetired', caption: 'Retired' },
             {
                 dataField: 'isRetired',
                 caption: 'Retired',
@@ -39,7 +40,7 @@
             { dataField: 'approvalUserGroup', caption: 'Approval Group' },
             { dataField: 'submissionUserGroup', caption: 'Submission Group' },
             {
-                width: 70,
+                width: 120,
                 alignment: 'center',
                 cellTemplate: function (container, options) {
 
@@ -50,6 +51,25 @@
                                 editFileSpecification($(this), options.data);
                             })
                         .appendTo(container);
+
+                    if (options.data.canRetire) {
+                        $('<a/>').addClass('btn btn-default btn-sm btn-grid')
+                            .text('Retire')
+                            .on('dxclick',
+                                function(e) {
+                                    retire($(this), options.data);
+                                })
+                            .appendTo(container);
+                    }
+                    if (options.data.canActivate) {
+                        $('<a/>').addClass('btn btn-default btn-sm btn-grid')
+                            .text('Activate')
+                            .on('dxclick',
+                                function (e) {
+                                    activate($(this), options.data);
+                                })
+                            .appendTo(container);
+                    }
 
                 }
             },
@@ -144,6 +164,42 @@
     }).dxDataGrid("instance");
 
 
+    function activate(container, data) {
+        var id = data.id;
+        $.ajax({
+            url: '/api/filespecification/activate/' + id,
+            type: 'POST',
+            success: function (data) {
+                $grid.refresh();
+                //TODO: Toast success retire action
+            },
+            error: function (err) {
+                console.log('err', err);
+                //TODO: Toast error retire action
+            }
+        }).always(function () {
+
+        });
+    }
+
+    function retire(container, data) {
+        var id = data.id; 
+        $.ajax({
+            url: '/api/filespecification/retire/' + id,
+            type: 'POST',
+            success: function (data) {
+                $grid.refresh();
+                //TODO: Toast success retire action
+            },
+            error: function (err) {
+                console.log('err', err);
+                //TODO: Toast error retire action
+            }
+        }).always(function () {
+            
+        });
+    }
+
     function editFileSpecification(container, data) {
         var title = 'Edit File Specification';
         var url = '/home/editfileSpecification/' + data.id;
@@ -169,11 +225,12 @@
                     label: 'Save',
                     cssClass: 'btn-primary',
                     action: function (dialogRef) {
+                        var data = $('form').serializeJSON(); 
                         $.ajax({
                             contentType: 'application/json; charset=utf-8',
                             type: "PUT",
                             url: postUrl,
-                            data: JSON.stringify({ 'dto': $('form').serialize() }),
+                            data: JSON.stringify(data),
                             //data: $('form').serialize(),
                             dataType: 'json',
                             success: function (response) {
