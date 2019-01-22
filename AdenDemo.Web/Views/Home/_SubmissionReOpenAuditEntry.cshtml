@@ -4,19 +4,16 @@
     <div class="col-md-12">
 
         <form id="form" name="form" role="form">
-            @*@Html.TextBoxFor(m => m.SubmissionId, new { id="submissionId", name="submissionId"})*@
             <input type="hidden" name="submissionId" id="submissionId" value=@Model.SubmissionId />
             <div class="form-group">
                 <label class="control-label">
                     New Submission Deadline
-                    <input type="date" class="form-control" id="nextSubmissionDate" name="nextSubmissionDate" value="2019-01-26">
-                    @*@Html.TextBoxFor(m => m.NextSubmissionDate)*@
+                    <input type="date" class="form-control" id="nextSubmissionDate" name="nextSubmissionDate" value="">
                 </label>
             </div>
             <div class="form-group">
                 <label for="message" class="control-label">Description:</label>
-                <textarea class="form-control" id="message" name="message" placeholder="Enter details here..." autofocus="autofocus">Test</textarea>
-                @*@Html.TextAreaFor(m => m.Message)*@
+                <textarea class="form-control" id="message" name="message" placeholder="Enter details here..." autofocus="autofocus"></textarea>
             </div>
 
         </form>

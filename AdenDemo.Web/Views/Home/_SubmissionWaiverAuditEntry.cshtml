@@ -4,12 +4,10 @@
     <div class="col-md-12">
 
         <form id="form" name="form" role="form">
-            @*@Html.HiddenFor(m => m.SubmissionId)*@
             <input type="hidden" id="submissionId" name="submissionId" value="@Model.SubmissionId"/>
             <div class="form-group">
                 <label for="message" class="control-label">Description:</label>
-                <textarea class="form-control" id="message" name="message" placeholder="Enter details here..." autofocus="autofocus">Test</textarea>
-            </div>
+                <textarea class="form-control" id="message" name="message" placeholder="Enter details here..." autofocus="autofocus"></textarea></div>
 
         </form>
 
