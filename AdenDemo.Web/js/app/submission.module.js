@@ -188,6 +188,7 @@
                     widget: "dxButton",
                     options: {
                         text: "Collapse All",
+                        
                         width: 136,
                         onClick: function (e) {
                             var expanding = e.component.option("text") === "Expand All";
@@ -199,8 +200,10 @@
                 {
                     location: "after",
                     widget: "dxButton",
+                  
                     options: {
                         icon: "refresh",
+                        hint: 'Refresh Data', 
                         onClick: function () {
                             dataGrid.refresh();
                         }
@@ -211,6 +214,7 @@
                     widget: "dxButton",
                     options: {
                         icon: "fa fa-undo",
+                        hint: 'Reset Grid',
                         onClick: function () {
                             dataGrid.state({});
                         }
