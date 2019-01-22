@@ -47,15 +47,15 @@ namespace AdenDemo.Web.Controllers
             return View();
         }
 
-        public ActionResult Audit(int id)
+        public ActionResult Waiver(int id)
         {
-            var audit = new SubmissionAuditEntryDto(id);
-            return PartialView("_SubmissionAuditEntry", audit);
+            var audit = new SubmissionWaiveAuditEntryDto(id);
+            return PartialView("_SubmissionWaiverAuditEntry", audit);
         }
 
-        public ActionResult RestartAudit(int id)
+        public ActionResult ReOpen(int id)
         {
-            var audit = new SubmissionAuditEntryDto(id);
+            var audit = new SubmissionReOpenAuditEntryDto(id);
             return PartialView("_SubmissionReOpenAuditEntry", audit);
         }
 

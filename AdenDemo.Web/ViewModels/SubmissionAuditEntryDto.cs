@@ -1,13 +1,18 @@
 ﻿namespace AdenDemo.Web.ViewModels
 {
-    public class SubmissionAuditEntryDto
+    public class SubmissionWaiveAuditEntryDto
     {
         public int SubmissionId { get; set; }
         public string Message { get; set; }
 
-        public SubmissionAuditEntryDto(int submissionId)
+        public SubmissionWaiveAuditEntryDto(int submissionId)
         {
             SubmissionId = submissionId;
+        }
+
+        private SubmissionWaiveAuditEntryDto()
+        {
+            
         }
     }
 }

@@ -30,8 +30,10 @@ namespace AdenDemo.Web.Controllers.api
         }
 
         [HttpPost, Route("waive/{id}")]
-        public async Task<object> Waive(int id, SubmissionAuditEntryDto model)
+        public async Task<object> Waive(int id, SubmissionWaiveAuditEntryDto model)
         {
+            if (string.IsNullOrWhiteSpace(model.Message)) return BadRequest("No message provided");
+
             var submission = await _context.Submissions.FirstOrDefaultAsync(s => s.Id == id);
             if (submission == null) return NotFound();
 
@@ -130,9 +132,13 @@ namespace AdenDemo.Web.Controllers.api
 
         }
 
-        [HttpPost, Route("restart/{id}")]
-        public async Task<object> Restart(int id, SubmissionReOpenAuditEntryDto model)
+        //[HttpPost, Route("restart")]
+        [HttpPost, Route("reopen/{id}")]
+        public async Task<object> ReOpen(int id, SubmissionReOpenAuditEntryDto model)
         {
+
+            if (model == null) return BadRequest("No audit entry found in request");
+
             var submission = await _context.Submissions.Include(f => f.FileSpecification).FirstOrDefaultAsync(x => x.Id == id);
             if (submission == null) return NotFound();
 

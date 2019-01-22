@@ -12,5 +12,10 @@ namespace AdenDemo.Web.ViewModels
         {
             SubmissionId = submissionId;
         }
+
+        public SubmissionReOpenAuditEntryDto()
+        {
+
+        }
     }
 }

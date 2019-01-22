@@ -296,9 +296,9 @@
 
     function reopenSubmission(container, data) {
 
-        var url = '/home/restartaudit/' + data.id;
+        var url = '/home/reopen/' + data.id;
         var title = 'Reopen Reason';
-        var postUrl = '/api/submission/restart/' + data.id;
+        var postUrl = '/api/submission/reopen/' + data.id;
 
         BootstrapDialog.show({
             size: window.BootstrapDialog.SIZE_WIDE,
@@ -320,11 +320,13 @@
                     label: 'Save',
                     cssClass: 'btn-primary',
                     action: function (dialogRef) {
+                        var data = $('form').serializeJSON(); 
+
                         $.ajax({
-                            contentType: 'application/json; charset=utf-8',
+                            contentType: 'application/json;',
                             type: "POST",
                             url: postUrl,
-                            data: JSON.stringify({ 'model': $('form').serialize() }),
+                            data: JSON.stringify(data),
                             dataType: 'json',
                             success: function (response) {
                                 console.log('success', response);
@@ -349,7 +351,7 @@
 
     function waiverWorkFlow(container, data) {
         var title = 'Waiver Reason';
-        var url = '/home/audit/' + data.id;
+        var url = '/home/waiver/' + data.id;
         var postUrl = '/api/submission/waive/' + data.id;
 
         BootstrapDialog.show({
@@ -371,13 +373,14 @@
                 {
                     label: 'Save',
                     cssClass: 'btn-primary',
-                    action: function (dialogRef) {
+                    action: function(dialogRef) {
+                        var data = $('form').serializeJSON(); 
+
                         $.ajax({
                             contentType: 'application/json; charset=utf-8',
-                            type: "POST",
-                            url: postUrl,
-                            data: JSON.stringify({ 'model': $('form').serialize() }),
-                            dataType: 'json',
+                            type: "POST", 
+                            url: postUrl, 
+                            data: JSON.stringify(data), 
                             success: function (response) {
                                 //TODO: toast success
                                 dialogRef.close();
