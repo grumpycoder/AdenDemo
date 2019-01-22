@@ -292,7 +292,7 @@
 
     function reopenSubmission(container, data) {
 
-        var url = '/home/audit/' + data.id;
+        var url = '/home/restartaudit/' + data.id;
         var title = 'Reopen Reason';
         var postUrl = '/api/submission/restart/' + data.id;
 
@@ -394,64 +394,4 @@
 
     }
     
-    //$(document).on('click', '[data-reassign]', function (e) {
-    //    e.preventDefault();
-    //    var id = $(this).data('workitem-id');
-    //    var title = 'Reassign Task';
-    //    //var url = $(this).attr('href') + '/' + id;
-    //    console.log('id', id);
-    //    console.log('url', url);
-    //    var url = '/reassign/' + id; 
-    //    $.ajax({
-    //        url: url,
-    //        type: 'POST',
-    //        success: function (data) {
-    //            BootstrapDialog.show({
-    //                size: BootstrapDialog.SIZE_WIDE,
-    //                draggable: true,
-    //                title: title,
-    //                message: $('<div></div>').load(url, function (resp, status, xhr) {
-    //                    if (status === 'error') {
-    //                        //window.$log.error('Error showing history');
-    //                    }
-    //                }),
-    //                buttons: [
-    //                    {
-    //                        label: 'Close',
-    //                        action: function (dialogRef) {
-    //                            dialogRef.close();
-    //                        }
-    //                    },
-    //                    {
-    //                        label: 'Save',
-    //                        cssClass: 'btn-primary',
-    //                        action: function (dialogRef) {
-    //                            //window.$showModalWorking();
-    //                            var formData = $('form').serialize();
-    //                            $.ajax({
-    //                                type: "POST",
-    //                                url: '/api/workitem/assign',
-    //                                data: model = formData
-    //                            }).done(function (data) {
-    //                                //window.$log.success('Reassigned task');
-    //                            }).fail(function (err) {
-    //                                //window.$log.error('Failed to reassign task. ' + error);
-    //                            }).always(function () {
-    //                                dialogRef.close();
-    //                                //window.$hideModalWorking();
-    //                            });
-
-    //                        }
-    //                    }
-    //                ]
-    //            });
-
-    //        },
-    //        error: function (err) {
-    //            window.$log.error('Error showing reassignment');
-    //        }
-    //    });
-
-    //});
-
 }); 

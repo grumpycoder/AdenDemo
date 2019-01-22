@@ -1,0 +1,204 @@
+﻿@model UpdateFileSpecificationDto
+<style>
+    /* BEGIN: Check box in Button Styles */
+    .checkbox .btn,
+    .checkbox-inline .btn {
+        padding-left: 2em;
+        min-width: 10em;
+    }
+
+    .checkbox-inline {
+        margin-left: -1.5em;
+    }
+
+        .checkbox label,
+        .checkbox-inline label {
+            text-align: left;
+        }
+    /* END: Check box in Button Styles */
+</style>
+<form id="form" name="form" role="form">
+    <div id="error">
+
+    </div>
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @*@Html.HiddenFor(model => model.Id)*@
+        @Html.TextBoxFor(model => model.Id)
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label full-width">
+                    File Number
+                    @Html.TextBoxFor(model => model.FileNumber, new { @class = "form-control", autofocus = "autofocus" })
+                </label>
+                @Html.ValidationMessageFor(model => model.FileNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label full-width">
+                    File Name
+                    @Html.TextBoxFor(model => model.FileName, new { @class = "form-control" })
+                </label>
+                @Html.ValidationMessageFor(model => model.FileName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <fieldset>
+        <legend>
+            Sources
+        </legend>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label full-width">
+                        Section
+                        @Html.TextBoxFor(model => model.Section, new { @class = "form-control", autofocus = "autofocus" })
+                    </label>
+                    @Html.ValidationMessageFor(model => model.Section, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label full-width">
+                        Application
+                        @Html.DropDownListFor(m => m.Application, new SelectList(ViewBag.Applications, "Value", "Text"), "Select Application", new { @class = "form-control" })
+                    </label>
+                    @Html.ValidationMessageFor(model => model.Application, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label full-width">
+                        Select group members
+                        <button class="btn btn-info btn-block" id="btnGenerationGroup" data-id="@Model.Id" data-modify-group data-group-name="@Model.GenerationUserGroup" @(Model.GenerationUserGroup == null ? "disabled='disabled'" : "")>Generation Group Members (@ViewBag.GenerationGroupMemberCount)</button>
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+
+                    <label class="control-label full-width">
+                        Collection
+                        @Html.DropDownListFor(m => m.Collection, new SelectList(ViewBag.Collections, "Value", "Text"), "Select Collection", new { @class = "form-control" })
+                    </label>
+                    @Html.ValidationMessageFor(model => model.Collection, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label full-width">
+                        Select group members
+                        <button class="btn btn-info btn-block" id="btnApprovalGroup" data-id="@Model.Id" data-modify-group data-group-name="@Model.ApprovalUserGroup" @(Model.ApprovalUserGroup == null ? "disabled='disabled'" : "")>Approval Group Members (@ViewBag.ApprovalGroupMemberCount)</button>
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="form-group">
+
+                    <label class="control-label full-width">
+                        Support Group Members
+                        @Html.DropDownListFor(m => m.SupportGroup, new SelectList(ViewBag.DataGroups, "Value", "Text"), "Select Group", new { @class = "form-control" })
+                    </label>
+                    @Html.ValidationMessageFor(model => model.SupportGroup, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+
+    </fieldset>
+
+
+    @*<fieldset class="@(User.IsInRole(Constants.ApplicationProgrammerGroup) ? "show" : "hidden")">
+        <legend>Responsible User Groups</legend>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label full-width">
+                        Generation User Group
+                        @Html.TextBoxFor(model => model.GenerationUserGroup, new { @class = "form-control", autofocus = "autofocus" })
+                    </label>
+                    @Html.ValidationMessageFor(model => model.GenerationUserGroup, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label full-width">
+                        Approval User Group
+                        @Html.TextBoxFor(model => model.ApprovalUserGroup, new { @class = "form-control" })
+                    </label>
+                    @Html.ValidationMessageFor(model => model.ApprovalUserGroup, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label full-width">
+                        Submission User Group
+                        @Html.TextBoxFor(model => model.SubmissionUserGroup, new { @class = "form-control" })
+                    </label>
+                    @Html.ValidationMessageFor(model => model.SubmissionUserGroup, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+    </fieldset>*@
+
+
+    @*<fieldset class="@(User.IsInRole(Constants.ApplicationProgrammerGroup) ? "show" : "hidden")">
+        <legend>Generation Properties</legend>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+
+                    <label class="control-label full-width">
+                        File Name Format
+                        @Html.TextBoxFor(model => model.FileNameFormat, new { @class = "form-control", autofocus = "autofocus" })
+                    </label>
+                    @Html.ValidationMessageFor(model => model.FileNameFormat, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label full-width">
+                        Report Action
+                        @Html.TextBoxFor(model => model.ReportAction, new { @class = "form-control" })
+                    </label>
+                    @Html.ValidationMessageFor(model => model.ReportAction, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+    </fieldset>*@
+
+
+</form>
+

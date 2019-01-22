@@ -82,6 +82,9 @@
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.7\lib\net45\System.Web.Cors.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -93,6 +96,9 @@
     </Reference>
     <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.7\lib\net45\System.Web.Http.Cors.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Http.WebHost, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.7\lib\net45\System.Web.Http.WebHost.dll</HintPath>
@@ -153,6 +159,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\api\FileSpecificationController.cs" />
     <Compile Include="Controllers\api\SubmissionController.cs" />
     <Compile Include="Controllers\api\WorkItemController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -164,6 +171,7 @@
     <Compile Include="Data\Configuration\SubmissionConfiguration.cs" />
     <Compile Include="Data\Configuration\WorkItemConfiguration.cs" />
     <Compile Include="Data\Configuration\WorkItemImageConfiguration.cs" />
+    <Compile Include="Data\Profiles\FileSpecificationProfile.cs" />
     <Compile Include="Data\Profiles\SubmissionProfile.cs" />
     <Compile Include="Data\Profiles\WorkItemProfile.cs" />
     <Compile Include="Global.asax.cs">
@@ -184,6 +192,8 @@
     <Compile Include="Models\WorkItemState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AssignmentDto.cs" />
+    <Compile Include="ViewModels\UpdateFileSpecificationDto.cs" />
+    <Compile Include="ViewModels\FileSpecificationViewDto.cs" />
     <Compile Include="ViewModels\HistoryViewDto.cs" />
     <Compile Include="ViewModels\SubmissionReOpenAuditEntryDto.cs" />
     <Compile Include="ViewModels\SubmissionAuditEntryDto.cs" />
@@ -281,6 +291,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="js\app\filespecification.module.js" />
     <Content Include="js\app\submission.module.js" />
     <Content Include="js\bootstrap-dialog.js" />
     <Content Include="js\bootstrap-dialog.min.js" />
@@ -411,6 +422,8 @@
     <Content Include="Views\Home\_SubmissionReOpenAuditEntry.cshtml" />
     <Content Include="Views\Home\_History.cshtml" />
     <Content Include="Views\Home\_WorkItemAssignment.cshtml" />
+    <Content Include="Views\Home\FileSpecifications.cshtml" />
+    <Content Include="Views\Home\_FileSpecificationEditForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
