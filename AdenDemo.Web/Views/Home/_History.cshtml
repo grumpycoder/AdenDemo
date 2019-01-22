@@ -1,26 +1,33 @@
 ﻿ReportId: @ViewBag.CurrentReportId
+
+<h3>History</h3>
 <div id="historyGrid">
 
 </div>
+
+<h3>Audit Log</h3>
+<div id="gridAudit"></div>
 
 <script>
 
 
     console.log('work history ready');
-    var uri = '/api/workitem/history/' + @ViewBag.CurrentReportId;
+    var historyUri = '/api/workitem/history/' + @(ViewBag.CurrentReportId ?? 0);
+
     var $historyGrid = $('#historyGrid').dxDataGrid(
         {
             dataSource: DevExpress.data.AspNet.createStore({
                 key: 'id',
-                loadUrl: uri,
-                updateUrl: uri,
+                loadUrl: historyUri,
             }),
             remoteOperations: true,
             allowColumnResizing: true,
+            noDataText: 'No History', 
             showBorders: true,
             columnResizingMode: "nextColumn",
             columnMinWidth: 50,
             columnAutoWidth: true,
+            height: 200, 
             columns: [
                 { dataField: 'actionDescription', caption: 'Task' },
                 { dataField: 'assignedDate', caption: 'Assigned Date', dataType: 'datetime' },
@@ -44,7 +51,7 @@
                     }
                 },
             ],
-        });
+        }).dxDataGrid('instance');
 
     function ShowReassign(container, data) {
         console.log('reassign');
@@ -102,7 +109,31 @@
         });
     };
 
-    (function () {
+    var auditUri = '/api/audit/' + @(ViewBag.SubmissionId ?? 0);
 
-    })
+    var $gridAudit = $('#gridAudit').dxDataGrid(
+        {
+            dataSource: DevExpress.data.AspNet.createStore({
+                key: 'id',
+                loadUrl: auditUri,
+            }),
+            remoteOperations: true,
+            allowColumnResizing: true,
+            noDataText: 'No Audits', 
+            showBorders: true,
+            columnResizingMode: "nextColumn",
+            columnMinWidth: 50,
+            columnAutoWidth: true,
+            height: 200, 
+            wordWrapEnabled: true,
+            scrolling: {
+                mode: "virtual",
+                rowRenderingMode: "virtual",
+            },
+            columns: [
+                { dataField: 'auditDate', caption: 'Date', dataType: 'datetime', width: 175 },
+                { dataField: 'message', caption: 'Message' },
+                ]
+    }).dxDataGrid('instance');
+    
 </script>

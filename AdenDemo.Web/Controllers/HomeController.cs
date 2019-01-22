@@ -38,6 +38,7 @@ namespace AdenDemo.Web.Controllers
             //TODO: Refactor using ViewBag for CurrentReport
             var dto = _context.Submissions.FirstOrDefault(x => x.Id == id);
             ViewBag.CurrentReportId = dto.CurrentReportId;
+            ViewBag.SubmissionId = id;
             return PartialView("_History");
         }
 
