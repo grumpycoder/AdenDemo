@@ -17,5 +17,7 @@ namespace AdenDemo.Web.ViewModels
         public string Description { get; set; }
 
         public bool CanReassign { get; set; }
+
+        public bool CanReviewError => Action == WorkItemAction.ReviewError; 
     }
 }

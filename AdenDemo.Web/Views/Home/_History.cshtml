@@ -47,11 +47,48 @@
                                     })
                                 .appendTo(container);
                         }
+                        if (options.data.canReviewError) {
+                            $('<a/>').addClass('btn btn-default btn-sm btn-grid')
+                                .text('Errors')
+                                .on('dxclick',
+                                    function (e) {
+                                        showErrorDetails($(this), options.data);
+                                    })
+                                .appendTo(container);
+                        }
 
                     }
                 },
             ],
         }).dxDataGrid('instance');
+
+
+    var auditUri = '/api/audit/' + @(ViewBag.SubmissionId ?? 0);
+
+    var $gridAudit = $('#gridAudit').dxDataGrid(
+        {
+            dataSource: DevExpress.data.AspNet.createStore({
+                key: 'id',
+                loadUrl: auditUri,
+            }),
+            remoteOperations: true,
+            allowColumnResizing: true,
+            noDataText: 'No Audits', 
+            showBorders: true,
+            columnResizingMode: "nextColumn",
+            columnMinWidth: 50,
+            columnAutoWidth: true,
+            height: 200, 
+            wordWrapEnabled: true,
+            scrolling: {
+                mode: "virtual",
+                rowRenderingMode: "virtual",
+            },
+            columns: [
+                { dataField: 'auditDate', caption: 'Date', dataType: 'datetime', width: 175 },
+                { dataField: 'message', caption: 'Message' },
+                ]
+    }).dxDataGrid('instance');
 
     function ShowReassign(container, data) {
         console.log('reassign');
@@ -109,31 +146,30 @@
         });
     };
 
-    var auditUri = '/api/audit/' + @(ViewBag.SubmissionId ?? 0);
+    function showErrorDetails(container, data) {
+        console.log('show report errors');
+        var title = 'Error Details';
+        var url = '/home/workitemimages/' + data.id;
 
-    var $gridAudit = $('#gridAudit').dxDataGrid(
-        {
-            dataSource: DevExpress.data.AspNet.createStore({
-                key: 'id',
-                loadUrl: auditUri,
+        BootstrapDialog.show({
+            size: window.BootstrapDialog.SIZE_WIDE,
+            draggable: true,
+            title: title,
+            message: $('<div></div>').load(url, function (resp, status, xhr) {
+                if (status === 'error') {
+                    //TODO: toast error message
+                }
             }),
-            remoteOperations: true,
-            allowColumnResizing: true,
-            noDataText: 'No Audits', 
-            showBorders: true,
-            columnResizingMode: "nextColumn",
-            columnMinWidth: 50,
-            columnAutoWidth: true,
-            height: 200, 
-            wordWrapEnabled: true,
-            scrolling: {
-                mode: "virtual",
-                rowRenderingMode: "virtual",
-            },
-            columns: [
-                { dataField: 'auditDate', caption: 'Date', dataType: 'datetime', width: 175 },
-                { dataField: 'message', caption: 'Message' },
-                ]
-    }).dxDataGrid('instance');
-    
+            buttons: [
+                {
+                    label: 'Close',
+                    action: function (dialogRef) {
+                        dialogRef.close();
+                    }
+                }
+            ]
+        });
+
+    }
+
 </script>
