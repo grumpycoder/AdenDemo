@@ -1,8 +1,11 @@
 ﻿using AdenDemo.Web.Data;
 using AdenDemo.Web.ViewModels;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace AdenDemo.Web.Controllers
@@ -116,6 +119,13 @@ namespace AdenDemo.Web.Controllers
             ViewBag.DataGroups = dataGroups;
             ViewBag.Collections = collections;
             return PartialView("_FileSpecificationEditForm", dto);
+        }
+
+        public async Task<ActionResult> ErrorReport(int id)
+        {
+            var dto = await _context.WorkItems.ProjectTo<SubmissionErrorDto>().FirstOrDefaultAsync(x => x.Id == id);
+
+            return PartialView("_ErrorReportForm", dto);
         }
     }
 }

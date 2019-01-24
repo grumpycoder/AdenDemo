@@ -12,7 +12,7 @@ namespace AdenDemo.Web.Models
         Reject = 7,
         [Display(Name = "Approve File", ShortName = "Approve", Description = "Approve File")]
         Approve = 3,
-        [Display(Name = "File Submitted", ShortName = "SubmitFile")]
+        [Display(Name = "Submit File", ShortName = "SubmitFile")]
         Submit = 4,
         [Display(Name = "Submit With Error", ShortName = "SubmitErrorFile")]
         SubmitWithError = 5,

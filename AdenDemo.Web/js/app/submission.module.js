@@ -139,7 +139,7 @@
         stateStoring: {
             enabled: true,
             type: "localStorage",
-            storageKey: "gridFilterStorage"
+            storageKey: "gridSubmissionFilterStorage"
         },
         filterRow: {
             visible: true
@@ -234,7 +234,7 @@
             title: title,
             message: $('<div></div>').load(url, function (resp, status, xhr) {
                 if (status === 'error') {
-                    window.$log.error('Error showing history');
+                    //TODO: toast error message
                 }
             }),
             buttons: [

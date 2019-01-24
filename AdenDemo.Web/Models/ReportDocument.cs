@@ -12,7 +12,7 @@
 
         public long FileSize { get; set; }
 
-        private ReportDocument()
+        public ReportDocument()
         {
 
         }

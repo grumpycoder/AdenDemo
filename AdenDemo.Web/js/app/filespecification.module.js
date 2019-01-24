@@ -17,7 +17,6 @@
         columns: [
             { dataField: 'fileNumber', caption: 'File Number' },
             { dataField: 'fileName', caption: 'File Name' },
-            { dataField: 'isRetired', caption: 'Retired' },
             {
                 dataField: 'isRetired',
                 caption: 'Retired',
@@ -81,7 +80,7 @@
         stateStoring: {
             enabled: true,
             type: "localStorage",
-            storageKey: "gridFilterStorage"
+            storageKey: "gridFileSpecificationFilterStorage"
         },
         filterRow: {
             visible: true

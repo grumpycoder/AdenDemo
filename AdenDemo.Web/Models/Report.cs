@@ -22,6 +22,7 @@ namespace AdenDemo.Web.Models
         public Report()
         {
             WorkItems = new List<WorkItem>();
+            Documents = new List<ReportDocument>();
         }
     }
 }

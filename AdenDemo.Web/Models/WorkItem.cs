@@ -16,5 +16,10 @@ namespace AdenDemo.Web.Models
         public WorkItemState WorkItemState { get; set; }
         public Report Report { get; set; }
 
+        public WorkItem()
+        {
+            WorkItemImages = new List<WorkItemImage>();
+        }
+
     }
 }

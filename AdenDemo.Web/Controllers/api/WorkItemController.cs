@@ -1,11 +1,16 @@
 ﻿using AdenDemo.Web.Data;
 using AdenDemo.Web.Models;
 using AdenDemo.Web.ViewModels;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
+using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -18,6 +23,32 @@ namespace AdenDemo.Web.Controllers.api
         public WorkItemController()
         {
             _context = new AdenContext();
+        }
+
+        [HttpGet, Route("{id}")]
+        public async Task<object> Get(string id, DataSourceLoadOptions loadOptions)
+        {
+            var username = id;
+            if (username == null) return NotFound();
+
+            var dto = await _context.WorkItems
+                .Where(u => u.AssignedUser == username && u.WorkItemState == WorkItemState.NotStarted)
+                .ProjectTo<WorkItemViewDto>().ToListAsync();
+
+            return Ok(DataSourceLoader.Load(dto.OrderBy(x => x.AssignedDate), loadOptions));
+        }
+
+        [HttpGet, Route("finished/{id}")]
+        public async Task<object> Finished(string id, DataSourceLoadOptions loadOptions)
+        {
+            var username = id;
+            if (username == null) return NotFound();
+
+            var dto = await _context.WorkItems
+                .Where(u => u.AssignedUser == username && u.WorkItemState == WorkItemState.Completed)
+                .ProjectTo<WorkItemViewDto>().ToListAsync();
+
+            return Ok(DataSourceLoader.Load(dto.OrderBy(x => x.AssignedDate), loadOptions));
         }
 
         [HttpGet, Route("history/{id}")]
@@ -61,6 +92,200 @@ namespace AdenDemo.Web.Controllers.api
 
 
             return Ok(model);
+        }
+
+
+        [HttpPost, Route("complete/{id}")]
+        public async Task<object> Complete(int id)
+        {
+            var workItem = await _context.WorkItems.FindAsync(id);
+
+            if (workItem == null) return NotFound();
+
+            var report = await _context.Reports.Include(s => s.Submission.FileSpecification).SingleOrDefaultAsync(r => r.Id == workItem.ReportId);
+
+            //TODO: Handle null report
+
+            if (workItem.WorkItemAction == WorkItemAction.Generate)
+            {
+                //Create documents
+                //TODO: Flesh out Generate documents from stored procdure
+                //report.Documents.Add(new ReportDocument() { ReportLevel = ReportLevel.SCH, Version = 1 });
+                //_context.SaveChanges();
+            }
+
+            //Complete work item
+            workItem.CompletedDate = DateTime.Now;
+            workItem.WorkItemState = WorkItemState.Completed;
+
+
+            //Start new work item
+            var wi = new WorkItem() { WorkItemState = WorkItemState.NotStarted, AssignedDate = DateTime.Now };
+            report.Submission.LastUpdated = DateTime.Now;
+
+            if (workItem.WorkItemAction == WorkItemAction.Generate)
+            {
+                wi.WorkItemAction = WorkItemAction.Review;
+                report.ReportState = ReportState.AssignedForReview;
+                report.Submission.SubmissionState = SubmissionState.AssignedForReview;
+            }
+
+            if (workItem.WorkItemAction == WorkItemAction.Review)
+            {
+                wi.WorkItemAction = WorkItemAction.Approve;
+                report.ReportState = ReportState.AwaitingApproval;
+                report.Submission.SubmissionState = SubmissionState.AwaitingApproval;
+            }
+
+            if (workItem.WorkItemAction == WorkItemAction.Approve)
+            {
+                wi.WorkItemAction = WorkItemAction.Submit;
+                report.ReportState = ReportState.AssignedForSubmission;
+                report.Submission.SubmissionState = SubmissionState.AssignedForSubmission;
+            }
+
+            if (workItem.WorkItemAction == WorkItemAction.Reject)
+            {
+                wi.WorkItemAction = WorkItemAction.Generate;
+                report.ReportState = ReportState.AssignedForGeneration;
+                report.Submission.SubmissionState = SubmissionState.AssignedForGeneration;
+            }
+
+            if (workItem.WorkItemAction == WorkItemAction.SubmitWithError)
+            {
+                wi.WorkItemAction = WorkItemAction.ReviewError;
+                report.ReportState = ReportState.CompleteWithError;
+                report.Submission.SubmissionState = SubmissionState.CompleteWithError;
+            }
+
+            if (workItem.WorkItemAction == WorkItemAction.ReviewError)
+            {
+                wi.WorkItemAction = WorkItemAction.Generate;
+                report.ReportState = ReportState.AssignedForGeneration;
+                report.Submission.SubmissionState = SubmissionState.AssignedForGeneration;
+            }
+
+            if (workItem.WorkItemAction == WorkItemAction.Submit)
+            {
+                report.ReportState = ReportState.Complete;
+                report.Submission.SubmissionState = SubmissionState.Complete;
+            }
+
+
+            //TODO: Get workitem assignee
+            var assignedUser = "mark";
+
+            wi.AssignedUser = assignedUser;
+            report.Submission.CurrentAssignee = assignedUser;
+
+            if (workItem.WorkItemAction != WorkItemAction.Submit) report.WorkItems.Add(wi);
+
+            _context.SaveChanges();
+
+            //TODO: Send notifications 
+
+            return Ok("completed work item task");
+
+        }
+
+        [HttpPost, Route("reject/{id}")]
+        public async Task<object> Reject(int id)
+        {
+            var workItem = await _context.WorkItems.FindAsync(id);
+
+            if (workItem == null) return NotFound();
+
+            var report = await _context.Reports.Include(s => s.Submission.FileSpecification).SingleOrDefaultAsync(r => r.Id == workItem.ReportId);
+
+            workItem.WorkItemState = WorkItemState.Reject;
+            workItem.CompletedDate = DateTime.Now;
+
+            //Start new work item
+            //TODO: Get workitem assignee
+            var assignedUser = "mark";
+
+            var wi = new WorkItem()
+            {
+                WorkItemState = WorkItemState.NotStarted,
+                AssignedDate = DateTime.Now,
+                WorkItemAction = WorkItemAction.Generate,
+                AssignedUser = assignedUser
+            };
+            report.Submission.LastUpdated = DateTime.Now;
+
+            report.ReportState = ReportState.AssignedForGeneration;
+            report.Submission.SubmissionState = SubmissionState.AssignedForGeneration;
+            report.Submission.CurrentAssignee = assignedUser;
+
+            report.WorkItems.Add(wi);
+
+
+            await _context.SaveChangesAsync();
+
+            //TODO Send notifications
+
+            var dto = Mapper.Map<WorkItemViewDto>(wi);
+            return Ok(dto);
+        }
+
+        [HttpPost, Route("reporterror")]
+        public async Task<object> ReportError(SubmissionErrorDto model)
+        {
+            var id = model.Id;
+
+            //if (model.Files. == 0) ModelState.AddModelError("", "You must include at least 1 file");
+            if (!ModelState.IsValid)
+            {
+
+                var errors = new List<string>();
+                foreach (var state in ModelState)
+                {
+                    foreach (var error in state.Value.Errors)
+                    {
+                        errors.Add(error.ErrorMessage);
+                    }
+                }
+
+                return Request.CreateResponse(HttpStatusCode.BadRequest, errors);
+            }
+
+            var workItem = await _context.WorkItems.FindAsync(id);
+            if (workItem == null) return NotFound();
+
+            //Complete current work item
+            workItem.CompletedDate = DateTime.Now;
+            workItem.WorkItemState = WorkItemState.Completed;
+
+            //Create new generation work item
+            var report = await _context.Reports.Include(s => s.Submission.FileSpecification).SingleOrDefaultAsync(r => r.Id == workItem.ReportId);
+
+            var assignedUser = "mark";
+
+            var wi = new WorkItem()
+            {
+                WorkItemState = WorkItemState.NotStarted,
+                AssignedDate = DateTime.Now,
+                WorkItemAction = WorkItemAction.ReviewError,
+                AssignedUser = assignedUser
+            };
+            report.Submission.LastUpdated = DateTime.Now;
+
+            report.ReportState = ReportState.CompleteWithError;
+            report.Submission.SubmissionState = SubmissionState.CompleteWithError;
+            report.Submission.CurrentAssignee = assignedUser;
+
+            //List<byte[]> files = new List<byte[]>();
+            //foreach (var f in model.Files)
+            //{
+            //    wi.WorkItemImages.Add(new WorkItemImage() { Image = f.ConvertToByte(), });
+            //}
+
+            report.WorkItems.Add(wi);
+
+            //await _context.SaveChangesAsync();
+
+            return Ok("error reported successfully");
+
         }
 
     }
