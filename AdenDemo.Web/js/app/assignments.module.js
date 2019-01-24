@@ -17,6 +17,11 @@
         columnAutoWidth: true,
         wordWrapEnabled: true,
         height: 300,
+        filterRow: { visible: false },
+        headerFilter: { visible: false },
+        groupPanel: { visible: false },
+        scrolling: { mode: "virtual", rowRenderingMode: "virtual", },
+        paging: { pageSize: 20 },
         columns: [
             { dataField: 'displayFileName', caption: 'File Name' },
             { dataField: 'dataYear', caption: 'Data Year', width: 75, },
@@ -68,12 +73,6 @@
                 }
             },
         ],
-        filterRow: { visible: false },
-        headerFilter: { visible: false },
-        groupPanel: { visible: false },
-        scrolling: { mode: "virtual", rowRenderingMode: "virtual", },
-        paging: { pageSize: 20 },
-
         onToolbarPreparing: function (e) {
             var dataGrid = e.component;
 
@@ -222,7 +221,7 @@
         console.log('show report errors');
         var title = 'History';
         var url = '/home/errorreport/' + data.id;
-        var postUrl = '/api/workitem/reporterror/' + data.id;
+        var postUrl = '/api/workitem/reporterror/'; // + data.id;
 
         BootstrapDialog.show({
             size: window.BootstrapDialog.SIZE_WIDE,
@@ -246,111 +245,124 @@
                     action: function (dialogRef) {
                         $('#errorMessage').text('');
 
-                        var data = $('form').serializeJSON();
+                        $('form').submit();
 
-                        var formData = new FormData();
-                        formData.append('id', id);
-                        formData.append('description', $('#description').val());
 
-                        var files = document.getElementById('files').files;
-                        if (files.length > 0) {
-                            for (var i = 0; i < files.length; i++) {
-                                formData.append('files', files[i]);
-                            }
-                        }
-                        console.log('id', id);
-                        postUrl = '/api/workitem/reporterror';
-                        $.ajax({
-                            type: "POST",
-                            url: postUrl,
-                            data: { 'model': formData },
-                            contentType: false,
-                            processData: false,
-                            success: function (response) {
-                             
-                            },
-                            error: function (error) {
-                                
-                            },
-                            complete: function () {
-                                
-                            }
-                        });
+                        //var data = $('form').serializeJSON();
+                        //var formData = new FormData($('form')[0]);
+                        ////formData.append('id', data.id);
+                        ////formData.append('description', data.description);
 
-                        //data.files = [];
+                        ////var files = document.getElementById('files').files;
+                        //debugger;
+                        ////data.files = []; 
 
-                        //var files = $('#files')[0].files; 
-                        //if (files.length > 0) {
-                        //    for (var i = 0; i < files.length; i++) {
-                        //        console.log('file', files[i]);
-                        //        data.files.push(files[i]); 
-                        //    }
-                        //}
-
-                        //var fd = new FormData();
-
-                        //fd.append('id', data.id);
-                        //fd.append('description', data.description);
                         ////if (files.length > 0) {
                         ////    for (var i = 0; i < files.length; i++) {
-                        ////        fd.append('files', files[i]); 
+                        ////        formData.append('files', files[i]);
+                        ////        data.files.push(files[i]);
                         ////    }
                         ////}
-                        //var f = $('#files').get(0).files; 
-
-                        //fd.append('files', f[0]); 
-
-                        //debugger;
-                        //var fd = new FormData($('form')); 
-
-                        //var files = $('#files')[0].files; 
-                        //if (files.length > 0) {
-                        //    for (var i = 0; i < files.length; i++) {
-                        //        console.log('file', files[i]);
-                        //        fd.files.push(files[i]); 
-                        //    }
-                        //}
-
-                        //var form = document.getElementById('form');
-                        //var formData = new FormData(form);
-
-                        //var xhr = new XMLHttpRequest();
-                        //// Add any event handlers here...
-                        //xhr.open('POST', postUrl, true);
-                        //xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                        //xhr.send(JSON.stringify(data));
-
+                        //postUrl = '/api/workitem/reporterror';
                         //$.ajax({
                         //    type: "POST",
                         //    url: postUrl,
-                        //    //data: JSON.stringify(data),
-                        //    //data: fd,  
-                        //    processData: false,
+                        //    //data: JSON.stringify(formData),
+                        //    data: data,
                         //    contentType: false,
-                            
-                        //    //contentType: 'application/json;',
-                        //    data: JSON.stringify(data),
-                        //    //dataType: 'json', 
+                        //    processData: false,
                         //    success: function (response) {
-                        //        console.log('success', response);
-                        //        //TODO: toast success
-                        //        dialogRef.close();
-                        //        //$grid.refresh();
+
                         //    },
                         //    error: function (error) {
-                        //        //TODO: toast error
-                        //        console.log('error', error);
 
-                        //        error.responseJSON.forEach(function (item) { $('#errorMessage').append(item + '<br />'); });
                         //    },
-                        //    complete: function (status) {
-                        //        console.log('complete', status);
+                        //    complete: function () {
+
                         //    }
                         //});
+
+
+                        //WORKING 
+                        //var formData = new FormData();
+                        //formData.append('id', data.id);
+                        //formData.append('description', data.description);
+
+                        //var files = document.getElementById('files').files;
+                        //if (files.length > 0) {
+                        //    for (var i = 0; i < files.length; i++) {
+                        //        formData.append('files', files[i]);
+                        //    }
+                        //}
+                        //postUrl = '/api/workitem/reporterror2';
+                        //$.ajax({
+                        //    type: "POST",
+                        //    url: postUrl,
+                        //    data: formData,
+                        //    contentType: false,
+                        //    processData: false,
+                        //    success: function (response) {
+
+                        //    },
+                        //    error: function (error) {
+
+                        //    },
+                        //    complete: function () {
+
+                        //    }
+                        //});
+
+
                     }
                 }
             ]
         });
 
     }
+
+    //$('form').submit(function (e) {
+    //    e.preventDefault();
+    //    console.log('submit form');
+    //}); 
+
 })();
+
+$(document).on('submit',
+    function (e) {
+        e.preventDefault();
+        console.log('submit form');
+
+        var data = $('form').serializeJSON();
+        var formData = new FormData($('form')[0]);
+
+        debugger;
+        //data.files = []; 
+
+        if (files.length > 0) {
+            for (var i = 0; i < files.length; i++) {
+                formData.append('file', files[i]);
+                //data.files.push(files[i]);
+            }
+        }
+        var postUrl = '/home/reporterror';
+        $.ajax({
+            type: "POST",
+            url: postUrl,
+            //data: JSON.stringify(formData),
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+
+            },
+            error: function (error) {
+
+            },
+            complete: function () {
+
+            }
+        });
+
+    });
+
+

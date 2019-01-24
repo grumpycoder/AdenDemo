@@ -15,6 +15,7 @@ namespace AdenDemo.Web.ViewModels
         public string Description { get; set; }
 
         //public List<HttpPostedFileBase> Files { get; set; }
-        public HttpPostedFileBase Files { get; set; }
+
+        public HttpPostedFileBase[] Files { get; set; }
     }
 }

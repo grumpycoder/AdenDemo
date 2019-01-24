@@ -1,7 +1,7 @@
 ﻿@model SubmissionErrorDto
 
 @Html.AntiForgeryToken()
-<form id="form" name="form" role="form" enctype="multipart/form-data">
+<form id="form" name="form" role="form" enctype="multipart/form-data" action="/api/workitem/reporterror">
 
     <input type="hidden" name="id" id="id" value=@Model.Id />
 

@@ -6,12 +6,10 @@ using AutoMapper.QueryableExtensions;
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 namespace AdenDemo.Web.Controllers.api
@@ -229,60 +227,126 @@ namespace AdenDemo.Web.Controllers.api
         }
 
         [HttpPost, Route("reporterror")]
-        public async Task<object> ReportError(SubmissionErrorDto model)
+        //public async Task<object> ReportError(SubmissionErrorDto model)
+        public object ReportError(SubmissionErrorDto model)
         {
-            var id = model.Id;
+            var f = HttpContext.Current.Request.Files;
 
-            //if (model.Files. == 0) ModelState.AddModelError("", "You must include at least 1 file");
-            if (!ModelState.IsValid)
-            {
+            //var id = 1; //model.Id;
 
-                var errors = new List<string>();
-                foreach (var state in ModelState)
-                {
-                    foreach (var error in state.Value.Errors)
-                    {
-                        errors.Add(error.ErrorMessage);
-                    }
-                }
-
-                return Request.CreateResponse(HttpStatusCode.BadRequest, errors);
-            }
-
-            var workItem = await _context.WorkItems.FindAsync(id);
-            if (workItem == null) return NotFound();
-
-            //Complete current work item
-            workItem.CompletedDate = DateTime.Now;
-            workItem.WorkItemState = WorkItemState.Completed;
-
-            //Create new generation work item
-            var report = await _context.Reports.Include(s => s.Submission.FileSpecification).SingleOrDefaultAsync(r => r.Id == workItem.ReportId);
-
-            var assignedUser = "mark";
-
-            var wi = new WorkItem()
-            {
-                WorkItemState = WorkItemState.NotStarted,
-                AssignedDate = DateTime.Now,
-                WorkItemAction = WorkItemAction.ReviewError,
-                AssignedUser = assignedUser
-            };
-            report.Submission.LastUpdated = DateTime.Now;
-
-            report.ReportState = ReportState.CompleteWithError;
-            report.Submission.SubmissionState = SubmissionState.CompleteWithError;
-            report.Submission.CurrentAssignee = assignedUser;
-
-            //List<byte[]> files = new List<byte[]>();
-            //foreach (var f in model.Files)
+            ////if (model.Files. == 0) ModelState.AddModelError("", "You must include at least 1 file");
+            //if (!ModelState.IsValid)
             //{
-            //    wi.WorkItemImages.Add(new WorkItemImage() { Image = f.ConvertToByte(), });
+
+            //    var errors = new List<string>();
+            //    foreach (var state in ModelState)
+            //    {
+            //        foreach (var error in state.Value.Errors)
+            //        {
+            //            errors.Add(error.ErrorMessage);
+            //        }
+            //    }
+
+            //    return Request.CreateResponse(HttpStatusCode.BadRequest, errors);
             //}
 
-            report.WorkItems.Add(wi);
+            //var workItem = await _context.WorkItems.FindAsync(id);
+            //if (workItem == null) return NotFound();
 
-            //await _context.SaveChangesAsync();
+            ////Complete current work item
+            //workItem.CompletedDate = DateTime.Now;
+            //workItem.WorkItemState = WorkItemState.Completed;
+
+            ////Create new generation work item
+            //var report = await _context.Reports.Include(s => s.Submission.FileSpecification).SingleOrDefaultAsync(r => r.Id == workItem.ReportId);
+
+            //var assignedUser = "mark";
+
+            //var wi = new WorkItem()
+            //{
+            //    WorkItemState = WorkItemState.NotStarted,
+            //    AssignedDate = DateTime.Now,
+            //    WorkItemAction = WorkItemAction.ReviewError,
+            //    AssignedUser = assignedUser
+            //};
+            //report.Submission.LastUpdated = DateTime.Now;
+
+            //report.ReportState = ReportState.CompleteWithError;
+            //report.Submission.SubmissionState = SubmissionState.CompleteWithError;
+            //report.Submission.CurrentAssignee = assignedUser;
+
+            ////List<byte[]> files = new List<byte[]>();
+            ////foreach (var f in model.Files)
+            ////{
+            ////    wi.WorkItemImages.Add(new WorkItemImage() { Image = f.ConvertToByte(), });
+            ////}
+
+            //report.WorkItems.Add(wi);
+
+            ////await _context.SaveChangesAsync();
+
+            return Ok("error reported successfully");
+
+        }
+
+        [HttpPost, Route("reporterror2")]
+        //public async Task<object> ReportError(SubmissionErrorDto model)
+        public object ReportError2()
+        {
+            var files = HttpContext.Current.Request.Files;
+
+            //var id = 1; //model.Id;
+
+            ////if (model.Files. == 0) ModelState.AddModelError("", "You must include at least 1 file");
+            //if (!ModelState.IsValid)
+            //{
+
+            //    var errors = new List<string>();
+            //    foreach (var state in ModelState)
+            //    {
+            //        foreach (var error in state.Value.Errors)
+            //        {
+            //            errors.Add(error.ErrorMessage);
+            //        }
+            //    }
+
+            //    return Request.CreateResponse(HttpStatusCode.BadRequest, errors);
+            //}
+
+            //var workItem = await _context.WorkItems.FindAsync(id);
+            //if (workItem == null) return NotFound();
+
+            ////Complete current work item
+            //workItem.CompletedDate = DateTime.Now;
+            //workItem.WorkItemState = WorkItemState.Completed;
+
+            ////Create new generation work item
+            //var report = await _context.Reports.Include(s => s.Submission.FileSpecification).SingleOrDefaultAsync(r => r.Id == workItem.ReportId);
+
+            //var assignedUser = "mark";
+
+            //var wi = new WorkItem()
+            //{
+            //    WorkItemState = WorkItemState.NotStarted,
+            //    AssignedDate = DateTime.Now,
+            //    WorkItemAction = WorkItemAction.ReviewError,
+            //    AssignedUser = assignedUser
+            //};
+            //report.Submission.LastUpdated = DateTime.Now;
+
+            //report.ReportState = ReportState.CompleteWithError;
+            //report.Submission.SubmissionState = SubmissionState.CompleteWithError;
+            //report.Submission.CurrentAssignee = assignedUser;
+
+            ////List<byte[]> files = new List<byte[]>();
+            ////foreach (var f in model.Files)
+            ////{
+            ////    wi.WorkItemImages.Add(new WorkItemImage() { Image = f.ConvertToByte(), });
+            ////}
+
+            //report.WorkItems.Add(wi);
+
+            ////await _context.SaveChangesAsync();
 
             return Ok("error reported successfully");
 

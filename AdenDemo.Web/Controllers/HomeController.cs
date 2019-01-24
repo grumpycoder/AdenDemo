@@ -1,10 +1,14 @@
 ﻿using AdenDemo.Web.Data;
+using AdenDemo.Web.Helpers;
+using AdenDemo.Web.Models;
 using AdenDemo.Web.ViewModels;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -126,6 +130,66 @@ namespace AdenDemo.Web.Controllers
             var dto = await _context.WorkItems.ProjectTo<SubmissionErrorDto>().FirstOrDefaultAsync(x => x.Id == id);
 
             return PartialView("_ErrorReportForm", dto);
+        }
+
+        public async Task<object> ReportError(SubmissionErrorDto model)
+        {
+            //TODO: Will not work in WebApi. Convert to Webapi method /api/workitem/reporterror
+
+            var id = model.Id;
+
+            if (model.Files.Length == 0) ModelState.AddModelError("", "You must include at least 1 file");
+            if (!ModelState.IsValid)
+            {
+
+                var errors = new List<string>();
+                foreach (var state in ModelState)
+                {
+                    foreach (var error in state.Value.Errors)
+                    {
+                        errors.Add(error.ErrorMessage);
+                    }
+                }
+
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var workItem = await _context.WorkItems.FindAsync(id);
+            if (workItem == null) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+
+            //Complete current work item
+            workItem.CompletedDate = DateTime.Now;
+            workItem.WorkItemState = WorkItemState.Completed;
+
+            //Create new generation work item
+            var report = await _context.Reports.Include(s => s.Submission.FileSpecification).SingleOrDefaultAsync(r => r.Id == workItem.ReportId);
+
+            var assignedUser = "mark";
+
+            var wi = new WorkItem()
+            {
+                WorkItemState = WorkItemState.NotStarted,
+                AssignedDate = DateTime.Now,
+                WorkItemAction = WorkItemAction.ReviewError,
+                AssignedUser = assignedUser
+            };
+            report.Submission.LastUpdated = DateTime.Now;
+
+            report.ReportState = ReportState.CompleteWithError;
+            report.Submission.SubmissionState = SubmissionState.CompleteWithError;
+            report.Submission.CurrentAssignee = assignedUser;
+
+
+            foreach (var f in model.Files)
+            {
+                wi.WorkItemImages.Add(new WorkItemImage() { Image = f.ConvertToByte(), });
+            }
+
+            report.WorkItems.Add(wi);
+
+            await _context.SaveChangesAsync();
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+
         }
     }
 }
