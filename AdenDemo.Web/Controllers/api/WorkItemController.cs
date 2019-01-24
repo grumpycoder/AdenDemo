@@ -45,7 +45,7 @@ namespace AdenDemo.Web.Controllers.api
                 .Where(u => u.AssignedUser == username && u.WorkItemState == WorkItemState.Completed)
                 .ProjectTo<WorkItemViewDto>().ToListAsync();
 
-            return Ok(DataSourceLoader.Load(dto.OrderBy(x => x.AssignedDate), loadOptions));
+            return Ok(DataSourceLoader.Load(dto.OrderByDescending(x => x.CompletedDate).ThenByDescending(d => d.Action), loadOptions));
         }
 
         [HttpGet, Route("history/{id}")]

@@ -84,6 +84,7 @@ namespace AdenDemo.Web.Controllers.api
             {
                 WorkItemAction = WorkItemAction.Generate,
                 WorkItemState = WorkItemState.NotStarted,
+                AssignedDate = DateTime.Now, 
                 AssignedUser = assignee
             };
             report.WorkItems.Add(workItem);

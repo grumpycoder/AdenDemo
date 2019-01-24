@@ -435,6 +435,7 @@
     <Content Include="Views\Home\_FileSpecificationEditForm.cshtml" />
     <Content Include="Views\Home\Assignments.cshtml" />
     <Content Include="Views\Home\_ErrorReportForm.cshtml" />
+    <Content Include="Views\Home\_WorkItemImage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

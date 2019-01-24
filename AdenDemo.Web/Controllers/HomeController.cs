@@ -132,6 +132,12 @@ namespace AdenDemo.Web.Controllers
             return PartialView("_ErrorReportForm", dto);
         }
 
+        public async Task<ActionResult> WorkItemImages(int id)
+        {
+            var wi = await _context.WorkItems.Include(x => x.WorkItemImages).FirstOrDefaultAsync(x => x.Id == id);
+
+            return PartialView("_WorkItemImage", wi);
+        }
         public async Task<object> ReportError(SubmissionErrorDto model)
         {
             //TODO: Will not work in WebApi. Convert to Webapi method /api/workitem/reporterror
@@ -171,7 +177,8 @@ namespace AdenDemo.Web.Controllers
                 WorkItemState = WorkItemState.NotStarted,
                 AssignedDate = DateTime.Now,
                 WorkItemAction = WorkItemAction.ReviewError,
-                AssignedUser = assignedUser
+                AssignedUser = assignedUser, 
+                Description = model.Description
             };
             report.Submission.LastUpdated = DateTime.Now;
 
