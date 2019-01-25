@@ -49,10 +49,45 @@ namespace AdenDemo.Web.Controllers
             return PartialView("_History");
         }
 
-        public ActionResult Review(int dataYear, string fileNumber)
+        public async Task<ActionResult> Review(int dataYear, string filenumber)
         {
+            //TODO: Move to mapping profile
+            var dto = await _context.Reports
+                .Where(f => (f.Submission.FileSpecification.FileNumber == filenumber && f.Submission.DataYear == dataYear) || string.IsNullOrEmpty(filenumber))
+                .Select(m =>
+                    new ReportViewDto
+                    {
+                        Id = m.Id,
+                        FileName = m.Submission.FileSpecification.FileName,
+                        FileNumber = m.Submission.FileSpecification.FileNumber,
+                        DataYear = m.Submission.FileSpecification.DataYear,
+                        ReportState = m.ReportState,
+                        ApprovedDate = m.ApprovedDate,
+                        GeneratedDate = m.GeneratedDate,
+                        SubmittedDate = m.SubmittedDate,
+                        Documents = m.Documents.Select(d => new DocumentViewDto()
+                        {
+                            Id = d.Id,
+                            Filename = d.Filename,
+                            Version = d.Version,
+                            FileSize = d.FileSize,
+                        }).ToList()
+                    }
+                )
+                .ToListAsync();
+            //TODO: Move to mapping profile
+            foreach (ReportViewDto item in dto)
+            {
+                item.Documents.ForEach(x =>
+                {
+                    x.FileSizeInMb = x.FileSize.ToFileSize();
+                    x.FileSizeMb = x.FileSize / 1024;
+                    x.FileSizeMb = x.FileSize.ConvertBytesToMega();
+                });
+            }
 
-            return View();
+            return View(dto);
+            ;
         }
 
         public ActionResult Waiver(int id)
@@ -138,6 +173,13 @@ namespace AdenDemo.Web.Controllers
 
             return PartialView("_WorkItemImage", wi);
         }
+
+        public ActionResult Document(int id)
+        {
+            ViewBag.Id = id;
+            return PartialView("_Document");
+        }
+
         public async Task<object> ReportError(SubmissionErrorDto model)
         {
             //TODO: Will not work in WebApi. Convert to Webapi method /api/workitem/reporterror
@@ -177,7 +219,7 @@ namespace AdenDemo.Web.Controllers
                 WorkItemState = WorkItemState.NotStarted,
                 AssignedDate = DateTime.Now,
                 WorkItemAction = WorkItemAction.ReviewError,
-                AssignedUser = assignedUser, 
+                AssignedUser = assignedUser,
                 Description = model.Description
             };
             report.Submission.LastUpdated = DateTime.Now;

@@ -30,6 +30,13 @@ namespace AdenDemo.Web
                 defaults: new { controller = "Home", action = "Review", datayear = UrlParameter.Optional, filenumber = UrlParameter.Optional }
                 );
 
+            routes.MapRoute
+            (
+                name: "Document",
+                url: "document/{id}",
+                defaults: new { controller = "Home", action = "Document", id = UrlParameter.Optional }
+            );
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

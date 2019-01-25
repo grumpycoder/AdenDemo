@@ -1,0 +1,13 @@
+﻿
+<script>
+    $.get('/api/document/' + @ViewBag.Id, function (response, data) {
+        $('#reportDocument').html(response.html);
+    });
+</script>
+
+<div class="row">
+    <div class="col-md-12">
+        <div style="max-height: 600px; overflow: auto;" id="reportDocument" name="reportDocument">
+        </div>
+    </div>
+</div>
