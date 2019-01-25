@@ -1,4 +1,5 @@
 ﻿using AdenDemo.Web.Data;
+using AdenDemo.Web.Helpers;
 using AdenDemo.Web.Models;
 using AdenDemo.Web.ViewModels;
 using AutoMapper;
@@ -6,8 +7,11 @@ using AutoMapper.QueryableExtensions;
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
 using System;
+using System.Data;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -109,6 +113,31 @@ namespace AdenDemo.Web.Controllers.api
                 //TODO: Flesh out Generate documents from stored procdure
                 //report.Documents.Add(new ReportDocument() { ReportLevel = ReportLevel.SCH, Version = 1 });
                 //_context.SaveChanges();
+                var version = 1;
+                string filename;
+                if (report.Submission.FileSpecification.IsSCH)
+                {
+                    filename = report.Submission.FileSpecification.FileNameFormat.Replace("{level}", ReportLevel.SCH.GetDisplayName()).Replace("{version}", string.Format("v{0}.csv", version));
+
+                    var file = ExecuteDocumentCreationToFile(report, ReportLevel.SCH);
+                    var doc = new ReportDocument() { FileData = file, ReportLevel = ReportLevel.SCH, Filename = filename, FileSize = file.Length };
+                    report.Documents.Add(doc);
+
+                }
+                if (report.Submission.FileSpecification.IsLEA)
+                {
+                    filename = report.Submission.FileSpecification.FileNameFormat.Replace("{level}", ReportLevel.LEA.GetDisplayName()).Replace("{version}", string.Format("v{0}.csv", version));
+                    var file = ExecuteDocumentCreationToFile(report, ReportLevel.LEA);
+                    var doc = new ReportDocument() { FileData = file, ReportLevel = ReportLevel.SCH, Filename = filename, FileSize = file.Length };
+                    report.Documents.Add(doc);
+                }
+                if (report.Submission.FileSpecification.IsSEA)
+                {
+                    filename = report.Submission.FileSpecification.FileNameFormat.Replace("{level}", ReportLevel.SEA.GetDisplayName()).Replace("{version}", string.Format("v{0}.csv", version));
+                    var file = ExecuteDocumentCreationToFile(report, ReportLevel.SEA);
+                    var doc = new ReportDocument() { FileData = file, ReportLevel = ReportLevel.SCH, Filename = filename, FileSize = file.Length };
+                    report.Documents.Add(doc);
+                }
             }
 
             //Complete work item
@@ -225,6 +254,39 @@ namespace AdenDemo.Web.Controllers.api
             return Ok(dto);
         }
 
+
+
+        private byte[] ExecuteDocumentCreationToFile(Report report, ReportLevel reportLevel)
+        {
+            var dataTable = new DataTable();
+            var ds = new DataSet();
+            using (var connection = new SqlConnection(_context.Database.Connection.ConnectionString))
+            {
+                using (var cmd = new SqlCommand(report.Submission.FileSpecification.ReportAction, connection))
+                {
+                    //TODO: Store timeout in constants
+                    cmd.CommandTimeout = 300;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@DataYear", report.Submission.DataYear);
+                    cmd.Parameters.AddWithValue("@ReportLevel", reportLevel.GetDisplayName());
+                    var adapter = new SqlDataAdapter(cmd);
+                    adapter.Fill(dataTable);
+                    adapter.Fill(ds);
+                }
+            }
+
+            var version = 1; //report.GetNextFileVersionNumber(reportLevel);
+            var filename = report.Submission.FileSpecification.FileNameFormat.Replace("{level}", reportLevel.GetDisplayName()).Replace("{version}", string.Format("v{0}.csv", version));
+
+            var table1 = ds.Tables[0].UpdateFieldValue("Filename", filename).ToCsvString(false);
+            var table2 = ds.Tables[1].UpdateFieldValue("Filename", filename).ToCsvString(false);
+
+
+            var file = Encoding.ASCII.GetBytes(ds.Tables[0].Rows.Count > 1 ? string.Concat(table2, table1) : string.Concat(table1, table2)); ;
+
+            return file;
+
+        }
 
     }
 }
