@@ -180,6 +180,12 @@ namespace AdenDemo.Web.Controllers
             return PartialView("_Document");
         }
 
+        public async Task<FileResult> Download(int id)
+        {
+            var document = await _context.ReportDocuments.FindAsync(id);
+            return File(document.FileData, System.Net.Mime.MediaTypeNames.Application.Octet, document.Filename);
+        }
+
         public async Task<object> ReportError(SubmissionErrorDto model)
         {
             //TODO: Will not work in WebApi. Convert to Webapi method /api/workitem/reporterror

@@ -37,6 +37,13 @@ namespace AdenDemo.Web
                 defaults: new { controller = "Home", action = "Document", id = UrlParameter.Optional }
             );
 
+            routes.MapRoute
+            (
+                name: "Download",
+                url: "download/{id}",
+                defaults: new { controller = "Home", action = "Download", id = UrlParameter.Optional }
+            );
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
