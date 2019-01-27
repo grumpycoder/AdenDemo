@@ -1,0 +1,18 @@
+﻿[
+  {
+    "outputFile": "src/scss/bootstrap/bootstrap.css",
+    "inputFile": "src/scss/bootstrap/bootstrap.scss"
+  },
+  {
+    "outputFile": "src/scss/bootstrap-dialog/bootstrap-dialog.css",
+    "inputFile": "src/scss/bootstrap-dialog/bootstrap-dialog.less"
+  },
+  {
+    "outputFile": "src/scss/devextreme/override.css",
+    "inputFile": "src/scss/devextreme/override.scss"
+  },
+  {
+    "outputFile": "src/scss/main.css",
+    "inputFile": "src/scss/main.scss"
+  }
+]

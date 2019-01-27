@@ -1,0 +1,75 @@
+﻿// READ MORE
+// https://github.com/twbs/bootstrap
+// https://get.getbootstrap.com
+
+@import "pre_default";
+
+// Core variables and mixins
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins";
+// state in March 2018
+
+
+// *** Core with grid
+/*@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/functions";*/
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap-sprockets";
+/*@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables";*/
+@import "node_modules/bootswatch/readable/variables";
+/*@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins";*/
+/*@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/root";*/
+/*@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/reboot";*/
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/type";
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/buttons";
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/image";
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/code";
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/grid";
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/nav-divider";
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/nav-vertical-align";
+// *** Standards
+// @import "tables";
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/forms";
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/buttons";
+
+// *** Components
+// @import "transitions";
+// @import "dropdown";
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/button-groups";
+// @import "input-group";
+// @import "custom-forms";
+/*@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/nav";*/
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/navbar";
+// @import "card";
+// @import "breadcrumb";
+// @import "pagination";
+// @import "badge";
+// @import "jumbotron";
+// @import "alert";
+// @import "progress";
+// @import "media";
+// @import "list-group";
+// @import "close";
+
+// *** Components w/ JavaScript
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/modals";
+/*@import "tooltip";*/
+// @import "popover";
+// @import "carousel";
+
+// *** Utility classes
+// @import "utilities/align";
+// @import "utilities/background";
+// @import "utilities/borders";
+// @import "utilities/clearfix";
+// @import "utilities/display";
+// @import "utilities/embed";
+// @import "utilities/flex";
+// @import "utilities/float";
+// @import "utilities/position";
+// @import "utilities/screenreaders";
+// @import "utilities/spacing";
+// @import "utilities/text";
+// @import "utilities/visibility";
+
+// *** Print classes
+// @import "print";
+
+@import '_pre_default'; 

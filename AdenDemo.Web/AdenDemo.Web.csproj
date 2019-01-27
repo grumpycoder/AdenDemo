@@ -60,6 +60,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="FluentEmail, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\fluent-email.1.5\lib\net40\FluentEmail.dll</HintPath>
+    </Reference>
     <Reference Include="Humanizer, Version=2.5.0.0, Culture=neutral, PublicKeyToken=979442b78dfc278e, processorArchitecture=MSIL">
       <HintPath>..\packages\Humanizer.Core.2.5.16\lib\netstandard2.0\Humanizer.dll</HintPath>
     </Reference>
@@ -72,6 +75,9 @@
     </Reference>
     <Reference Include="Nortal.Utilities.Csv, Version=0.9.2.0, Culture=neutral, PublicKeyToken=3a479c26195e6b17, processorArchitecture=MSIL">
       <HintPath>..\packages\Nortal.Utilities.Csv.0.9.2\lib\net35\Nortal.Utilities.Csv.dll</HintPath>
+    </Reference>
+    <Reference Include="RazorEngine, Version=3.2.0.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
+      <HintPath>..\packages\RazorEngine.3.2.0\lib\net40\RazorEngine.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -266,7 +272,17 @@
     <Content Include="Content\layouts\Popup\PopupLayout.html" />
     <Content Include="Content\layouts\Popup\PopupLayout.js" />
     <Content Include="css\bootstrap-dialog.css" />
-    <Content Include="css\bootstrap-dialog.min.css" />
+    <Content Include="css\bootstrap-dialog.min.css">
+      <DependentUpon>bootstrap-dialog.css</DependentUpon>
+    </Content>
+    <Content Include="css\bootstrap.css" />
+    <Content Include="css\bootstrap.min.css">
+      <DependentUpon>bootstrap.css</DependentUpon>
+    </Content>
+    <Content Include="css\dx-bundle.css" />
+    <Content Include="css\dx-bundle.min.css">
+      <DependentUpon>dx-bundle.css</DependentUpon>
+    </Content>
     <Content Include="css\dx.android5.light.css" />
     <Content Include="css\dx.carmine.compact.css" />
     <Content Include="css\dx.carmine.css" />
@@ -308,12 +324,20 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="js\app\app.js" />
+    <Content Include="js\app\app.min.js">
+      <DependentUpon>app.js</DependentUpon>
+    </Content>
     <Content Include="js\app\assignments.module.js" />
     <Content Include="js\app\filespecification.module.js" />
     <Content Include="js\app\review.module.js" />
     <Content Include="js\app\submission.module.js" />
     <Content Include="js\bootstrap-dialog.js" />
     <Content Include="js\bootstrap-dialog.min.js" />
+    <Content Include="js\dx-bundle.js" />
+    <Content Include="js\dx-bundle.min.js">
+      <DependentUpon>dx-bundle.js</DependentUpon>
+    </Content>
     <Content Include="js\dx.all.debug.js" />
     <Content Include="js\dx.all.js" />
     <Content Include="js\dx.aspnet.data.js" />
@@ -326,6 +350,10 @@
     <Content Include="js\dx.web.debug.js" />
     <Content Include="js\dx.web.js" />
     <Content Include="js\jquery.serializejson.min.js" />
+    <Content Include="js\vendor.js" />
+    <Content Include="js\vendor.min.js">
+      <DependentUpon>vendor.js</DependentUpon>
+    </Content>
     <Content Include="LICENSE.txt" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -379,6 +407,11 @@
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\FontAwesome.otf" />
+    <None Include="bundleconfig.json" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\cldr.js" />
     <Content Include="Scripts\cldr\event.js" />
@@ -424,6 +457,30 @@
     <Content Include="Scripts\vectormap-utils\dx.vectormaputils.debug.js" />
     <Content Include="Scripts\vectormap-utils\dx.vectormaputils.js" />
     <Content Include="Scripts\vectormap-utils\dx.vectormaputils.node.js" />
+    <Content Include="src\scss\bootstrap-dialog\bootstrap-dialog.css">
+      <DependentUpon>bootstrap-dialog.less</DependentUpon>
+    </Content>
+    <Content Include="src\scss\bootstrap-dialog\bootstrap-dialog.min.css">
+      <DependentUpon>bootstrap-dialog.css</DependentUpon>
+    </Content>
+    <Content Include="src\scss\bootstrap\bootstrap.css">
+      <DependentUpon>bootstrap.scss</DependentUpon>
+    </Content>
+    <Content Include="src\scss\bootstrap\bootstrap.min.css">
+      <DependentUpon>bootstrap.css</DependentUpon>
+    </Content>
+    <Content Include="src\scss\devextreme\override.css">
+      <DependentUpon>override.scss</DependentUpon>
+    </Content>
+    <Content Include="src\scss\devextreme\override.min.css">
+      <DependentUpon>override.css</DependentUpon>
+    </Content>
+    <Content Include="src\scss\main.css">
+      <DependentUpon>main.scss</DependentUpon>
+    </Content>
+    <Content Include="src\scss\main.min.css">
+      <DependentUpon>main.css</DependentUpon>
+    </Content>
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -450,6 +507,15 @@
     <Content Include="Views\Home\_WorkItemImage.cshtml" />
     <Content Include="Views\Home\Report.cshtml" />
     <Content Include="Views\Home\_Document.cshtml" />
+    <Content Include="src\scss\bootstrap\bootstrap.scss" />
+    <Content Include="src\scss\bootstrap\_config.scss" />
+    <Content Include="src\scss\bootstrap\_pre_default.scss" />
+    <Content Include="src\scss\bootstrap_ext\_button.scss" />
+    <Content Include="src\scss\vendor.scss" />
+    <Content Include="src\scss\bootstrap-dialog\bootstrap-dialog.less" />
+    <None Include="src\scss\bootstrap-dialog\_pre_default.less" />
+    <Content Include="src\scss\main.scss" />
+    <Content Include="src\scss\devextreme\override.scss" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -503,7 +569,9 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\BuildBundlerMinifier.2.8.391\build\BuildBundlerMinifier.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\BuildBundlerMinifier.2.8.391\build\BuildBundlerMinifier.targets'))" />
   </Target>
+  <Import Project="..\packages\BuildBundlerMinifier.2.8.391\build\BuildBundlerMinifier.targets" Condition="Exists('..\packages\BuildBundlerMinifier.2.8.391\build\BuildBundlerMinifier.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

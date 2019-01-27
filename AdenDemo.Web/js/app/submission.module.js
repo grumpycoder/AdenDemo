@@ -100,7 +100,7 @@
                     }
 
                     if (options.data.canReview) {
-                        $('<a/>').addClass('btn btn-default btn-sm btn-grid')
+                        $('<a/>').addClass('btn btn-primary btn-sm btn-grid')
                             .text('Review File')
                             .attr('href', '/review/' + options.data.dataYear + '/' + options.data.fileNumber)
                             .attr('target', '_blank')
@@ -108,7 +108,7 @@
                     }
 
                     if (options.data.canReopen) {
-                        $('<a/>').addClass('btn btn-default btn-sm btn-grid')
+                        $('<a/>').addClass('btn btn-primary btn-sm btn-grid')
                             .text('Reopen')
                             .on('dxclick',
                                 function (e) {

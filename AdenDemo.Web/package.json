@@ -2,10 +2,15 @@
   "name": "myproject",
   "version": "1.0.0",
   "devDependencies": {
+    "bootstrap": "^4.2.1",
+    "bootstrap-sass": "3.4.0",
     "bootstrap3-dialog": "1.35.4",
+    "bootstrap4-dialog": "^4.1.0",
+    "bootswatch": "3.4.0",
     "devextreme": "18.2.4",
     "devextreme-aspnet-data": "2.1.1",
     "font-awesome": "4.7.0",
+    "jquery": "3.3.1",
     "jquery-serializejson": "2.9.0"
   }
 }

@@ -1,0 +1,38 @@
+[
+  {
+    "outputFileName": "js/app/app.js",
+    "inputFiles": [
+      "js/app/assignments.module.js",
+      "js/app/filespecification.module.js",
+      "js/app/review.module.js",
+      "js/app/submission.module.js"
+    ]
+  },
+  {
+    "outputFileName": "js/vendor.js",
+    "inputFiles": [
+      "node_modules/jquery/dist/jquery.js",
+      "node_modules/bootstrap/dist/js/bootstrap.bundle.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": true
+  },
+  {
+    "outputFileName": "js/dx-bundle.js",
+    "inputFiles": [
+      "js/dx.all.js",
+      "js/dx.aspnet.data.js"
+    ]
+  },
+  {
+    "outputFileName": "css/dx-bundle.css",
+    "inputFiles": [
+      "css/dx.common.css",
+      "css/dx.light.css", 
+      "src/scss/devextreme/override.css"
+    ]
+  }
+]

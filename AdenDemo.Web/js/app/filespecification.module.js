@@ -205,6 +205,7 @@
         var postUrl = '/api/filespecification/' + data.id;
 
         BootstrapDialog.show({
+            type: BootstrapDialog.TYPE_WARNING, 
             size: window.BootstrapDialog.SIZE_WIDE,
             draggable: true,
             title: title,

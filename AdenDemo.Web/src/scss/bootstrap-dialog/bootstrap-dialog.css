@@ -7,22 +7,22 @@
   /** End of icon animation **/
 }
 .bootstrap-dialog .modal-header {
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
 }
 .bootstrap-dialog .bootstrap-dialog-title {
   color: #fff;
   display: inline-block;
-  font-size: 19px;
+  font-size: 20px;
 }
 .bootstrap-dialog .bootstrap-dialog-message {
-  font-size: 15px;
+  font-size: 16px;
 }
 .bootstrap-dialog .bootstrap-dialog-button-icon {
   margin-right: 3px;
 }
 .bootstrap-dialog .bootstrap-dialog-close-button {
-  font-size: 15px;
+  font-size: 16px;
   float: right;
   opacity: 0.9;
   filter: alpha(opacity=90);
@@ -39,28 +39,28 @@
   color: #333;
 }
 .bootstrap-dialog.type-info .modal-header {
-  background-color: #369;
+  background-color: #5bc0de;
 }
 .bootstrap-dialog.type-primary .modal-header {
-  background-color: #EB6864;
+  background-color: #4582EC;
 }
 .bootstrap-dialog.type-success .modal-header {
-  background-color: #22B24C;
+  background-color: #3FAD46;
 }
 .bootstrap-dialog.type-warning .modal-header {
-  background-color: #F5E625;
+  background-color: #f0ad4e;
 }
 .bootstrap-dialog.type-danger .modal-header {
-  background-color: #F57A00;
+  background-color: #d9534f;
 }
 .bootstrap-dialog.size-large .bootstrap-dialog-title {
-  font-size: 19px;
+  font-size: 20px;
 }
 .bootstrap-dialog.size-large .bootstrap-dialog-close-button {
-  font-size: 19px;
+  font-size: 20px;
 }
 .bootstrap-dialog.size-large .bootstrap-dialog-message {
-  font-size: 15px;
+  font-size: 16px;
 }
 .bootstrap-dialog .icon-spin {
   display: inline-block;
