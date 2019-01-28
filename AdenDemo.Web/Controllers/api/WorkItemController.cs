@@ -80,7 +80,7 @@ namespace AdenDemo.Web.Controllers.api
 
             //Create Audit record
             //TODO: Get current user
-            var user = "mark";
+            var user = "mark@mail.com";
             var message = $"Reassigned by {user}: {model.Reason}";
             var audit = new SubmissionAudit(submission.Id, message);
             submission.SubmissionAudits.Add(audit);
@@ -169,19 +169,21 @@ namespace AdenDemo.Web.Controllers.api
                 report.Submission.SubmissionState = SubmissionState.AssignedForSubmission;
             }
 
-            if (workItem.WorkItemAction == WorkItemAction.Reject)
-            {
-                wi.WorkItemAction = WorkItemAction.Generate;
-                report.ReportState = ReportState.AssignedForGeneration;
-                report.Submission.SubmissionState = SubmissionState.AssignedForGeneration;
-            }
+            //TODO: Why do you need a reject work item action?
+            //if (workItem.WorkItemAction == WorkItemAction.Reject)
+            //{
+            //    wi.WorkItemAction = WorkItemAction.Generate;
+            //    report.ReportState = ReportState.AssignedForGeneration;
+            //    report.Submission.SubmissionState = SubmissionState.AssignedForGeneration;
+            //}
 
-            if (workItem.WorkItemAction == WorkItemAction.SubmitWithError)
-            {
-                wi.WorkItemAction = WorkItemAction.ReviewError;
-                report.ReportState = ReportState.CompleteWithError;
-                report.Submission.SubmissionState = SubmissionState.CompleteWithError;
-            }
+            //TODO: Why do you need a submit with error work item action?
+            //if (workItem.WorkItemAction == WorkItemAction.SubmitWithError)
+            //{
+            //    wi.WorkItemAction = WorkItemAction.ReviewError;
+            //    report.ReportState = ReportState.CompleteWithError;
+            //    report.Submission.SubmissionState = SubmissionState.CompleteWithError;
+            //}
 
             if (workItem.WorkItemAction == WorkItemAction.ReviewError)
             {
@@ -203,12 +205,14 @@ namespace AdenDemo.Web.Controllers.api
             wi.AssignedUser = assignedUser;
             report.Submission.CurrentAssignee = assignedUser;
 
-            if (workItem.WorkItemAction != WorkItemAction.Submit) report.WorkItems.Add(wi);
+            if (wi.WorkItemAction != 0) report.WorkItems.Add(wi);
 
-            _context.SaveChanges();
 
             //TODO: Send notifications 
             WorkEmailer.Send(wi, report.Submission);
+
+            _context.SaveChanges();
+
 
             return Ok("completed work item task");
 
@@ -228,7 +232,7 @@ namespace AdenDemo.Web.Controllers.api
 
             //Start new work item
             //TODO: Get workitem assignee
-            var assignedUser = "mark";
+            var assignedUser = "mark@mail.com";
 
             var wi = new WorkItem()
             {
@@ -245,6 +249,7 @@ namespace AdenDemo.Web.Controllers.api
 
             report.WorkItems.Add(wi);
 
+            WorkEmailer.Send(wi, report.Submission);
 
             await _context.SaveChangesAsync();
 

@@ -4,22 +4,13 @@
 
     <div style="width:70%; margin:auto; text-align:center;" id="messageTitle">
         <h2>
-            You have been assigned a @Model.WorkItemAction task
+            The @Model.FileName submission has been completed.
         </h2>
         <hr />
     </div>
 
     <div style="width: 100%; text-align: center;" id="messageIcon">
         <img src=@string.Format("https://img.icons8.com/color/480/000000/{0}.png", @Model.Icon) style="display:block; margin:auto;" width="200" height="200" />
-    </div>
-
-    <div id="messageBody" style="margin:auto; display:block; text-align: center; width: 70%;">
-        <p>
-            The task of @Model.WorkItemAction for @Model.FileName needs to be completed before @(Model.DueDate.ToString("M/d/yyy")).
-        </p>
-        <p>
-            @Model.Notes
-        </p>
     </div>
 
     <div style="display:block; margin:auto; width: 70%; text-align:center;">

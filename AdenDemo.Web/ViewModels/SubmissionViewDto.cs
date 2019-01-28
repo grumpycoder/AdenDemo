@@ -61,14 +61,9 @@ namespace AdenDemo.Web.ViewModels
 
         public bool CanReview => HasStarted;
 
-        public bool HasAdmin
-        {
-            get
-            {
-                //var claim = (HttpContext.Current.User as ClaimsPrincipal).Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role && c.Value.Contains(Constants.GlobalAdministrators));
-                return true; //claim != null;
-            }
-        }
+        public bool HasAdmin => true; //claim != null;
+                                      //var claim = (HttpContext.Current.User as ClaimsPrincipal).Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role && c.Value.Contains(Constants.GlobalAdministrators));
+
 
         public int? CurrentReportId { get; set; }
     }

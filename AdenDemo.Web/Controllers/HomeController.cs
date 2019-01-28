@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using AdenDemo.Web.Services;
 
 namespace AdenDemo.Web.Controllers
 {
@@ -218,7 +219,7 @@ namespace AdenDemo.Web.Controllers
             //Create new generation work item
             var report = await _context.Reports.Include(s => s.Submission.FileSpecification).SingleOrDefaultAsync(r => r.Id == workItem.ReportId);
 
-            var assignedUser = "mark";
+            var assignedUser = "mark@mail.com";
 
             var wi = new WorkItem()
             {
@@ -242,7 +243,10 @@ namespace AdenDemo.Web.Controllers
 
             report.WorkItems.Add(wi);
 
+            WorkEmailer.Send(wi, report.Submission, model.Files);
+
             await _context.SaveChangesAsync();
+
             return new HttpStatusCodeResult(HttpStatusCode.OK);
 
         }

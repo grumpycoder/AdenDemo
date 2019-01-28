@@ -12,9 +12,6 @@
 
         public long FileSize { get; set; }
 
-        public ReportDocument()
-        {
 
-        }
     }
 }

@@ -518,7 +518,9 @@
     <None Include="src\scss\bootstrap-dialog\_pre_default.less" />
     <Content Include="src\scss\main.scss" />
     <Content Include="src\scss\devextreme\override.scss" />
+    <Content Include="Templates\WorkItemSubmissionTemplate.cshtml" />
     <None Include="Templates\WorkItemEmailTemplate.cshtml" />
+    <Content Include="Templates\WorkItemCancelTemplate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

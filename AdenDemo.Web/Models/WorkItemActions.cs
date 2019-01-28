@@ -4,21 +4,23 @@ namespace AdenDemo.Web.Models
 {
     public enum WorkItemAction
     {
-        [Display(Name = "Generate File", ShortName = "Generate", Description = "Generate file")]
+        [Display(Name = "Generate", ShortName = "Generate File", Description = "Generate File")]
         Generate = 1,
-        [Display(Name = "Accept File", ShortName = "Accept", Description = "Review file and accept")]
+        [Display(Name = "Accept", ShortName = "Accept File", Description = "Review File")]
         Review = 2,
-        [Display(Name = "Reject File", ShortName = "Reject", Description = "Reject File")]
-        Reject = 7,
-        [Display(Name = "Approve File", ShortName = "Approve", Description = "Approve File")]
+        //[Display(Name = "Reject File", ShortName = "Reject", Description = "Reject File")]
+        //Reject = 7,
+        [Display(Name = "Approve", ShortName = "Approve File", Description = "Approve File")]
         Approve = 3,
-        [Display(Name = "Submit File", ShortName = "SubmitFile")]
+        [Display(Name = "Submit", ShortName = "Submit File", Description = "Submit File")]
         Submit = 4,
-        [Display(Name = "Submit With Error", ShortName = "SubmitErrorFile")]
-        SubmitWithError = 5,
-        [Display(Name = "Review Completed", ShortName = "SubmitErrorReview", Description = "Submission error reviewed")]
+
+        //[Display(Name = "Submit With Error", ShortName = "SubmitErrorFile", Description = "Submit Error File")]
+        //SubmitWithError = 5,
+        [Display(Name = "Review Completed", ShortName = "Review Error", Description = "Submission Error Review")]
         ReviewError = 6,
 
-        Nothing = 0
+        //[Display(Name = "Completed", ShortName = "Completed", Description = "Submission Complete")]
+        //Nothing = 0
     }
 }

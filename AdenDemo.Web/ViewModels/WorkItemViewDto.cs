@@ -26,7 +26,7 @@ namespace AdenDemo.Web.ViewModels
 
         public WorkItemState WorkItemState { get; set; }
 
-        public string ActionName => Action.GetDisplayName();
+        public string ActionName => Action.GetShortName();
 
 
         public bool CanGenerate => Action == WorkItemAction.Generate;

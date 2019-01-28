@@ -51,7 +51,7 @@
 
                     if (options.data.canReject) {
                         $('<a/>').addClass('btn btn-danger btn-sm btn-grid')
-                            .text('Reject')
+                            .text('Reject File')
                             .on('dxclick',
                                 function (e) {
                                     reject($(this), options.data);
@@ -70,7 +70,7 @@
                     }
                     if (options.data.canReviewError) {
                         $('<a/>').addClass('btn btn-danger btn-sm btn-grid')
-                            .text('View Details')
+                            .text('View Errors')
                             .on('dxclick',
                                 function (e) {
                                     showErrorDetails($(this), options.data);
@@ -227,7 +227,7 @@
 
     function showReportErrors(container, data) {
         console.log('show report errors');
-        var title = 'History';
+        var title = 'Submission Errors';
         var url = '/home/errorreport/' + data.id;
         var postUrl = '/home/reporterror'; // + data.id;
 

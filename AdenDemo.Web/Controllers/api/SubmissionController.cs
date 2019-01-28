@@ -1,5 +1,6 @@
 ﻿using AdenDemo.Web.Data;
 using AdenDemo.Web.Models;
+using AdenDemo.Web.Services;
 using AdenDemo.Web.ViewModels;
 using AutoMapper.QueryableExtensions;
 using DevExtreme.AspNet.Data;
@@ -47,7 +48,7 @@ namespace AdenDemo.Web.Controllers.api
             submission.Reports.Add(report);
 
             //Create Audit record
-            var user = "mark";
+            var user = "mark@mail.com";
             var message = $"Waived by {user}: {model.Message}";
             var audit = new SubmissionAudit(submission.Id, message);
             submission.SubmissionAudits.Add(audit);
@@ -68,7 +69,7 @@ namespace AdenDemo.Web.Controllers.api
                 return BadRequest($"No generation group defined for File { submission.FileSpecification.FileNumber }");
 
             //TODO: Get next assignee
-            var assignee = "mark";
+            var assignee = "mark@mail.com";
 
             //Change state
             submission.SubmissionState = SubmissionState.AssignedForGeneration;
@@ -84,10 +85,12 @@ namespace AdenDemo.Web.Controllers.api
             {
                 WorkItemAction = WorkItemAction.Generate,
                 WorkItemState = WorkItemState.NotStarted,
-                AssignedDate = DateTime.Now, 
+                AssignedDate = DateTime.Now,
                 AssignedUser = assignee
             };
             report.WorkItems.Add(workItem);
+
+            WorkEmailer.Send(workItem, submission);
 
             _context.SaveChanges();
 
@@ -104,12 +107,14 @@ namespace AdenDemo.Web.Controllers.api
             var submission = await _context.Submissions.Include(f => f.FileSpecification).FirstOrDefaultAsync(x => x.Id == id);
             if (submission == null) return NotFound();
 
+            var workItem = _context.WorkItems.SingleOrDefault(x => x.ReportId == submission.CurrentReportId && x.WorkItemState == WorkItemState.NotStarted);
+
             //Set Submission State and clear assignee
             submission.SubmissionState = SubmissionState.NotStarted;
             submission.CurrentAssignee = string.Empty;
 
             //Create Audit record
-            var user = "mark";
+            var user = "mark@mail.com";
             var message = $"Cancelled by {user}";
             var audit = new SubmissionAudit(submission.Id, message);
             submission.SubmissionAudits.Add(audit);
@@ -127,6 +132,7 @@ namespace AdenDemo.Web.Controllers.api
                 _context.Reports.Remove(report);
             }
 
+            WorkEmailer.Send(workItem, submission);
             _context.SaveChanges();
 
             return Ok();
@@ -147,13 +153,13 @@ namespace AdenDemo.Web.Controllers.api
                 return BadRequest($"No generation group defined for File { submission.FileSpecification.FileNumber }");
 
             //Create Audit record
-            var user = "mark";
+            var user = "mark@mail.com";
             var message = $"ReOpened by { user}: { model.Message }";
             var audit = new SubmissionAudit(submission.Id, message);
             submission.SubmissionAudits.Add(audit);
 
             //TODO: Get next assignee
-            var assignee = "mark";
+            var assignee = "mark@mail.com";
 
             //Change state
             submission.SubmissionState = SubmissionState.AssignedForGeneration;
@@ -173,6 +179,8 @@ namespace AdenDemo.Web.Controllers.api
                 AssignedUser = assignee
             };
             report.WorkItems.Add(workItem);
+
+            WorkEmailer.Send(workItem, submission);
 
             _context.SaveChanges();
 
