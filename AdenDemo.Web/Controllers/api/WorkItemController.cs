@@ -1,6 +1,7 @@
 ﻿using AdenDemo.Web.Data;
 using AdenDemo.Web.Helpers;
 using AdenDemo.Web.Models;
+using AdenDemo.Web.Services;
 using AdenDemo.Web.ViewModels;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -26,10 +27,9 @@ namespace AdenDemo.Web.Controllers.api
             _context = new AdenContext();
         }
 
-        [HttpGet, Route("{id}")]
-        public async Task<object> Get(string id, DataSourceLoadOptions loadOptions)
+        [HttpGet, Route("{username}")]
+        public async Task<object> Get(string username, DataSourceLoadOptions loadOptions)
         {
-            var username = id;
             if (username == null) return NotFound();
 
             var dto = await _context.WorkItems
@@ -39,10 +39,9 @@ namespace AdenDemo.Web.Controllers.api
             return Ok(DataSourceLoader.Load(dto.OrderBy(x => x.AssignedDate), loadOptions));
         }
 
-        [HttpGet, Route("finished/{id}")]
-        public async Task<object> Finished(string id, DataSourceLoadOptions loadOptions)
+        [HttpGet, Route("finished/{username}")]
+        public async Task<object> Finished(string username, DataSourceLoadOptions loadOptions)
         {
-            var username = id;
             if (username == null) return NotFound();
 
             var dto = await _context.WorkItems
@@ -199,7 +198,7 @@ namespace AdenDemo.Web.Controllers.api
 
 
             //TODO: Get workitem assignee
-            var assignedUser = "mark";
+            var assignedUser = "mark@mail.com";
 
             wi.AssignedUser = assignedUser;
             report.Submission.CurrentAssignee = assignedUser;
@@ -209,6 +208,7 @@ namespace AdenDemo.Web.Controllers.api
             _context.SaveChanges();
 
             //TODO: Send notifications 
+            WorkEmailer.Send(wi, report.Submission);
 
             return Ok("completed work item task");
 

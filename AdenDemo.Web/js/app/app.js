@@ -1,7 +1,7 @@
 (function () {
 
-    var uriCurrent = "/api/workitem/mark";
-    var uriComplete = "/api/workitem/finished/mark";
+    var uriCurrent = "/api/workitem/mark@mail.com/";
+    var uriComplete = "/api/workitem/finished/mark@mail.com/";
 
     var $gridCurrent = $('#gridCurrent').dxDataGrid({
         dataSource: DevExpress.data.AspNet.createStore({

@@ -1,0 +1,41 @@
+﻿
+
+<div style="width:100%; font-family:'Lato', Tahoma, Verdana, Segoe, sans-serif;">
+
+    <div style="width:70%; margin:auto; text-align:center;" id="messageTitle">
+        <h2>
+            You have been assigned a @Model.WorkItemAction task
+        </h2>
+        <hr />
+    </div>
+
+    <div style="width: 100%; text-align: center;" id="messageIcon">
+        <img src=@String.Format("https://img.icons8.com/color/480/000000/{0}.png", @Model.Icon) style="display:block; margin:auto;" width="200" height="200" />
+    </div>
+
+    <div id="messageBody" style="margin:auto; display:block; text-align: center; width: 70%;">
+        <p>
+            The task of @Model.WorkItemAction for @Model.FileName needs to be completed before @(Model.DueDate.ToString("M/d/yyy")).
+        </p>
+        <p>
+            @Model.Notes
+        </p>
+    </div>
+
+    <div style="display:block; margin:auto; width: 70%; text-align:center;">
+        <p>
+            <a href="#">View Your Assignments</a>
+        </p>
+    </div>
+
+</div>
+
+<div style="width:70%; margin:auto; text-align:center;">
+    <hr />
+</div>
+
+<div id="footer" style="width:70%; margin:auto; text-align:center;">
+    <p>
+        Copyright &#169; @(DateTime.Now.ToString("yyyy")) Alabama State Department of Education. All rights reserved.
+    </p>
+</div>

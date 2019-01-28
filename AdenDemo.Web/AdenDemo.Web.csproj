@@ -171,6 +171,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Controllers\api\AuditController.cs" />
     <Compile Include="Controllers\api\DocumentController.cs" />
     <Compile Include="Controllers\api\FileSpecificationController.cs" />
@@ -209,6 +210,7 @@
     <Compile Include="Models\WorkItemImage.cs" />
     <Compile Include="Models\WorkItemState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\WorkEmailer.cs" />
     <Compile Include="ViewModels\AssignmentDto.cs" />
     <Compile Include="ViewModels\FileViewDto.cs" />
     <Compile Include="ViewModels\ReportDocumentViewDto.cs" />
@@ -516,6 +518,7 @@
     <None Include="src\scss\bootstrap-dialog\_pre_default.less" />
     <Content Include="src\scss\main.scss" />
     <Content Include="src\scss\devextreme\override.scss" />
+    <None Include="Templates\WorkItemEmailTemplate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

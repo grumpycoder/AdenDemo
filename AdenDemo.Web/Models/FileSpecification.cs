@@ -27,6 +27,8 @@ namespace AdenDemo.Web.Models
         public bool IsSCH { get; set; }
         public DateTime DueDate { get; set; }
 
+        public string FileDisplayName => $"{FileName} ({FileNumber})";
+
         public List<Submission> Submissions { get; set; }
 
         private FileSpecification()
