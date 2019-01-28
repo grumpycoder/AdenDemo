@@ -1,6 +1,4 @@
-﻿ReportId: @ViewBag.CurrentReportId
-
-<h3>History</h3>
+﻿<h3>History</h3>
 <div id="historyGrid">
 
 </div>
@@ -10,8 +8,6 @@
 
 <script>
 
-
-    console.log('work history ready');
     var historyUri = '/api/workitem/history/' + @(ViewBag.CurrentReportId ?? 0);
 
     var $historyGrid = $('#historyGrid').dxDataGrid(

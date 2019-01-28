@@ -61,7 +61,7 @@ namespace AdenDemo.Web.Controllers.api
             var IsAdmin = true;
             foreach (var item in dto)
             {
-                if (item.WorkItemState == WorkItemState.NotStarted && IsAdmin) item.CanReassign = true;
+                if ((item.WorkItemState == WorkItemState.NotStarted || item.WorkItemState == WorkItemState.Reassigned) && IsAdmin) item.CanReassign = true;
             }
             return Ok(DataSourceLoader.Load(dto.OrderByDescending(x => x.Id), loadOptions));
         }
@@ -76,14 +76,17 @@ namespace AdenDemo.Web.Controllers.api
 
             //Update assigned user
             workItem.AssignedUser = model.AssignedUser;
-            submission.CurrentAssignee = model.AssignedUser;
+            workItem.WorkItemState = WorkItemState.Reassigned; 
+
 
             //Create Audit record
             //TODO: Get current user
             var user = "mark@mail.com";
-            var message = $"Reassigned by {user}: {model.Reason}";
+            var message = $"Reassigned from {workItem.AssignedUser} to {model.AssignedUser} by {user}: {model.Reason}";
             var audit = new SubmissionAudit(submission.Id, message);
             submission.SubmissionAudits.Add(audit);
+
+            submission.CurrentAssignee = model.AssignedUser;
 
             _context.SaveChanges();
 

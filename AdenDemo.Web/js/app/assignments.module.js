@@ -173,7 +173,6 @@
 
 
     function complete(container, data) {
-        console.log('generate', data);
         var uri = '/api/workitem/complete/' + data.id;
         $.ajax({
             url: uri,
@@ -191,7 +190,6 @@
     }
 
     function reject(container, data) {
-        console.log('generate', data);
         var uri = '/api/workitem/reject/' + data.id;
         $.ajax({
             url: uri,
@@ -209,7 +207,6 @@
     }
 
     function cancel(container, data) {
-        console.log('generate', data);
         var uri = '/api/workitem/cancel/' + data.id;
         $.ajax({
             url: uri,
@@ -289,7 +286,6 @@
     }
 
     function showErrorDetails(container, data) {
-        console.log('show report errors');
         var title = 'Error Details';
         var url = '/home/workitemimages/' + data.id;
 

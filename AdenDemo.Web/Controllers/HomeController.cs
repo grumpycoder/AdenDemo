@@ -1,6 +1,7 @@
 ﻿using AdenDemo.Web.Data;
 using AdenDemo.Web.Helpers;
 using AdenDemo.Web.Models;
+using AdenDemo.Web.Services;
 using AdenDemo.Web.ViewModels;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -11,7 +12,6 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using AdenDemo.Web.Services;
 
 namespace AdenDemo.Web.Controllers
 {

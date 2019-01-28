@@ -251,7 +251,6 @@
 
     function startWorkFlow(container, data) {
         var id = data.id;
-        console.log('id', id);
         $.ajax({
             url: '/api/submission/start/' + id,
             type: 'POST',
