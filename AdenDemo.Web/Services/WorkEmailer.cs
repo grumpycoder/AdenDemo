@@ -14,7 +14,6 @@ namespace AdenDemo.Web.Services
 
             Email.DefaultRenderer = new RazorRenderer();
 
-            //TODO: Set sender email in configuration
             var sender = Constants.ReplyAddress;
             var templatePath = Constants.WorkItemTemplatePath;
             var taskIcon = Constants.TaskIcon;

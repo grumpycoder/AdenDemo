@@ -11,6 +11,10 @@ namespace AdenDemo.Web
 
         public static string ReplyAddress = AppSettings.Get<string>("ReplyAddress");
 
+
+        public static int CommandTimeout => AppSettings.Get<int>("CommandTimeout");
+
+
         //Email variables
         public const string TaskIcon = "tasklist";
         public const string CancelledIcon = "event-declined";

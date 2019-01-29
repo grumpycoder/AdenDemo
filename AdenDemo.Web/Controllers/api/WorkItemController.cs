@@ -76,7 +76,7 @@ namespace AdenDemo.Web.Controllers.api
 
             //Update assigned user
             workItem.AssignedUser = model.AssignedUser;
-            workItem.WorkItemState = WorkItemState.Reassigned; 
+            workItem.WorkItemState = WorkItemState.Reassigned;
 
 
             //Create Audit record
@@ -272,8 +272,7 @@ namespace AdenDemo.Web.Controllers.api
             {
                 using (var cmd = new SqlCommand(report.Submission.FileSpecification.ReportAction, connection))
                 {
-                    //TODO: Store timeout in constants
-                    cmd.CommandTimeout = 300;
+                    cmd.CommandTimeout = Constants.CommandTimeout;
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@DataYear", report.Submission.DataYear);
                     cmd.Parameters.AddWithValue("@ReportLevel", reportLevel.GetDisplayName());
