@@ -5,53 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Aden</title>
 
-    
+
     <link href="~/src/scss/bootstrap/bootstrap.css" rel="stylesheet" />
     <link href="~/src/scss/fontawesome/fontawesome.css" rel="stylesheet" />
     <!-- DevExtreme themes -->
-    @*<link rel="stylesheet" type="text/css" href="~/css/dx.common.css" />
-    <link rel="stylesheet" type="text/css" href="~/css/dx.light.css" />*@
     <link href="~/css/dx-bundle.css" rel="stylesheet" />
-    
 
-    <link href="~/css/font-awesome.css" rel="stylesheet" />
-    @*<link href="~/css/bootstrap-dialog.min.css" rel="stylesheet" />*@
-    @*<link href="~/css/bootstrap-dialog.min.css" rel="stylesheet" />*@
     <link href="~/src/scss/bootstrap-dialog/bootstrap-dialog.css" rel="stylesheet" />
-    @*<link href="~/src/scss/bootstrap-dialog/bootstrap-dialog.css" rel="stylesheet" />*@
-    @*@Styles.Render("~/Content/css")*@
-    <link href="~/src/scss/main.css" rel="stylesheet" />
+    <link href="~/src/scss/main/main.css" rel="stylesheet" />
     @Scripts.Render("~/bundles/modernizr")
-   
+
 
 </head>
 <body>
 
-@Html.Partial("_NavBar")
+    @Html.Partial("_NavBar")
 
-<div class="container-fluid">
-    @RenderBody()
-    <hr/>
-    <footer>
-        <p>&copy; @DateTime.Now.Year - Aden</p>
-    </footer>
-</div>
-@*@Scripts.Render("~/bundles/jquery")*@
+    <div class="container-fluid" id="content">
+        <div class="page" id="page">
+            @RenderBody()
+        </div>
+    </div>
 
-<script src="~/node_modules/jquery/dist/jquery.js"></script>
+    @Html.Partial("_Footer")
 
-@*@Scripts.Render("~/bundles/bootstrap")*@
-<script src="~/node_modules/bootstrap-sass/assets/javascripts/bootstrap.js"></script>
-@*<script src="~/node_modules/bootstrap/dist/js/bootstrap.js"></script>*@
-<!-- DevExtreme library -->
-<script src="~/js/dx-bundle.js"></script>
-@*<script type="text/javascript" src="~/js/dx.all.js"></script>
-        <script src="~/js/dx.aspnet.data.js"></script>*@
-<script src="~/js/jquery.serializejson.min.js"></script>
-@*<script src="~/js/bootstrap-dialog.min.js"></script>*@
-<script src="~/node_modules/bootstrap3-dialog/dist/js/bootstrap-dialog.js"></script>
-@*@Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")*@
-@RenderSection("scripts", required: false)
+
+    <script src="~/node_modules/jquery/dist/jquery.js"></script>
+    <script src="~/node_modules/bootstrap-sass/assets/javascripts/bootstrap.js"></script>
+
+    <!-- DevExtreme library -->
+    <script src="~/js/dx-bundle.js"></script>
+
+    <script src="~/js/jquery.serializejson.min.js"></script>
+
+    <script src="~/node_modules/bootstrap3-dialog/dist/js/bootstrap-dialog.js"></script>
+
+    @RenderSection("scripts", required: false)
 </body>
 </html>
