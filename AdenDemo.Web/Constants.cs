@@ -9,6 +9,7 @@ namespace AdenDemo.Web
         public static string DatabaseContextName => "AdenContext";
         public static string AimBaseUrl => "aim.alsde.edu";
 
+        public static string ReplyAddress = AppSettings.Get<string>("ReplyAddress");
 
         //Email variables
         public const string TaskIcon = "tasklist";

@@ -15,7 +15,7 @@ namespace AdenDemo.Web.Services
             Email.DefaultRenderer = new RazorRenderer();
 
             //TODO: Set sender email in configuration
-            var sender = "noreplay@mail.com";
+            var sender = Constants.ReplyAddress;
             var templatePath = Constants.WorkItemTemplatePath;
             var taskIcon = Constants.TaskIcon;
             var subject = string.Empty;
@@ -23,7 +23,7 @@ namespace AdenDemo.Web.Services
 
             if (workItem.WorkItemAction == 0)
             {
-                subject = $"{submission.FileSpecification.FileDisplayName} Submission Successful"; 
+                subject = $"{submission.FileSpecification.FileDisplayName} Submission Successful";
                 templatePath = Constants.SubmissionTemplatePath;
                 taskIcon = Constants.SuccessIcon;
             }
@@ -40,7 +40,7 @@ namespace AdenDemo.Web.Services
                 taskIcon = Constants.CancelledIcon;
             }
 
-            if(string.IsNullOrWhiteSpace(subject)) subject = $"{submission.FileSpecification.FileDisplayName} {workItem.WorkItemAction.GetDisplayName()} Assignment";
+            if (string.IsNullOrWhiteSpace(subject)) subject = $"{submission.FileSpecification.FileDisplayName} {workItem.WorkItemAction.GetDisplayName()} Assignment";
 
             var model = new EmailModel()
             {

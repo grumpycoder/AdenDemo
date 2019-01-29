@@ -38,7 +38,7 @@ namespace AdenDemo.Web.Controllers.api
             var submission = await _context.Submissions.FirstOrDefaultAsync(s => s.Id == id);
             if (submission == null) return NotFound();
 
-            //TODO: Refactor model
+            //TODO: Refactor model to be less anemic
             //Change state
             submission.SubmissionState = SubmissionState.Waived;
             submission.LastUpdated = DateTime.Now;
