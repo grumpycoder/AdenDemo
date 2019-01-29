@@ -1,15 +1,36 @@
 ﻿/*@import '_config.scss';*/
 
+//** Global text color on `<body>`.
+/*$text-color: $gray-dark !default;*/
+
+
+
 @import '_pre_default'; 
 @import "node_modules/bootswatch/readable/variables";
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 @import "node_modules/bootswatch/readable/bootswatch";
 
 
+
 /*@import "node_modules/bootswatch/dist/cerulean/bootswatch";*/
+
+// Basics of a navbar
+// $navbar-height: 10px !default;
+
+
+/*$btn-default-bg: #fff; 
+$btn-default-color: #000;
+$btn-default-bg: #fff;
+$btn-default-border: $btn-default-bg;*/
 
 
 /*$btn-default-color: $text-color !default;
 $btn-default-bg: #fff !default;
 $btn-default-border: #ddd !default;*/
+
+
+
+.navbar {
+    margin-bottom: 10px;
+}
 

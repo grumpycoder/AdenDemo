@@ -329,6 +329,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="img\sde-logo-transparent-25.png" />
+    <Content Include="img\sde-logo-transparent-50.png" />
+    <Content Include="img\sde-logo-transparent-75.png" />
     <Content Include="js\app\app.js" />
     <Content Include="js\app\app.min.js">
       <DependentUpon>app.js</DependentUpon>
@@ -537,6 +540,7 @@
     <Content Include="Templates\WorkItemCancelTemplate.cshtml" />
     <Content Include="Views\Shared\_NavBar.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
+    <Content Include="Views\Shared\_Header.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
