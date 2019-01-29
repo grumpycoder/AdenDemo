@@ -12,8 +12,8 @@
     "inputFile": "src/scss/devextreme/override.scss"
   },
   {
-    "outputFile": "src/scss/main.css",
-    "inputFile": "src/scss/main.scss"
+    "outputFile": "src/scss/main/main.css",
+    "inputFile": "src/scss/main/main.scss"
   },
   {
     "outputFile": "src/scss/fontawesome/fontawesome.css",

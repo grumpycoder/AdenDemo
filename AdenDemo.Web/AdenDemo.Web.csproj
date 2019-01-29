@@ -486,10 +486,10 @@
     <Content Include="src\scss\fontawesome\fontawesome.min.css">
       <DependentUpon>fontawesome.css</DependentUpon>
     </Content>
-    <Content Include="src\scss\main.css">
+    <Content Include="src\scss\main\main.css">
       <DependentUpon>main.scss</DependentUpon>
     </Content>
-    <Content Include="src\scss\main.min.css">
+    <Content Include="src\scss\main\main.min.css">
       <DependentUpon>main.css</DependentUpon>
     </Content>
     <Content Include="Web.config" />
@@ -525,11 +525,13 @@
     <Content Include="src\scss\vendor.scss" />
     <Content Include="src\scss\bootstrap-dialog\bootstrap-dialog.less" />
     <None Include="src\scss\bootstrap-dialog\_pre_default.less" />
-    <Content Include="src\scss\main.scss" />
+    <Content Include="src\scss\main\main.scss" />
     <Content Include="src\scss\devextreme\override.scss" />
     <Content Include="Templates\WorkItemSubmissionTemplate.cshtml" />
     <Content Include="src\scss\fontawesome\fontawesome.scss" />
     <Content Include="src\scss\fontawesome\_variables.scss" />
+    <Content Include="src\scss\main\_defaults.scss" />
+    <Content Include="src\scss\main\_footer.scss" />
     <None Include="Templates\WorkItemEmailTemplate.cshtml" />
     <Content Include="Templates\WorkItemCancelTemplate.cshtml" />
     <Content Include="Views\Shared\_NavBar.cshtml" />

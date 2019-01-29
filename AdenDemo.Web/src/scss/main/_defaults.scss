@@ -1,0 +1,100 @@
+﻿html {
+    height: 100%;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+    -moz-box-sizing: inherit;
+    box-sizing: inherit;
+}
+
+body {
+    position: relative;
+    margin: 0;
+    padding-bottom: 6rem;
+    min-height: 100%;
+}
+
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+.no-wrap {
+    white-space: nowrap;
+}
+
+.list-group-horizontal .list-group-item {
+    display: inline-block;
+}
+
+.list-group-horizontal .list-group-item {
+    margin-bottom: 0;
+    margin-left: -4px;
+    margin-right: 0;
+    border-right-width: 0;
+}
+
+.list-group-horizontal .list-group-item:first-child {
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 4px;
+}
+
+.list-group-horizontal .list-group-item:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-left-radius: 0;
+    border-right-width: 1px;
+}
+
+.panel-heading > .panel-title {
+    font-size: 1.5em;
+}
+
+.panel-heading > .panel-subtitle {
+    font-size: 0.9em;
+}
+
+/*.blue-gradient {
+    background: -webkit-linear-gradient(rgb(75, 99, 151),rgb(86, 121, 198)) !important;
+    background: -o-linear-gradient(rgb(75, 99, 151),rgb(86, 121, 198)) !important;
+    background: linear-gradient(rgb(75, 99, 151),rgb(86, 121, 198)) !important;
+    color: #fff;
+}*/
+
+.blue-gradient {
+    background-color: #4b6397;
+    color: #fff;
+}
+
+header .lead {
+    font-size: 1.8em;
+    vertical-align: middle;
+    font-weight: 700;
+}
+
+.btn-grid {
+    min-width: 120px;
+}
+
+.btn-lg-grid {
+    min-width: 90px;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.btn-cell {
+    /*white-space: nowrap;
+    text-align:right;*/
+}
+
+.full-width {
+    display: block;
+}
+
+.form-group > label > input, select, textarea {
+    font-weight: normal;
+}
