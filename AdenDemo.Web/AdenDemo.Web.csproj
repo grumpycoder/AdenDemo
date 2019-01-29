@@ -192,6 +192,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AlsdeHtmlHelper.cs" />
     <Compile Include="Helpers\AppSettings.cs" />
     <Compile Include="Helpers\AssemblyExtensions.cs" />
     <Compile Include="Helpers\DataTableHelper.cs" />

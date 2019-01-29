@@ -43,7 +43,21 @@
                         </a>
                     </li>
                 </ul>
-                @Html.UserNavBarMenuList("right")
+                @Html.UserNavBarMenuList("right", "AppUserGroupName", "AdminGroupName")
+
+                @*<ul class="nav navbar-nav pull-right bg-orange">
+                    <li><a href='http://devaim/ApplicationInventory.aspx'><i class='fa fa-home'></i> My Applications</a></li>
+                    <li class="dropdown">
+                        <a href='#' class='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'><i class='fa fa-user'></i>&nbsp;Mark Lawrence<span class="caret"></span></a>
+
+                        <ul class='dropdown-menu'>
+                            <li><a href="devaim/ApplicationInventory.aspx"><i class='fa fa-home'></i> My Applications</a></li>
+                            <li><a href='devaim/UserProfile.aspx'><i class='fa fa-book'></i> User Profile</a></li>
+                        </ul>
+
+                    </li>
+                </ul>*@
+
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
