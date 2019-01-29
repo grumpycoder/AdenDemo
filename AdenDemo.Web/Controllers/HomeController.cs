@@ -40,7 +40,7 @@ namespace AdenDemo.Web.Controllers
 
         public ActionResult History(int id)
         {
-            //TODO: Set SectionAction variable
+            //TODO: Set SectionAction variable or verify needed
             ViewBag.IsSectionAdmin = true;
 
             //TODO: Refactor using ViewBag for CurrentReport
@@ -56,7 +56,7 @@ namespace AdenDemo.Web.Controllers
                 .Where(f => (f.Submission.FileSpecification.FileNumber == filenumber &&
                              f.Submission.DataYear == dataYear) || string.IsNullOrEmpty(filenumber))
                 .ProjectTo<ReportViewDto>().ToListAsync();
-            
+
             //TODO: Move to mapping profile
             foreach (ReportViewDto item in dto)
             {
@@ -127,7 +127,7 @@ namespace AdenDemo.Web.Controllers
             //TODO: Get application from IDEM
             var applications = new List<SelectListItem>()
             {
-                new SelectListItem(){ Value = "APplication1", Text = "Application 1"},
+                new SelectListItem(){ Value = "Application1", Text = "Application 1"},
                 new SelectListItem(){ Value = "Application2", Text = "Application 2"},
                 new SelectListItem(){ Value = "Application3", Text = "Application 3"}
             };
