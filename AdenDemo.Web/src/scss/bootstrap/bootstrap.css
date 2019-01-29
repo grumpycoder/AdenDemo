@@ -1,12 +1,13 @@
 ﻿@charset "UTF-8";
 /*@import '_config.scss';*/
+@import url("https://fonts.googleapis.com/css?family=Lato:400,700|Open+Sans:400,700|Raleway:400,700|Roboto:400,700");
 /*!
  * Bootstrap v3.4.0 (https://getbootstrap.com/)
  * Copyright 2011-2018 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
-@import url("https://fonts.googleapis.com/css?family=Raleway:400,700");
+@import url("https://fonts.googleapis.com/css?family=Lato:400,700|Open+Sans:400,700|Raleway:400,700|Roboto:400,700");
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
@@ -5886,3 +5887,6 @@ legend {
   color: #333333; }
 
 /*@import "node_modules/bootswatch/dist/cerulean/bootswatch";*/
+/*$btn-default-color: $text-color !default;
+$btn-default-bg: #fff !default;
+$btn-default-border: #ddd !default;*/
