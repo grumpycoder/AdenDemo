@@ -107,14 +107,13 @@ namespace AdenDemo.Web.Controllers.api
 
             var report = await _context.Reports.Include(s => s.Submission.FileSpecification).SingleOrDefaultAsync(r => r.Id == workItem.ReportId);
 
-            //TODO: Handle null report
+            if (report == null) return BadRequest("No report for work item task");
+
 
             if (workItem.WorkItemAction == WorkItemAction.Generate)
             {
                 //Create documents
                 //TODO: Flesh out Generate documents from stored procdure
-                //report.Documents.Add(new ReportDocument() { ReportLevel = ReportLevel.SCH, Version = 1 });
-                //_context.SaveChanges();
                 var version = 1;
                 string filename;
                 if (report.Submission.FileSpecification.IsSCH)
@@ -172,22 +171,6 @@ namespace AdenDemo.Web.Controllers.api
                 report.Submission.SubmissionState = SubmissionState.AssignedForSubmission;
             }
 
-            //TODO: Why do you need a reject work item action?
-            //if (workItem.WorkItemAction == WorkItemAction.Reject)
-            //{
-            //    wi.WorkItemAction = WorkItemAction.Generate;
-            //    report.ReportState = ReportState.AssignedForGeneration;
-            //    report.Submission.SubmissionState = SubmissionState.AssignedForGeneration;
-            //}
-
-            //TODO: Why do you need a submit with error work item action?
-            //if (workItem.WorkItemAction == WorkItemAction.SubmitWithError)
-            //{
-            //    wi.WorkItemAction = WorkItemAction.ReviewError;
-            //    report.ReportState = ReportState.CompleteWithError;
-            //    report.Submission.SubmissionState = SubmissionState.CompleteWithError;
-            //}
-
             if (workItem.WorkItemAction == WorkItemAction.ReviewError)
             {
                 wi.WorkItemAction = WorkItemAction.Generate;
@@ -210,8 +193,6 @@ namespace AdenDemo.Web.Controllers.api
 
             if (wi.WorkItemAction != 0) report.WorkItems.Add(wi);
 
-
-            //TODO: Send notifications 
             WorkEmailer.Send(wi, report.Submission);
 
             _context.SaveChanges();
@@ -255,8 +236,6 @@ namespace AdenDemo.Web.Controllers.api
             WorkEmailer.Send(wi, report.Submission);
 
             await _context.SaveChangesAsync();
-
-            //TODO Send notifications
 
             var dto = Mapper.Map<WorkItemViewDto>(wi);
             return Ok(dto);
