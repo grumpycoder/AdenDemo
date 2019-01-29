@@ -14,5 +14,9 @@
   {
     "outputFile": "src/scss/main.css",
     "inputFile": "src/scss/main.scss"
+  },
+  {
+    "outputFile": "src/scss/fontawesome/fontawesome.css",
+    "inputFile": "src/scss/fontawesome/fontawesome.scss"
   }
 ]

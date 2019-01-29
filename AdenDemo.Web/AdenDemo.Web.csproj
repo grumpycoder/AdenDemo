@@ -407,11 +407,11 @@
     <Content Include="css\icons\dxiconsmaterial.woff" />
     <Content Include="css\icons\dxiconsmaterial.woff2" />
     <Content Include="css\font-awesome.css.map" />
-    <Content Include="fonts\fontawesome-webfont.eot" />
-    <Content Include="fonts\fontawesome-webfont.ttf" />
-    <Content Include="fonts\fontawesome-webfont.woff" />
-    <Content Include="fonts\fontawesome-webfont.woff2" />
-    <Content Include="fonts\FontAwesome.otf" />
+    <None Include="fonts\fontawesome-webfont.eot" />
+    <None Include="fonts\fontawesome-webfont.ttf" />
+    <None Include="fonts\fontawesome-webfont.woff" />
+    <None Include="fonts\fontawesome-webfont.woff2" />
+    <None Include="fonts\FontAwesome.otf" />
     <None Include="bundleconfig.json" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
@@ -480,6 +480,12 @@
     <Content Include="src\scss\devextreme\override.min.css">
       <DependentUpon>override.css</DependentUpon>
     </Content>
+    <Content Include="src\scss\fontawesome\fontawesome.css">
+      <DependentUpon>fontawesome.scss</DependentUpon>
+    </Content>
+    <Content Include="src\scss\fontawesome\fontawesome.min.css">
+      <DependentUpon>fontawesome.css</DependentUpon>
+    </Content>
     <Content Include="src\scss\main.css">
       <DependentUpon>main.scss</DependentUpon>
     </Content>
@@ -522,6 +528,8 @@
     <Content Include="src\scss\main.scss" />
     <Content Include="src\scss\devextreme\override.scss" />
     <Content Include="Templates\WorkItemSubmissionTemplate.cshtml" />
+    <Content Include="src\scss\fontawesome\fontawesome.scss" />
+    <Content Include="src\scss\fontawesome\_variables.scss" />
     <None Include="Templates\WorkItemEmailTemplate.cshtml" />
     <Content Include="Templates\WorkItemCancelTemplate.cshtml" />
     <Content Include="Views\Shared\_NavBar.cshtml" />
@@ -533,10 +541,10 @@
     <Folder Include="js\vectormap-utils\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <None Include="fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="fonts\glyphicons-halflings-regular.woff" />
+    <None Include="fonts\glyphicons-halflings-regular.ttf" />
+    <None Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />

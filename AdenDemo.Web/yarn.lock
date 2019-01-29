@@ -81,7 +81,6 @@ bcrypt-pbkdf@^1.0.0:
 bootstrap-sass@3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/bootstrap-sass/-/bootstrap-sass-3.4.0.tgz#b1c330a56782347f626d31d497fa4aea16b3f99b"
-  integrity sha512-qdUyw4KmNNPSIdBadn+eyuuQFH0LsZlRCs6tor1zN8sQas7mnY5JNfemauraOdNPiFQd2gFeeo3gZjZZCuohZg==
 
 bootstrap3-dialog@1.35.4:
   version "1.35.4"
@@ -90,17 +89,14 @@ bootstrap3-dialog@1.35.4:
 bootstrap4-dialog@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/bootstrap4-dialog/-/bootstrap4-dialog-4.1.0.tgz#f99ad8c05b30836ab990fe6aaceeca0ecd6c497c"
-  integrity sha1-+ZrYwFswg2q5kP5qrO7KDs1sSXw=
 
 bootstrap@^4.2.1:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.2.1.tgz#8f8bdca024dbf0e8644da32e918c8a03a90a5757"
-  integrity sha512-tt/7vIv3Gm2mnd/WeDx36nfGGHleil0Wg8IeB7eMrVkY0fZ5iTaBisSh8oNANc2IBsCc6vCgCNTIM/IEN0+50Q==
 
 bootswatch@3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/bootswatch/-/bootswatch-3.4.0.tgz#712ecbda714fe365e7310a0e20f89829eaea0ffa"
-  integrity sha512-eCMWAa3/vYkT7bKDbffcgmbfy8keGSETMY0ECt+vAnKf2nKtgJUlr99x5OGFp3ZKW4hQrsSR9mPhNqFQRl4PXw==
 
 browser-process-hrtime@^0.1.2:
   version "0.1.3"
@@ -299,6 +295,10 @@ font-awesome@4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/font-awesome/-/font-awesome-4.7.0.tgz#8fa8cf0411a1a31afd07b06d2902bb9fc815a133"
 
+fontawesome@4.7.2:
+  version "4.7.2"
+  resolved "https://registry.yarnpkg.com/fontawesome/-/fontawesome-4.7.2.tgz#7f0c72ac7a6b029d3375bacb23522d9acfc50a52"
+
 forever-agent@~0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/forever-agent/-/forever-agent-0.6.1.tgz#fbc71f0c41adeb37f96c577ad1ed42d8fdacca91"
@@ -409,7 +409,6 @@ jquery-serializejson@2.9.0:
 jquery@3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
-  integrity sha512-Ubldcmxp5np52/ENotGxlLe6aGMvmF4R8S6tZjsP6Knsaxd/xp3Zrh50cG93lR6nPXyUFwzN3ZSOQI0wRJNdGg==
 
 jsbn@~0.1.0:
   version "0.1.1"
