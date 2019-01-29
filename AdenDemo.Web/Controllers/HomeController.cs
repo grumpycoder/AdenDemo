@@ -52,30 +52,11 @@ namespace AdenDemo.Web.Controllers
 
         public async Task<ActionResult> Review(int dataYear, string filenumber)
         {
-            //TODO: Move to mapping profile
             var dto = await _context.Reports
-                .Where(f => (f.Submission.FileSpecification.FileNumber == filenumber && f.Submission.DataYear == dataYear) || string.IsNullOrEmpty(filenumber))
-                .Select(m =>
-                    new ReportViewDto
-                    {
-                        Id = m.Id,
-                        FileName = m.Submission.FileSpecification.FileName,
-                        FileNumber = m.Submission.FileSpecification.FileNumber,
-                        DataYear = m.Submission.FileSpecification.DataYear,
-                        ReportState = m.ReportState,
-                        ApprovedDate = m.ApprovedDate,
-                        GeneratedDate = m.GeneratedDate,
-                        SubmittedDate = m.SubmittedDate,
-                        Documents = m.Documents.Select(d => new DocumentViewDto()
-                        {
-                            Id = d.Id,
-                            Filename = d.Filename,
-                            Version = d.Version,
-                            FileSize = d.FileSize,
-                        }).ToList()
-                    }
-                )
-                .ToListAsync();
+                .Where(f => (f.Submission.FileSpecification.FileNumber == filenumber &&
+                             f.Submission.DataYear == dataYear) || string.IsNullOrEmpty(filenumber))
+                .ProjectTo<ReportViewDto>().ToListAsync();
+            
             //TODO: Move to mapping profile
             foreach (ReportViewDto item in dto)
             {

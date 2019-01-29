@@ -187,6 +187,7 @@
     <Compile Include="Data\Configuration\WorkItemConfiguration.cs" />
     <Compile Include="Data\Configuration\WorkItemImageConfiguration.cs" />
     <Compile Include="Data\Profiles\FileSpecificationProfile.cs" />
+    <Compile Include="Data\Profiles\ReportProfile.cs" />
     <Compile Include="Data\Profiles\SubmissionProfile.cs" />
     <Compile Include="Data\Profiles\WorkItemProfile.cs" />
     <Compile Include="Global.asax.cs">
