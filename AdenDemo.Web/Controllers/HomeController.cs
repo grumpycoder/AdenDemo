@@ -23,7 +23,7 @@ namespace AdenDemo.Web.Controllers
             _context = new AdenContext();
         }
 
-        public ActionResult Index()
+        public ActionResult Submissions()
         {
             return View();
         }

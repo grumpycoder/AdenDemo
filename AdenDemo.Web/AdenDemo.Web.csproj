@@ -192,9 +192,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AppSettings.cs" />
+    <Compile Include="Helpers\AssemblyExtensions.cs" />
     <Compile Include="Helpers\DataTableHelper.cs" />
     <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="Helpers\FileExtensions.cs" />
+    <Compile Include="Helpers\HtmlHelper.cs" />
     <Compile Include="Helpers\ImageHelpers.cs" />
     <Compile Include="Helpers\StringExtensions.cs" />
     <Compile Include="Models\FileSpecification.cs" />
@@ -496,7 +499,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\Submissions.cshtml" />
     <Content Include="Views\Home\_SubmissionWaiverAuditEntry.cshtml" />
     <Content Include="Views\Home\Review.cshtml" />
     <Content Include="Views\Home\_SubmissionReOpenAuditEntry.cshtml" />
@@ -521,6 +524,7 @@
     <Content Include="Templates\WorkItemSubmissionTemplate.cshtml" />
     <None Include="Templates\WorkItemEmailTemplate.cshtml" />
     <Content Include="Templates\WorkItemCancelTemplate.cshtml" />
+    <Content Include="Views\Shared\_NavBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
