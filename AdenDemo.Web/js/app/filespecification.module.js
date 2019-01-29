@@ -105,7 +105,6 @@
                 }
             },
         ],
-       
         sortByGroupSummaryInfo: [
             {
                 summaryItem: "count"
@@ -148,8 +147,10 @@
                 {
                     location: "after",
                     widget: "dxButton",
+                  
                     options: {
                         icon: "refresh",
+                        hint: 'Refresh', 
                         onClick: function () {
                             dataGrid.refresh();
                         }
@@ -159,12 +160,25 @@
                     location: "after",
                     widget: "dxButton",
                     options: {
-                        icon: "fa fa-undo",
+                        icon: "clearformat",
+                        hint: 'Clear filters', 
+                        onClick: function () {
+                            dataGrid.clearFilter();
+                        }
+                    }
+                },
+                {
+                    location: "after",
+                    widget: "dxButton",
+                    options: {
+                        icon: "clearsquare",
+                        hint: 'Reset grid to default', 
                         onClick: function () {
                             dataGrid.state({});
                         }
                     }
                 },
+                
             );
         }
     }).dxDataGrid("instance");

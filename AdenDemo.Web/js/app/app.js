@@ -88,8 +88,10 @@
                 {
                     location: "after",
                     widget: "dxButton",
+                  
                     options: {
                         icon: "refresh",
+                        hint: 'Refresh', 
                         onClick: function () {
                             dataGrid.refresh();
                         }
@@ -159,8 +161,10 @@
                 {
                     location: "after",
                     widget: "dxButton",
+                  
                     options: {
                         icon: "refresh",
+                        hint: 'Refresh', 
                         onClick: function () {
                             dataGrid.refresh();
                         }
@@ -423,7 +427,6 @@
                 }
             },
         ],
-       
         sortByGroupSummaryInfo: [
             {
                 summaryItem: "count"
@@ -466,8 +469,10 @@
                 {
                     location: "after",
                     widget: "dxButton",
+                  
                     options: {
                         icon: "refresh",
+                        hint: 'Refresh', 
                         onClick: function () {
                             dataGrid.refresh();
                         }
@@ -477,12 +482,25 @@
                     location: "after",
                     widget: "dxButton",
                     options: {
-                        icon: "fa fa-undo",
+                        icon: "clearformat",
+                        hint: 'Clear filters', 
+                        onClick: function () {
+                            dataGrid.clearFilter();
+                        }
+                    }
+                },
+                {
+                    location: "after",
+                    widget: "dxButton",
+                    options: {
+                        icon: "clearsquare",
+                        hint: 'Reset grid to default', 
                         onClick: function () {
                             dataGrid.state({});
                         }
                     }
                 },
+                
             );
         }
     }).dxDataGrid("instance");
@@ -697,7 +715,7 @@ $(function () {
             {
                 dataField: 'isSEA', caption: 'SEA',
                 dataType: 'boolean',
-                visible: true,
+                visible: false,
                 showEditorAlways: false,
                 trueText: 'Yes',
                 falseText: 'No',
@@ -709,7 +727,7 @@ $(function () {
             },
             {
                 dataField: 'isLEA', caption: 'LEA', dataType: 'boolean',
-                visible: true,
+                visible: false,
                 showEditorAlways: false,
                 trueText: 'Yes',
                 falseText: 'No',
@@ -722,7 +740,7 @@ $(function () {
             {
                 dataField: 'isSCH', caption: 'SCH',
                 dataType: 'boolean',
-                visible: true,
+                visible: false,
                 showEditorAlways: false,
                 trueText: 'Yes',
                 falseText: 'No',
@@ -819,7 +837,6 @@ $(function () {
                     widget: "dxButton",
                     options: {
                         text: "Collapse All",
-                        
                         width: 136,
                         onClick: function (e) {
                             var expanding = e.component.option("text") === "Expand All";
@@ -834,7 +851,7 @@ $(function () {
                   
                     options: {
                         icon: "refresh",
-                        hint: 'Refresh Data', 
+                        hint: 'Refresh', 
                         onClick: function () {
                             dataGrid.refresh();
                         }
@@ -844,13 +861,25 @@ $(function () {
                     location: "after",
                     widget: "dxButton",
                     options: {
-                        icon: "fa fa-undo",
-                        hint: 'Reset Grid',
+                        icon: "clearformat",
+                        hint: 'Clear filters', 
+                        onClick: function () {
+                            dataGrid.clearFilter();
+                        }
+                    }
+                },
+                {
+                    location: "after",
+                    widget: "dxButton",
+                    options: {
+                        icon: "clearsquare",
+                        hint: 'Reset grid to default', 
                         onClick: function () {
                             dataGrid.state({});
                         }
                     }
                 },
+                
             );
         }
     }).dxDataGrid("instance");

@@ -89,8 +89,10 @@
                 {
                     location: "after",
                     widget: "dxButton",
+                  
                     options: {
                         icon: "refresh",
+                        hint: 'Refresh', 
                         onClick: function () {
                             dataGrid.refresh();
                         }
@@ -160,8 +162,10 @@
                 {
                     location: "after",
                     widget: "dxButton",
+                  
                     options: {
                         icon: "refresh",
+                        hint: 'Refresh', 
                         onClick: function () {
                             dataGrid.refresh();
                         }
