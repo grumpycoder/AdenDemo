@@ -56,16 +56,10 @@ body {
     font-size: 0.9em;
 }
 
-/*.blue-gradient {
-    background: -webkit-linear-gradient(rgb(75, 99, 151),rgb(86, 121, 198)) !important;
-    background: -o-linear-gradient(rgb(75, 99, 151),rgb(86, 121, 198)) !important;
-    background: linear-gradient(rgb(75, 99, 151),rgb(86, 121, 198)) !important;
-    color: #fff;
-}*/
-
 .blue-gradient {
     background-color: #4b6397;
     color: #fff;
+    padding: 5px;
 }
 
 header .lead {

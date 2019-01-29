@@ -536,11 +536,13 @@
     <Content Include="src\scss\main\_defaults.scss" />
     <Content Include="src\scss\main\_footer.scss" />
     <Content Include="src\scss\bootstrap\_variables.scss" />
+    <Content Include="src\scss\main\_statusbar.scss" />
     <None Include="Templates\WorkItemEmailTemplate.cshtml" />
     <Content Include="Templates\WorkItemCancelTemplate.cshtml" />
     <Content Include="Views\Shared\_NavBar.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
+    <Content Include="Views\Shared\_StatusHeader.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
