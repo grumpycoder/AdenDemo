@@ -34,7 +34,7 @@
                 cellTemplate: function (container, options) {
 
                     if (!options.data.canGenerate) {
-                        $('<a/>').addClass('btn btn-primary  btn-sm btn-grid')
+                        $('<a/>').addClass('btn btn-default  btn-sm btn-grid')
                             .text('Review File')
                             .attr('href', '/review/' + options.data.dataYear + '/' + options.data.fileNumber)
                             .attr('target', '_blank')

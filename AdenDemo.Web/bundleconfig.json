@@ -30,9 +30,13 @@
   {
     "outputFileName": "css/dx-bundle.css",
     "inputFiles": [
-      "css/dx.common.css",
-      "css/dx.light.css", 
+      "node_modules/devextreme/dist/css/dx.common.css",
+      "node_modules/devextreme/dist/css/dx.light.css",
       "src/scss/devextreme/override.css"
-    ]
+    ],
+    "minify": {
+      "enabled": true,
+      "adjustRelativePaths": false
+    }
   }
 ]

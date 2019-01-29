@@ -2,3 +2,8 @@
 .dx-button{
     border-radius: 0; 
 }
+
+/*Override b/c devextreme broken default export link*/
+.dx-datagrid-export-button .dx-icon-export-excel-button:before {
+    content: "\f05f";
+}
