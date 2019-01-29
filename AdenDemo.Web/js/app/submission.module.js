@@ -11,9 +11,41 @@
         remoteOperations: true,
         allowColumnResizing: true,
         showBorders: true,
+        wordWrapEnabled: true,
+        'export': {
+            enabled: true,
+            fileName: "Submissions",
+            allowExportSelectedData: false, 
+            icon: 'fa fa-trash'
+        },
+        stateStoring: {
+            enabled: true,
+            type: "localStorage",
+            storageKey: "gridSubmissionFilterStorage"
+        },
+        filterRow: {
+            visible: true
+        },
+        headerFilter: {
+            visible: true
+        },
+        groupPanel: {
+            visible: true
+        },
+        scrolling: {
+            mode: "virtual",
+            rowRenderingMode: "virtual",
+        },
+        paging: {
+            pageSize: 20
+        },
+        height: 650,
         columnResizingMode: "nextColumn",
         columnMinWidth: 50,
         columnAutoWidth: true,
+        columnChooser: {
+            enabled: true
+        },
         columns: [
             {
                 width: 50,
@@ -132,38 +164,6 @@
                 }
             },
         ],
-        wordWrapEnabled: true,
-        columnChooser: {
-            enabled: true
-        },
-        "export": {
-            enabled: true,
-            fileName: "Submissions",
-            allowExportSelectedData: false, 
-            icon: 'fa fa-trash'
-        },
-        stateStoring: {
-            enabled: true,
-            type: "localStorage",
-            storageKey: "gridSubmissionFilterStorage"
-        },
-        filterRow: {
-            visible: true
-        },
-        headerFilter: {
-            visible: true
-        },
-        groupPanel: {
-            visible: true
-        },
-        scrolling: {
-            mode: "virtual",
-            rowRenderingMode: "virtual",
-        },
-        paging: {
-            pageSize: 20
-        },
-        height: 650,
         sortByGroupSummaryInfo: [{
             summaryItem: "count"
         }],

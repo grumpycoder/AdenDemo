@@ -11,6 +11,38 @@
         remoteOperations: true,
         allowColumnResizing: true,
         showBorders: true,
+        wordWrapEnabled: true,
+        'export': {
+            enabled: true,
+            fileName: "FileSpecifications",
+            allowExportSelectedData: false, 
+            icon: 'fa fa-trash'
+        },
+        stateStoring: {
+            enabled: true,
+            type: "localStorage",
+            storageKey: "gridFileSpecificationFilterStorage"
+        },
+        filterRow: {
+            visible: true
+        },
+        headerFilter: {
+            visible: true
+        },
+        groupPanel: {
+            visible: true
+        },
+        scrolling: {
+            mode: "virtual",
+            rowRenderingMode: "virtual",
+        },
+        paging: {
+            pageSize: 20
+        },
+        height: 650,
+        columnChooser: {
+            enabled: true
+        },
         columnResizingMode: "nextColumn",
         columnMinWidth: 50,
         columnAutoWidth: true,
@@ -73,32 +105,7 @@
                 }
             },
         ],
-        wordWrapEnabled: true,
-        columnChooser: {
-            enabled: true
-        },
-        stateStoring: {
-            enabled: true,
-            type: "localStorage",
-            storageKey: "gridFileSpecificationFilterStorage"
-        },
-        filterRow: {
-            visible: true
-        },
-        headerFilter: {
-            visible: true
-        },
-        groupPanel: {
-            visible: true
-        },
-        scrolling: {
-            mode: "virtual",
-            rowRenderingMode: "virtual",
-        },
-        paging: {
-            pageSize: 20
-        },
-        height: 400,
+       
         sortByGroupSummaryInfo: [
             {
                 summaryItem: "count"
