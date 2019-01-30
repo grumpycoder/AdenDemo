@@ -72,7 +72,7 @@ else
             return item.firstname + ' ' + item.lastname + '(' + item.emailAddress + ')';
         },
         afterSelect: function (item) {
-            selectedUser = item.firstname + ' ' + item.lastname + ' (' + item.emailAddress + ')'; 
+            selectedUser = item.firstname + ' ' + item.lastname + ' (' + item.emailAddress + ') - requested'; 
             this.$element[0].value = item.emailAddress;
         },
         delay: 500,

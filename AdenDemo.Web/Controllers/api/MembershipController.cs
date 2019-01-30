@@ -1,6 +1,10 @@
 ﻿using AdenDemo.Web.Data;
+using AdenDemo.Web.Services;
+using Alsde.Extensions;
 using ALSDE.Services;
+using Humanizer;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.Http;
 
 namespace AdenDemo.Web.Controllers.api
@@ -27,35 +31,20 @@ namespace AdenDemo.Web.Controllers.api
         [HttpPut, Route("groupmembers")]
         public object AddGroupUser(UpdateGroupMemberDto model)
         {
-            //var client = new SmtpClient();
-            ////Regex.Replace(groupName.Humanize().ToTitleCase(), " App ", " ", RegexOptions.ExplicitCapture);
-            //var message = new MailMessage()
-            //{
-            //    Body = $"Please ADD user {model.Email} to group <br />{ Regex.Replace(model.GroupName.Humanize().ToTitleCase().TrimEnd('s'), " App ", " ", RegexOptions.ExplicitCapture) }",
-            //    To = { "helpdesk@alsde.edu" },
-            //    From = new MailAddress(User.Identity.Name),
-            //    IsBodyHtml = true
-            //};
-
-            //client.Send(message);
-
+            model.Action = "ADD";
+            model.GroupName = Regex.Replace(model.GroupName.Humanize().ToTitleCase().TrimEnd('s'), " App ", " ",
+                RegexOptions.ExplicitCapture);
+            WorkEmailer.SendRequest(model);
             return Ok($"Added {model.Email} to {model.GroupName}");
         }
 
         [HttpDelete, Route("groupmembers")]
         public object DeleteGroupMember(UpdateGroupMemberDto model)
         {
-
-            //var client = new SmtpClient();
-            //var message = new MailMessage()
-            //{
-            //    Body = $"Please REMOVE user {model.Email} from group <br />{ Regex.Replace(model.GroupName.Humanize().ToTitleCase().TrimEnd('s'), " App ", " ", RegexOptions.ExplicitCapture) }",
-            //    To = { "helpdesk@alsde.edu" },
-            //    From = new MailAddress(User.Identity.Name),
-            //    IsBodyHtml = true
-            //};
-
-            //client.Send(message);
+            model.Action = "DELETE";
+            model.GroupName = Regex.Replace(model.GroupName.Humanize().ToTitleCase().TrimEnd('s'), " App ", " ",
+                RegexOptions.ExplicitCapture);
+            WorkEmailer.SendRequest(model);
 
             return Ok($"Deleted {model.Email} to {model.GroupName}");
         }
@@ -65,6 +54,8 @@ namespace AdenDemo.Web.Controllers.api
     {
         public string GroupName { get; set; }
         public string Email { get; set; }
+
+        public string Action { get; set; }
     }
 
     public class UserModel

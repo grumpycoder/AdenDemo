@@ -1,8 +1,12 @@
-﻿using AdenDemo.Web.Helpers;
+﻿using AdenDemo.Web.Controllers.api;
+using AdenDemo.Web.Helpers;
 using AdenDemo.Web.Models;
+using Alsde.Extensions;
 using FluentEmail;
+using Humanizer;
 using System;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 using System.Web;
 
 namespace AdenDemo.Web.Services
@@ -73,6 +77,30 @@ namespace AdenDemo.Web.Services
 
         }
 
+        public static void SendRequest(UpdateGroupMemberDto model)
+        {
+            Email.DefaultRenderer = new RazorRenderer();
+
+            var sender = Constants.ReplyAddress;
+            var templatePath = Constants.UserRequestTemplatePath;
+            var subject = "Add Aden Group members";
+            var body =
+                $"Please ADD user {model.Email} to group <br />{Regex.Replace(model.GroupName.Humanize().ToTitleCase().TrimEnd('s'), " App ", " ", RegexOptions.ExplicitCapture)}";
+
+            var email = Email
+                .From(sender, sender)
+                .To("helpdesk@alsde.edu")
+                .Subject(subject)
+                .BodyAsHtml()
+                .Body("")
+                //.UsingTemplateEngine(new RazorRenderer())
+                .UsingTemplateFromFile(templatePath, model)
+            //.Send();
+            ;
+
+
+            email.Send();
+        }
     }
 
     public class EmailModel
@@ -83,5 +111,7 @@ namespace AdenDemo.Web.Services
         public string FileName { get; set; }
         public string Icon { get; set; }
     }
+
+
 
 }

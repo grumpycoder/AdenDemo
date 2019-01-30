@@ -34,6 +34,7 @@ namespace AdenDemo.Web
         public const string WorkItemTemplatePath = @"D:\source\AdenDemo\AdenDemo.Web\Templates\WorkItemEmailTemplate.cshtml";
         public const string SubmissionTemplatePath = @"D:\source\AdenDemo\AdenDemo.Web\Templates\WorkItemSubmissionTemplate.cshtml";
         public const string CancelTemplatePath = @"D:\source\AdenDemo\AdenDemo.Web\Templates\WorkItemCancelTemplate.cshtml";
+        public const string UserRequestTemplatePath = @"D:\source\AdenDemo\AdenDemo.Web\Templates\UserRequestEmailTemplate.cshtml";
 
     }
 }
