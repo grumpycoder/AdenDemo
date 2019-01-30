@@ -2,10 +2,13 @@
 using AdenDemo.Web.Models;
 using AdenDemo.Web.Services;
 using AdenDemo.Web.ViewModels;
+using ALSDE.Services;
 using AutoMapper.QueryableExtensions;
+using CSharpFunctionalExtensions;
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Claims;
@@ -19,11 +22,13 @@ namespace AdenDemo.Web.Controllers.api
     public class SubmissionController : ApiController
     {
         private AdenContext _context;
+        private MembershipService _membershipService;
         private string _currentUserFullName;
 
         public SubmissionController()
         {
             _context = new AdenContext();
+            var _membershipService = new MembershipService(_context);
             _currentUserFullName = ((ClaimsIdentity)HttpContext.Current.User.Identity).Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
         }
 
@@ -72,12 +77,12 @@ namespace AdenDemo.Web.Controllers.api
             if (string.IsNullOrWhiteSpace(submission.FileSpecification.GenerationUserGroup))
                 return BadRequest($"No generation group defined for File { submission.FileSpecification.FileNumber }");
 
-            //TODO: Get next assignee
-            var assignee = "mark@mail.com";
+
+            var assignedUser = _membershipService.GetAssignee(submission.FileSpecification.GenerationUserGroup);
 
             //Change state
             submission.SubmissionState = SubmissionState.AssignedForGeneration;
-            submission.CurrentAssignee = assignee;
+            submission.CurrentAssignee = assignedUser;
             submission.LastUpdated = DateTime.Now;
 
             //Create report
@@ -90,7 +95,7 @@ namespace AdenDemo.Web.Controllers.api
                 WorkItemAction = WorkItemAction.Generate,
                 WorkItemState = WorkItemState.NotStarted,
                 AssignedDate = DateTime.Now,
-                AssignedUser = assignee
+                AssignedUser = assignedUser
             };
             report.WorkItems.Add(workItem);
 
@@ -160,12 +165,11 @@ namespace AdenDemo.Web.Controllers.api
             var audit = new SubmissionAudit(submission.Id, message);
             submission.SubmissionAudits.Add(audit);
 
-            //TODO: Get next assignee
-            var assignee = "mark@mail.com";
+            var assignedUser = _membershipService.GetAssignee(submission.FileSpecification.GenerationUserGroup);
 
             //Change state
             submission.SubmissionState = SubmissionState.AssignedForGeneration;
-            submission.CurrentAssignee = assignee;
+            submission.CurrentAssignee = assignedUser;
             submission.LastUpdated = DateTime.Now;
             submission.NextDueDate = model.NextSubmissionDate;
 
@@ -178,7 +182,7 @@ namespace AdenDemo.Web.Controllers.api
             {
                 WorkItemAction = WorkItemAction.Generate,
                 WorkItemState = WorkItemState.NotStarted,
-                AssignedUser = assignee
+                AssignedUser = assignedUser
             };
             report.WorkItems.Add(workItem);
 
@@ -189,7 +193,6 @@ namespace AdenDemo.Web.Controllers.api
             return Ok("Successfully repopened");
 
         }
-
-
+        
     }
 }

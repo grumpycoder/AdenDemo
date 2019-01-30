@@ -5,6 +5,7 @@ using AdenDemo.Web.Services;
 using AdenDemo.Web.ViewModels;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using CSharpFunctionalExtensions;
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
 using System;
@@ -24,11 +25,13 @@ namespace AdenDemo.Web.Controllers.api
     public class WorkItemController : ApiController
     {
         private AdenContext _context;
+        private MembershipService _membershipService;
         private string _currentUserFullName;
 
         public WorkItemController()
         {
             _context = new AdenContext();
+            var _membershipService = new MembershipService(_context);
             _currentUserFullName = ((ClaimsIdentity)HttpContext.Current.User.Identity).Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
         }
@@ -154,6 +157,7 @@ namespace AdenDemo.Web.Controllers.api
             //Start new work item
             var wi = new WorkItem() { WorkItemState = WorkItemState.NotStarted, AssignedDate = DateTime.Now };
             report.Submission.LastUpdated = DateTime.Now;
+            var nextGroupName = report.Submission.FileSpecification.GenerationUserGroup;
 
             if (workItem.WorkItemAction == WorkItemAction.Generate)
             {
@@ -165,8 +169,10 @@ namespace AdenDemo.Web.Controllers.api
             if (workItem.WorkItemAction == WorkItemAction.Review)
             {
                 wi.WorkItemAction = WorkItemAction.Approve;
+                wi.AssignedUser = workItem.AssignedUser;
                 report.ReportState = ReportState.AwaitingApproval;
                 report.Submission.SubmissionState = SubmissionState.AwaitingApproval;
+                nextGroupName = report.Submission.FileSpecification.ApprovalUserGroup;
             }
 
             if (workItem.WorkItemAction == WorkItemAction.Approve)
@@ -174,6 +180,7 @@ namespace AdenDemo.Web.Controllers.api
                 wi.WorkItemAction = WorkItemAction.Submit;
                 report.ReportState = ReportState.AssignedForSubmission;
                 report.Submission.SubmissionState = SubmissionState.AssignedForSubmission;
+                nextGroupName = report.Submission.FileSpecification.SubmissionUserGroup;
             }
 
             if (workItem.WorkItemAction == WorkItemAction.ReviewError)
@@ -181,6 +188,7 @@ namespace AdenDemo.Web.Controllers.api
                 wi.WorkItemAction = WorkItemAction.Generate;
                 report.ReportState = ReportState.AssignedForGeneration;
                 report.Submission.SubmissionState = SubmissionState.AssignedForGeneration;
+                nextGroupName = report.Submission.FileSpecification.GenerationUserGroup;
             }
 
             if (workItem.WorkItemAction == WorkItemAction.Submit)
@@ -190,8 +198,7 @@ namespace AdenDemo.Web.Controllers.api
             }
 
 
-            //TODO: Get workitem assignee
-            var assignedUser = "mark@mail.com";
+            var assignedUser = _membershipService.GetAssignee(nextGroupName);
 
             wi.AssignedUser = assignedUser;
             report.Submission.CurrentAssignee = assignedUser;
@@ -220,8 +227,7 @@ namespace AdenDemo.Web.Controllers.api
             workItem.CompletedDate = DateTime.Now;
 
             //Start new work item
-            //TODO: Get workitem assignee
-            var assignedUser = "mark@mail.com";
+            var assignedUser = _membershipService.GetAssignee(report.Submission.FileSpecification.GenerationUserGroup);
 
             var wi = new WorkItem()
             {
@@ -278,6 +284,8 @@ namespace AdenDemo.Web.Controllers.api
             return file;
 
         }
+
+
 
     }
 }
