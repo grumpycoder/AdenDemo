@@ -13,21 +13,23 @@
 else
 {
     <div class="row">
-        <form role="form" id="groupForm" name="groupForm">
-            <input type="hidden" name="groupName" id="groupName" value="@ViewBag.GroupName" />
 
-            <div class="col-md-12">
-                <div class="form-group">
+            <form role="form" id="groupForm" name="groupForm">
+                <input type="hidden" name="groupName" id="groupName" value="@ViewBag.GroupName" />
+
+                <div class="col-md-12">
+                    <div class="form-group">
 
 
-                    <label class="control-label">
-                        Add member
-                        <input type="text" id="email" name="email" class="form-control typeahead" data-provide="typeahead" autocomplete="off">
-                    </label>
-                    <button class="btn btn-default" id="btnAddGroupMember" disabled="disabled" aria-disabled="True">Add</button>
+                        <label class="control-label">
+                            Add member
+                            <input type="text" id="email" name="email" class="form-control typeahead" data-provide="typeahead" autocomplete="off">
+                        </label>
+                        <button class="btn btn-default" id="btnAddGroupMember" disabled="disabled" aria-disabled="True">Add</button>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+
     </div>
 
     <div class="row">
@@ -72,7 +74,7 @@ else
             return item.firstname + ' ' + item.lastname + ' (' + item.emailAddress + ')';
         },
         afterSelect: function (item) {
-            selectedUser = item.firstname + ' ' + item.lastname + ' (' + item.emailAddress + ') - requested'; 
+            selectedUser = item.firstname + ' ' + item.lastname + ' (' + item.emailAddress + ') - requested';
             this.$element[0].value = item.emailAddress;
         },
         delay: 500,
@@ -90,7 +92,7 @@ else
     $('#btnAddGroupMember').on('click',
         function (e) {
             e.preventDefault();
-            
+
             var url = '/api/membership/groupmembers/';
             $.ajax({
                 type: "PUT",
@@ -134,7 +136,7 @@ else
                     console.log('Request has been sent to HelpDesk. Check back in 24 hours. ');
                     $btn.parent().remove();
                     if ($btn.parent().parent().children().length === 0) {
-                        $('.list-group').append("<li class='list-group-item'>No Members</li>"); 
+                        $('.list-group').append("<li class='list-group-item'>No Members</li>");
                     }
                 },
                 error: function (err) {

@@ -5,6 +5,7 @@ using AdenDemo.Web.Models;
 using AdenDemo.Web.Services;
 using AdenDemo.Web.ViewModels;
 using Alsde.Extensions;
+using ALSDE.Idem;
 using ALSDE.Idem.Web.UI.AimBanner;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -131,9 +132,8 @@ namespace AdenDemo.Web.Controllers
 
             var applications = IdemApplications.Applications.ConvertAll(a => new SelectListItem() { Text = a.Title, Value = a.Title });
 
-            //TODO: Get member group count
-            ViewBag.GenerationGroupMemberCount = 3;
-            ViewBag.ApprovalGroupMemberCount = 2;
+            ViewBag.GenerationGroupMemberCount = GroupHelper.GetGroupMembers(model?.GenerationUserGroup)?.Count ?? 0;
+            ViewBag.ApprovalGroupMemberCount = GroupHelper.GetGroupMembers(model?.ApprovalUserGroup)?.Count ?? 0;
 
             ViewBag.Applications = applications;
             ViewBag.DataGroups = dataGroups;
