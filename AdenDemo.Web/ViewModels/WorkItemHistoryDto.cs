@@ -1,6 +1,9 @@
 ﻿using AdenDemo.Web.Helpers;
 using AdenDemo.Web.Models;
 using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Web;
 
 namespace AdenDemo.Web.ViewModels
 {
@@ -16,8 +19,14 @@ namespace AdenDemo.Web.ViewModels
         public WorkItemState WorkItemState { get; set; }
         public string Description { get; set; }
 
-        public bool CanReassign { get; set; }
+        public bool CanReassign
+        {
+            get
+            {
+                return ((HttpContext.Current.User as ClaimsPrincipal).Claims.Any(c => c.Value == Constants.GlobalAdministrators)) && (WorkItemState == WorkItemState.NotStarted || WorkItemState == WorkItemState.Reassigned);
+            }
+        }
 
-        public bool CanReviewError => Action == WorkItemAction.ReviewError; 
+        public bool CanReviewError => Action == WorkItemAction.ReviewError;
     }
 }

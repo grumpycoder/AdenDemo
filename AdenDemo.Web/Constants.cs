@@ -21,6 +21,7 @@ namespace AdenDemo.Web
 
 
         public static int CommandTimeout => AppSettings.Get<int>("CommandTimeout");
+        public static string GlobalAdministrators => AppSettings.Get<string>("GlobalAdministratorsGroupName");
 
 
         //Email variables

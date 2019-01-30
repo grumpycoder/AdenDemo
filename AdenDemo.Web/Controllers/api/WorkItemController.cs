@@ -69,12 +69,6 @@ namespace AdenDemo.Web.Controllers.api
             var dto = await _context.WorkItems.Where(w => w.ReportId == id)
                             .ProjectTo<WorkItemHistoryDto>().ToListAsync();
 
-            //TODO: Set GlobalAdmin variable
-            var IsAdmin = true;
-            foreach (var item in dto)
-            {
-                if ((item.WorkItemState == WorkItemState.NotStarted || item.WorkItemState == WorkItemState.Reassigned) && IsAdmin) item.CanReassign = true;
-            }
             return Ok(DataSourceLoader.Load(dto.OrderByDescending(x => x.Id), loadOptions));
         }
 
