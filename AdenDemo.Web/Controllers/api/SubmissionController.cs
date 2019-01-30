@@ -8,7 +8,9 @@ using DevExtreme.AspNet.Mvc;
 using System;
 using System.Data.Entity;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 namespace AdenDemo.Web.Controllers.api
@@ -17,9 +19,12 @@ namespace AdenDemo.Web.Controllers.api
     public class SubmissionController : ApiController
     {
         private AdenContext _context;
+        private string _currentUserFullName;
+
         public SubmissionController()
         {
             _context = new AdenContext();
+            _currentUserFullName = ((ClaimsIdentity)HttpContext.Current.User.Identity).Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
         }
 
         [HttpGet]
@@ -48,8 +53,7 @@ namespace AdenDemo.Web.Controllers.api
             submission.Reports.Add(report);
 
             //Create Audit record
-            var user = "mark@mail.com";
-            var message = $"Waived by {user}: {model.Message}";
+            var message = $"{_currentUserFullName} waived submission: {model.Message}";
             var audit = new SubmissionAudit(submission.Id, message);
             submission.SubmissionAudits.Add(audit);
 
@@ -114,8 +118,7 @@ namespace AdenDemo.Web.Controllers.api
             submission.CurrentAssignee = string.Empty;
 
             //Create Audit record
-            var user = "mark@mail.com";
-            var message = $"Cancelled by {user}";
+            var message = $"{_currentUserFullName} cancelled submission";
             var audit = new SubmissionAudit(submission.Id, message);
             submission.SubmissionAudits.Add(audit);
 
@@ -153,8 +156,7 @@ namespace AdenDemo.Web.Controllers.api
                 return BadRequest($"No generation group defined for File { submission.FileSpecification.FileNumber }");
 
             //Create Audit record
-            var user = "mark@mail.com";
-            var message = $"ReOpened by { user}: { model.Message }";
+            var message = $"{_currentUserFullName} reopened submission: { model.Message }";
             var audit = new SubmissionAudit(submission.Id, message);
             submission.SubmissionAudits.Add(audit);
 

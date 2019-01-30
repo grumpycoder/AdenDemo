@@ -12,8 +12,10 @@ using System.Data;
 using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 namespace AdenDemo.Web.Controllers.api
@@ -22,9 +24,13 @@ namespace AdenDemo.Web.Controllers.api
     public class WorkItemController : ApiController
     {
         private AdenContext _context;
+        private string _currentUserFullName; 
+
         public WorkItemController()
         {
             _context = new AdenContext();
+            _currentUserFullName = ((ClaimsIdentity)HttpContext.Current.User.Identity).Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+
         }
 
         [HttpGet, Route("{username}")]
@@ -80,9 +86,7 @@ namespace AdenDemo.Web.Controllers.api
 
 
             //Create Audit record
-            //TODO: Get current user
-            var user = "mark@mail.com";
-            var message = $"Reassigned from {workItem.AssignedUser} to {model.AssignedUser} by {user}: {model.Reason}";
+            var message = $"{_currentUserFullName} reassigned from {workItem.AssignedUser} to {model.AssignedUser}: {model.Reason}";
             var audit = new SubmissionAudit(submission.Id, message);
             submission.SubmissionAudits.Add(audit);
 
