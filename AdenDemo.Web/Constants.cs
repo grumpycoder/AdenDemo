@@ -10,6 +10,7 @@ namespace AdenDemo.Web
         public static string Environment => AppSettings.Get<string>("ASPNET_ENV");
         public static string AimApplicationViewKey => AppSettings.Get<string>("ALSDE_AIM_ApplicationViewKey");
         public static string WebServiceUrl => AppSettings.Get<string>("WebServiceUrl");
+        public static string AimUrl => AppSettings.Get<string>("AimUrl");
 
         public static string LogoutUrl = AppSettings.Get<string>("LogoutUrl");
 

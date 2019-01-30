@@ -21,7 +21,7 @@ namespace AdenDemo.Web.Helpers
             if (!identity.IsAuthenticated)
             {
                 //TODO: Create return to aim link
-                sb.AppendFormat("<li><a href='{0}aim/ApplicationInventory.aspx'><i class='fa fa-home'></i> My Applications</a></li>", Constants.AimBaseUrl);
+                sb.AppendFormat("<li><a href='{0}/ApplicationInventory.aspx'><i class='fa fa-home'></i> My Applications</a></li>", Constants.AimBaseUrl);
                 sb.Append("</ul>");
                 return MvcHtmlString.Create(sb.ToString());
             }
@@ -34,18 +34,18 @@ namespace AdenDemo.Web.Helpers
 
             sb.Append("<ul class='dropdown-menu'>");
 
-            sb.AppendFormat("<li><a href='{0}aim/ApplicationInventory.aspx'><i class='fa fa-home'></i> My Applications</a></li>", Constants.AimBaseUrl);
-            sb.AppendFormat("<li><a href='{0}aim/UserProfile.aspx'><i class='fa fa-book'></i> User Profile</a></li>", Constants.AimBaseUrl);
-            sb.AppendFormat("<li><a href='{0}aim/EdDirPositions.aspx'><i class='fa fa-university'></i> EdDir Positions</a></li>", Constants.AimBaseUrl);
+            sb.AppendFormat("<li><a href='{0}/ApplicationInventory.aspx'><i class='fa fa-home'></i> My Applications</a></li>", Constants.AimUrl);
+            sb.AppendFormat("<li><a href='{0}/UserProfile.aspx'><i class='fa fa-book'></i> User Profile</a></li>", Constants.AimUrl);
+            sb.AppendFormat("<li><a href='{0}/EdDirPositions.aspx'><i class='fa fa-university'></i> EdDir Positions</a></li>", Constants.AimUrl);
             sb.Append("<li role='separator' class='divider'></li>");
 
 
             //if (identity.HasClaim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", appUserGroup))
             //{
             sb.Append("<li class='dropdown-header'>AIM Groups and Users</li>");
-            sb.AppendFormat("<li><a href='{0}aim/admin/RolesAndUsers.aspx'><i class='fa fa-group'></i> Groups and Users</a></li>", Constants.AimBaseUrl);
-            sb.AppendFormat("<li><a href='{0}aim/admin/UserMaintenance.aspx'><i class='fa fa-user'></i> User Maintenance</a></li>", Constants.AimBaseUrl);
-            sb.AppendFormat("<li><a href='{0}aim/alsde/AppMembership.aspx'><i class='fa fa-heartbeat'></i> App Members</a></li>", Constants.AimBaseUrl);
+            sb.AppendFormat("<li><a href='{0}/admin/RolesAndUsers.aspx'><i class='fa fa-group'></i> Groups and Users</a></li>", Constants.AimUrl);
+            sb.AppendFormat("<li><a href='{0}/admin/UserMaintenance.aspx'><i class='fa fa-user'></i> User Maintenance</a></li>", Constants.AimUrl);
+            sb.AppendFormat("<li><a href='{0}/alsde/AppMembership.aspx'><i class='fa fa-heartbeat'></i> App Members</a></li>", Constants.AimUrl);
             sb.Append("<li role='separator' class='divider'></li>");
             //}
 
