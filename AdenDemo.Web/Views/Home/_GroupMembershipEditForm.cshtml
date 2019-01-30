@@ -13,7 +13,7 @@
 else
 {
     <div class="row">
-        <form role="form" id="groupForm">
+        <form role="form" id="groupForm" name="groupForm">
             <input type="hidden" name="groupName" id="groupName" value="@ViewBag.GroupName" />
 
             <div class="col-md-12">
@@ -31,7 +31,7 @@ else
     </div>
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <form id="memberForm" role="form">
                 <input type="hidden" name="groupName" value="@ViewBag.GroupName" />
                 <input type="hidden" name="email" id="email" />
@@ -39,7 +39,7 @@ else
             <label class="control-label">
                 Current Members
             </label>
-            <ul class="list-group">
+            <ul class="list-group" id="memberlist">
                 @if (Enumerable.Count(ViewBag.Members) == 0)
                 {
                     <li class="list-group-item">Group contains no members</li>
@@ -56,7 +56,9 @@ else
 }
 
 <script>
-        
+
+    var selectedUser = '';
+
     $('input.typeahead').typeahead({
         source: function(query, response) {
             return $.get('/api/membership/users/?username=' + query,
@@ -70,6 +72,7 @@ else
             return item.firstname + ' ' + item.lastname + '(' + item.emailAddress + ')';
         },
         afterSelect: function (item) {
+            selectedUser = item.firstname + ' ' + item.lastname + ' (' + item.emailAddress + ')'; 
             this.$element[0].value = item.emailAddress;
         },
         delay: 500,
@@ -82,5 +85,66 @@ else
             $('#btnAddGroupMember').prop('disabled', false);
         }
     });
+
+
+    $('#btnAddGroupMember').on('click',
+        function (e) {
+            e.preventDefault();
+            
+            var url = '/api/membership/groupmembers/';
+            $.ajax({
+                type: "PUT",
+                url: url,
+                data: $('#groupForm').serialize(),
+                success: function (data) {
+                    console.log('success', data);
+                    //TODO: Toast success message
+                    $('.list-group').append("<li class='list-group-item'><span>" + selectedUser + "</span></li>");
+                    $('input.typeahead').val('');
+                    $('#btnAddGroupMember').prop('disabled', true);
+                    console.log('Request has been sent to HelpDesk. Check back in 24 hours. ');
+                },
+                error: function (err) {
+                    //TODO: Toast error message
+                    console.log('error', err);
+                }
+            }).always(function () {
+
+            });
+
+        });
+
+    $('#btnRemoveGroupMember').on('click',
+        function (e) {
+            e.preventDefault();
+            console.log('click', e);
+            var $btn = $(this);
+
+            var url = '/api/membership/groupmembers/';
+            var email = $btn.data('email');
+            $('#memberForm #email').val(email);
+
+            $.ajax({
+                type: "DELETE",
+                url: url,
+                data: $('#memberForm').serialize(),
+                processData: false,
+                success: function (data) {
+                    //TODO: Toast success message
+                    console.log('Request has been sent to HelpDesk. Check back in 24 hours. ');
+                    $btn.parent().remove();
+                    if ($btn.parent().parent().children().length === 0) {
+                        $('.list-group').append("<li class='list-group-item'>No Members</li>"); 
+                    }
+                },
+                error: function (err) {
+                    console.log('error', err);
+                    //TODO: Toast error message
+                }
+            }).always(function () {
+
+            });
+
+        });
 
 </script>
