@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Web;
@@ -11,23 +12,24 @@ namespace AdenDemo.Web.Helpers
         public static IHtmlString UserNavBarMenuList(this HtmlHelper htmlHelper, string position, string appUserGroup, string appAdminGroup)
         {
             var identity = ((ClaimsIdentity)HttpContext.Current.User.Identity);
+            var fullName = ((ClaimsIdentity)HttpContext.Current.User.Identity).Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
             var sb = new StringBuilder();
             var cssClass = GetCssClass();
 
             sb.AppendFormat("<ul class='nav navbar-nav pull-{0} {1}'>", position, cssClass);
 
-            //if (!identity.IsAuthenticated)
-            //{
-            //    //TODO: Create return to aim link
-            //    sb.AppendFormat("<li><a href='{0}aim/ApplicationInventory.aspx'><i class='fa fa-home'></i> My Applications</a></li>", Constants.AimBaseUrl);
-            //    sb.Append("</ul>");
-            //    return MvcHtmlString.Create(sb.ToString());
-            //}
+            if (!identity.IsAuthenticated)
+            {
+                //TODO: Create return to aim link
+                sb.AppendFormat("<li><a href='{0}aim/ApplicationInventory.aspx'><i class='fa fa-home'></i> My Applications</a></li>", Constants.AimBaseUrl);
+                sb.Append("</ul>");
+                return MvcHtmlString.Create(sb.ToString());
+            }
 
             sb.Append(@"<li class='dropdown'>");
             sb.AppendFormat(
                 @"<a href='#' class='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'><i class='fa fa-user'></i>&nbsp;{0}<span class='caret'></span></a>",
-                identity.Name ?? "Unknown");
+                fullName ?? "Unknown");
 
 
             sb.Append("<ul class='dropdown-menu'>");

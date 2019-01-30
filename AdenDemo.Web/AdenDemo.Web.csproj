@@ -57,8 +57,8 @@
     <Reference Include="ALSDE.IdemLib, Version=2018.9.28.6846, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ALSDE.IdemLib.2018.9.0\lib\net40\ALSDE.IdemLib.dll</HintPath>
     </Reference>
-    <Reference Include="Alsde.Security, Version=2018.10.17.6865, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Alsde.Security.2018.10.0\lib\net451\Alsde.Security.dll</HintPath>
+    <Reference Include="Alsde.Security, Version=2019.1.30.6969, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Alsde.Security.2019.1.0-beta-01\lib\net451\Alsde.Security.dll</HintPath>
     </Reference>
     <Reference Include="Alsde.Services, Version=2018.10.17.6688, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Services.2018.10.0\lib\net451\Alsde.Services.dll</HintPath>
