@@ -4,6 +4,7 @@ using AdenDemo.Web.Helpers;
 using AdenDemo.Web.Models;
 using AdenDemo.Web.Services;
 using AdenDemo.Web.ViewModels;
+using ALSDE.Idem.Web.UI.AimBanner;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using System;
@@ -127,13 +128,7 @@ namespace AdenDemo.Web.Controllers
                 new SelectListItem(){ Value = "Schedules", Text = "Schedules"}
             };
 
-            //TODO: Get application from IDEM
-            var applications = new List<SelectListItem>()
-            {
-                new SelectListItem(){ Value = "Application1", Text = "Application 1"},
-                new SelectListItem(){ Value = "Application2", Text = "Application 2"},
-                new SelectListItem(){ Value = "Application3", Text = "Application 3"}
-            };
+            var applications = IdemApplications.Applications.ConvertAll(a => new SelectListItem() { Text = a.Title, Value = a.Title });
 
             //TODO: Get member group count
             ViewBag.GenerationGroupMemberCount = 3;

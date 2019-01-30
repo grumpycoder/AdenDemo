@@ -45,11 +45,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ALSDE.Core.4, Version=2018.5.21.6716, Culture=neutral, PublicKeyToken=9c039b0383290564, processorArchitecture=MSIL">
+      <HintPath>..\packages\ALSDE.Core.4.2018.5.21.6716\lib\net40\ALSDE.Core.4.dll</HintPath>
+    </Reference>
     <Reference Include="Alsde.Entity, Version=2018.4.9.25674, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Entity.2018.4.3\lib\net451\Alsde.Entity.dll</HintPath>
     </Reference>
     <Reference Include="Alsde.Extensions, Version=2018.5.22.6717, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Extensions.2018.5.22.6717\lib\net451\Alsde.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="ALSDE.IdemLib, Version=2018.9.28.6846, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ALSDE.IdemLib.2018.9.0\lib\net40\ALSDE.IdemLib.dll</HintPath>
     </Reference>
     <Reference Include="Alsde.Security, Version=2018.10.17.6865, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Security.2018.10.0\lib\net451\Alsde.Security.dll</HintPath>
@@ -114,6 +120,12 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=3.2.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.3.2.0.0\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog.Extended, Version=3.2.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.Extended.3.2.0.0\lib\net45-full\NLog.Extended.dll</HintPath>
     </Reference>
     <Reference Include="Nortal.Utilities.Csv, Version=0.9.2.0, Culture=neutral, PublicKeyToken=3a479c26195e6b17, processorArchitecture=MSIL">
       <HintPath>..\packages\Nortal.Utilities.Csv.0.9.2\lib\net35\Nortal.Utilities.Csv.dll</HintPath>
@@ -444,6 +456,10 @@
     <Content Include="src\scss\bootstrap\bootstrap_ext\_button.scss" />
     <Content Include="src\scss\vendor.scss" />
     <Content Include="src\scss\bootstrap-dialog\bootstrap-dialog.less" />
+    <Content Include="NLog.config" />
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="src\scss\bootstrap-dialog\_pre_default.less" />
     <Content Include="src\scss\main\main.scss" />
