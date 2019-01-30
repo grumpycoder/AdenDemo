@@ -123,6 +123,8 @@
                                     data: model = formData
                                 }).done(function (data) {
                                     //window.$log.success('Reassigned task');
+                                    $gridAudit.refresh();
+                                    $historyGrid.refresh();
                                 }).fail(function (err) {
                                     //window.$log.error('Failed to reassign task. ' + error);
                                 }).always(function () {

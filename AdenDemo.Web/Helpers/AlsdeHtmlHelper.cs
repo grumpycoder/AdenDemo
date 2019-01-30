@@ -20,7 +20,6 @@ namespace AdenDemo.Web.Helpers
 
             if (!identity.IsAuthenticated)
             {
-                //TODO: Create return to aim link
                 sb.AppendFormat("<li><a href='{0}/ApplicationInventory.aspx'><i class='fa fa-home'></i> My Applications</a></li>", Constants.AimBaseUrl);
                 sb.Append("</ul>");
                 return MvcHtmlString.Create(sb.ToString());

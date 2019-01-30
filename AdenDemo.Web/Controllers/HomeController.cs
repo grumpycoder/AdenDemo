@@ -44,9 +44,6 @@ namespace AdenDemo.Web.Controllers
 
         public ActionResult History(int id)
         {
-            //TODO: Set SectionAction variable or verify needed
-            ViewBag.IsSectionAdmin = true;
-
             //TODO: Refactor using ViewBag for CurrentReport
             var dto = _context.Submissions.FirstOrDefault(x => x.Id == id);
             ViewBag.CurrentReportId = dto.CurrentReportId;

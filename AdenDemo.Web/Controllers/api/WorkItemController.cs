@@ -24,7 +24,7 @@ namespace AdenDemo.Web.Controllers.api
     public class WorkItemController : ApiController
     {
         private AdenContext _context;
-        private string _currentUserFullName; 
+        private string _currentUserFullName;
 
         public WorkItemController()
         {
@@ -78,7 +78,9 @@ namespace AdenDemo.Web.Controllers.api
             var workItem = await _context.WorkItems.Include(r => r.Report).FirstOrDefaultAsync(x => x.Id == model.WorkItemId);
             if (workItem == null) return NotFound();
 
-            var submission = await _context.Submissions.FindAsync(workItem.Report.SubmissionId);
+            var submission = await _context.Submissions
+                .Include(s => s.FileSpecification)
+                .FirstOrDefaultAsync(x => x.Id == workItem.Report.SubmissionId);
 
             //Update assigned user
             workItem.AssignedUser = model.AssignedUser;
@@ -95,8 +97,7 @@ namespace AdenDemo.Web.Controllers.api
             _context.SaveChanges();
 
             //Send assignment notification
-            //TODO: Send notification
-
+            WorkEmailer.Send(workItem, submission);
 
             return Ok(model);
         }
