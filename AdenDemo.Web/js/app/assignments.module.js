@@ -1,8 +1,8 @@
 ﻿
 (function () {
 
-    var uriCurrent = "/api/workitem/mark@mail.com/";
-    var uriComplete = "/api/workitem/finished/mark@mail.com/";
+    var uriCurrent = "/api/workitem";
+    var uriComplete = "/api/workitem/finished";
 
     var $gridCurrent = $('#gridCurrent').dxDataGrid({
         dataSource: DevExpress.data.AspNet.createStore({
@@ -28,8 +28,7 @@
             { dataField: 'assignedDate', caption: 'Assigned', dataType: 'datetime', width: 150, },
             { dataField: 'dueDate', caption: 'Due', dataType: 'datetime', width: 150, },
             {
-                //width: 150,
-
+                width: 375,
                 alignment: 'center',
                 cellTemplate: function (container, options) {
 

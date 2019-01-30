@@ -36,9 +36,10 @@ namespace AdenDemo.Web.Controllers.api
 
         }
 
-        [HttpGet, Route("{username}")]
-        public async Task<object> Get(string username, DataSourceLoadOptions loadOptions)
+        [HttpGet, Route("")]
+        public async Task<object> Get(DataSourceLoadOptions loadOptions)
         {
+            var username = User.Identity.Name;
             if (username == null) return NotFound();
 
             var dto = await _context.WorkItems
@@ -48,9 +49,11 @@ namespace AdenDemo.Web.Controllers.api
             return Ok(DataSourceLoader.Load(dto.OrderBy(x => x.AssignedDate), loadOptions));
         }
 
-        [HttpGet, Route("finished/{username}")]
-        public async Task<object> Finished(string username, DataSourceLoadOptions loadOptions)
+        [HttpGet, Route("finished")]
+        public async Task<object> Finished(DataSourceLoadOptions loadOptions)
         {
+            var username = User.Identity.Name;
+
             if (username == null) return NotFound();
 
             var dto = await _context.WorkItems
