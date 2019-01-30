@@ -2,13 +2,11 @@
 using AdenDemo.Web.Models;
 using AdenDemo.Web.Services;
 using AdenDemo.Web.ViewModels;
-using ALSDE.Services;
 using AutoMapper.QueryableExtensions;
 using CSharpFunctionalExtensions;
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Claims;
@@ -28,7 +26,7 @@ namespace AdenDemo.Web.Controllers.api
         public SubmissionController()
         {
             _context = new AdenContext();
-            var _membershipService = new MembershipService(_context);
+            _membershipService = new MembershipService(_context);
             _currentUserFullName = ((ClaimsIdentity)HttpContext.Current.User.Identity).Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
         }
 
@@ -193,6 +191,6 @@ namespace AdenDemo.Web.Controllers.api
             return Ok("Successfully repopened");
 
         }
-        
+
     }
 }

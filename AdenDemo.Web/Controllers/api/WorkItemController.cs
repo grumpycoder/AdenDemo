@@ -31,7 +31,7 @@ namespace AdenDemo.Web.Controllers.api
         public WorkItemController()
         {
             _context = new AdenContext();
-            var _membershipService = new MembershipService(_context);
+            _membershipService = new MembershipService(_context);
             _currentUserFullName = ((ClaimsIdentity)HttpContext.Current.User.Identity).Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
 
         }

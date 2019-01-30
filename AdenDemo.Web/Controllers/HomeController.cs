@@ -4,9 +4,11 @@ using AdenDemo.Web.Helpers;
 using AdenDemo.Web.Models;
 using AdenDemo.Web.Services;
 using AdenDemo.Web.ViewModels;
+using Alsde.Extensions;
 using ALSDE.Idem.Web.UI.AimBanner;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Humanizer;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -22,9 +24,12 @@ namespace AdenDemo.Web.Controllers
     {
 
         private AdenContext _context;
+        private MembershipService _membershipService;
+
         public HomeController()
         {
             _context = new AdenContext();
+            _membershipService = new MembershipService(_context);
         }
 
         public ActionResult Submissions()
@@ -225,6 +230,31 @@ namespace AdenDemo.Web.Controllers
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
 
+        }
+
+        public ActionResult EditGroupMembership(string id)
+        {
+            var displayGroupName = id.Humanize().ToTitleCase().RemoveExactWord("App");
+            ViewBag.GroupName = id;
+            ViewBag.DisplayGroupName = displayGroupName;
+            ViewBag.IsGroupDefined = true;
+
+            var groupExists = _membershipService.GroupExists(id);
+
+            if (!groupExists)
+            {
+                ViewBag.IsGroupDefined = false;
+                return PartialView("_GroupMembershipEditForm");
+            }
+
+            var membersResult = _membershipService.GetGroupMembers(id);
+
+            if (membersResult.IsSuccess) ViewBag.Members = membersResult.Value;
+
+
+            if (membersResult.IsFailure) ViewBag.IsGroupDefined = false;
+
+            return PartialView("_GroupMembershipEditForm");
         }
     }
 }

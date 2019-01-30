@@ -52,5 +52,12 @@ namespace AdenDemo.Web.Services
             var list = members.Select(m => m.EmailAddress).ToList();
             return Result.Ok(list);
         }
+
+        public bool GroupExists(string groupName)
+        {
+            var groupService = new IdemGroupService();
+            return groupService.GroupExists(groupName);
+
+        }
     }
 }

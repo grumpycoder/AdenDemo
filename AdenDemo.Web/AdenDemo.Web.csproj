@@ -51,12 +51,11 @@
     <Reference Include="Alsde.Entity, Version=2018.4.9.25674, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Entity.2018.4.3\lib\net451\Alsde.Entity.dll</HintPath>
     </Reference>
-    <Reference Include="Alsde.Extensions, Version=2018.5.22.6717, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Alsde.Extensions.2018.5.22.6717\lib\net451\Alsde.Extensions.dll</HintPath>
+    <Reference Include="Alsde.Extensions, Version=2018.11.16.6895, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Alsde.Extensions.2018.11.0\lib\net451\Alsde.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="ALSDE.IdemLib, Version=2018.11.16.6895, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ALSDE.IdemLib.2018.11.0-beta\lib\net40\ALSDE.IdemLib.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="ALSDE.IdemLib, Version=2019.1.30.6970, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ALSDE.IdemLib.2019.1.0-beta\lib\net40\ALSDE.IdemLib.dll</HintPath>
     </Reference>
     <Reference Include="Alsde.Security, Version=2019.1.30.6969, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Security.2019.1.0-beta-01\lib\net451\Alsde.Security.dll</HintPath>
@@ -227,6 +226,7 @@
     <Compile Include="Controllers\api\AuditController.cs" />
     <Compile Include="Controllers\api\DocumentController.cs" />
     <Compile Include="Controllers\api\FileSpecificationController.cs" />
+    <Compile Include="Controllers\api\MembershipController.cs" />
     <Compile Include="Controllers\api\SubmissionController.cs" />
     <Compile Include="Controllers\api\WorkItemController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -489,6 +489,7 @@
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\Shared\_StatusHeader.cshtml" />
     <Content Include="Views\Account\LoginFailure.cshtml" />
+    <Content Include="Views\Home\_GroupMembershipEditForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

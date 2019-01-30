@@ -88,7 +88,7 @@
                 <div class="form-group">
                     <label class="control-label full-width">
                         Select group members
-                        <button class="btn btn-info btn-block" id="btnGenerationGroup" data-id="@Model.Id" data-modify-group data-group-name="@Model.GenerationUserGroup" @(Model.GenerationUserGroup == null ? "disabled='disabled'" : "")>Generation Group Members (@ViewBag.GenerationGroupMemberCount)</button>
+                        <button class="btn btn-info btn-block" data-membership id="btnGenerationGroup" data-id="@Model.Id" data-modify-group data-group-name="@Model.GenerationUserGroup" @(Model.GenerationUserGroup == null ? "disabled='disabled'" : "")>Generation Group Members (@ViewBag.GenerationGroupMemberCount)</button>
                     </label>
                 </div>
             </div>
@@ -110,7 +110,7 @@
                 <div class="form-group">
                     <label class="control-label full-width">
                         Select group members
-                        <button class="btn btn-info btn-block" id="btnApprovalGroup" data-id="@Model.Id" data-modify-group data-group-name="@Model.ApprovalUserGroup" @(Model.ApprovalUserGroup == null ? "disabled='disabled'" : "")>Approval Group Members (@ViewBag.ApprovalGroupMemberCount)</button>
+                        <button class="btn btn-info btn-block" data-membership id="btnApprovalGroup" data-id="@Model.Id" data-modify-group data-group-name="@Model.ApprovalUserGroup" @(Model.ApprovalUserGroup == null ? "disabled='disabled'" : "")>Approval Group Members (@ViewBag.ApprovalGroupMemberCount)</button>
                     </label>
                 </div>
             </div>
@@ -203,3 +203,42 @@
 
 </form>
 
+<script>
+
+    $('[data-membership]').on('click',
+            function(e) {
+                e.preventDefault();
+                var groupName = $(this).data('group-name'); 
+                console.log('e', groupName);
+                console.log('show generators');
+                var url = '/home/EditGroupMembership/' + groupName;
+                var title = 'Edit Group Members';
+
+                BootstrapDialog.show({
+                    size: BootstrapDialog.SIZE_NORMAL,
+                    closable: true,
+                    closeByBackdrop: false,
+                    closeByKeyboard: false,
+                    title: title,
+                    message: $('<div></div>').load(url, function (resp, status, xhr) {
+                        if (status === 'error') {
+                            console.log('status', status);
+                            console.log('resp', resp);
+                            window.$log.error('Error showing group membership');
+                        }
+                    }),
+                    buttons: [
+                        {
+                            label: 'Close',
+                            action: function (dialogRef) {
+                                dialogRef.close();
+                            }
+                        }
+                    ]
+                });
+
+            });
+
+
+
+</script>
