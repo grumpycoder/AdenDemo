@@ -5,8 +5,15 @@ namespace AdenDemo.Web
     public static class Constants
     {
 
-        public static string Environment => AppSettings.Get<string>("ASPNET_ENV");
+        public static string TpaAccessKey => AppSettings.Get<string>("TPA_AccessKey");
         public static string DatabaseContextName => "AdenContext";
+        public static string Environment => AppSettings.Get<string>("ASPNET_ENV");
+        public static string AimApplicationViewKey => AppSettings.Get<string>("ALSDE_AIM_ApplicationViewKey");
+        public static string WebServiceUrl => AppSettings.Get<string>("WebServiceUrl");
+
+        public static string LogoutUrl = AppSettings.Get<string>("LogoutUrl");
+
+
         public static string AimBaseUrl => "aim.alsde.edu";
 
         public static string ReplyAddress = AppSettings.Get<string>("ReplyAddress");
