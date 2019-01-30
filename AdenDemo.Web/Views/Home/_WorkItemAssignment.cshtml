@@ -15,7 +15,7 @@
 
         <label class="control-label full-width">
             Reassign To
-            <input type="text" id="AssignedUser" name="AssignedUser" class="form-control"/>
+            <input type="text" id="AssignedUser" name="AssignedUser" class="form-control typeahead"/>
         </label>
 
 
@@ -29,3 +29,36 @@
     </div>
 
 </form>
+
+
+<script>
+
+    $('input.typeahead').typeahead({
+        source: function (query, response) {
+            return $.get('/api/membership/users/?username=' + query,
+                { query: query },
+                function (data) {
+                    return response(data);
+                });
+        },
+        items: 15,
+        displayText: function (item) {
+            return item.firstname + ' ' + item.lastname + ' (' + item.emailAddress + ')';
+        },
+        afterSelect: function (item) {
+            selectedUser = item.firstname + ' ' + item.lastname + ' (' + item.emailAddress + ') - requested';
+            this.$element[0].value = item.emailAddress;
+        },
+        delay: 500,
+        minLength: 0,
+        autoSelect: true,
+    }).bind('change blur', function (e) {
+        if (e.currentTarget.value === undefined || e.currentTarget.value === '') {
+            $('#btnAddGroupMember').prop('disabled', true);
+        } else {
+            $('#btnAddGroupMember').prop('disabled', false);
+        }
+    });
+
+
+</script>

@@ -95,7 +95,6 @@ namespace AdenDemo.Web.Controllers
             var workItem = _context.WorkItems.FirstOrDefault(x => x.Id == id);
 
             var dto = Mapper.Map<AssignmentDto>(workItem);
-            //TODO: Display typeahead selection for assignment field
             return PartialView("_WorkItemAssignment", dto);
         }
 
