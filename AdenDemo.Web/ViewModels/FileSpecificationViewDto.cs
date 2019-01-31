@@ -1,4 +1,6 @@
-﻿namespace AdenDemo.Web.ViewModels
+﻿using System.Collections.Generic;
+
+namespace AdenDemo.Web.ViewModels
 {
     public class FileSpecificationViewDto
     {
@@ -25,5 +27,15 @@
 
         public bool CanRetire => (bool)(IsRetired.HasValue ? !IsRetired : true);
         public bool CanActivate => !CanRetire;
+
+
+
+        public string GeneratorGroup { get; set; }
+        public string ApprovalGroup { get; set; }
+        public string SubmissionGroup { get; set; }
+
+        public List<string> Generators { get; set; }
+        public List<string> Approvers { get; set; }
+        public List<string> Submitters { get; set; }
     }
 }

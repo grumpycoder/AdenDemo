@@ -1,4 +1,5 @@
-﻿using AdenDemo.Web.Models;
+﻿using System.Linq;
+using AdenDemo.Web.Models;
 using AdenDemo.Web.ViewModels;
 using AutoMapper;
 using Humanizer;
@@ -26,24 +27,27 @@ namespace AdenDemo.Web.Data.Profiles
                 .ForMember(d => d.ReportAction, opt => opt.MapFrom(s => s.ReportAction)).ReverseMap()
                 .ForAllOtherMembers(d => d.Ignore()); ;
 
-            //CreateMap<FileSpecification, FileSpecificationViewDto>()
-            //    .ForMember(d => d.Id, opt => opt.MapFrom(src => src.Id))
-            //    .ForMember(d => d.FileName, opt => opt.MapFrom(src => src.FileName))
-            //    .ForMember(d => d.FileNumber, opt => opt.MapFrom(src => src.FileNumber))
-            //    .ForMember(d => d.IsRetired, opt => opt.MapFrom(src => src.IsRetired))
-            //    .ForMember(d => d.Section, opt => opt.MapFrom(src => src.Section))
-            //    .ForMember(d => d.SupportGroup, opt => opt.MapFrom(src => src.SupportGroup))
-            //    .ForMember(d => d.Application, opt => opt.MapFrom(src => src.Application))
-            //    .ForMember(d => d.Collection, opt => opt.MapFrom(src => src.Collection))
-            //    .ForMember(d => d.GenerationUserGroup, opt => opt.MapFrom(src => src.GenerationUserGroup))
-            //    .ForMember(d => d.ApprovalUserGroup, opt => opt.MapFrom(src => src.ApprovalUserGroup))
-            //    .ForMember(d => d.SubmissionUserGroup, opt => opt.MapFrom(src => src.SubmissionUserGroup))
-            //    .ForMember(d => d.ReportAction, opt => opt.MapFrom(src => src.ReportAction))
+            CreateMap<FileSpecification, FileSpecificationViewDto>()
+                .ForMember(d => d.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(d => d.FileName, opt => opt.MapFrom(src => src.FileName))
+                .ForMember(d => d.FileNumber, opt => opt.MapFrom(src => src.FileNumber))
+                .ForMember(d => d.IsRetired, opt => opt.MapFrom(src => src.IsRetired))
+                .ForMember(d => d.Section, opt => opt.MapFrom(src => src.Section))
+                .ForMember(d => d.SupportGroup, opt => opt.MapFrom(src => src.SupportGroup))
+                .ForMember(d => d.Application, opt => opt.MapFrom(src => src.Application))
+                .ForMember(d => d.Collection, opt => opt.MapFrom(src => src.Collection))
+                .ForMember(d => d.GenerationUserGroup, opt => opt.MapFrom(src => src.GenerationUserGroup))
+                .ForMember(d => d.ApprovalUserGroup, opt => opt.MapFrom(src => src.ApprovalUserGroup))
+                .ForMember(d => d.SubmissionUserGroup, opt => opt.MapFrom(src => src.SubmissionUserGroup))
+                .ForMember(d => d.ReportAction, opt => opt.MapFrom(src => src.ReportAction))
+                .ForMember(d => d.GeneratorGroup, opt => opt.MapFrom(s => s.GenerationGroup.Name))
+                .ForMember(d => d.ApprovalGroup, opt => opt.MapFrom(s => s.ApprovalGroup.Name))
+                .ForMember(d => d.SubmissionGroup, opt => opt.MapFrom(s => s.SubmissionGroup.Name))
+                .ForMember(d => d.Generators, opt => opt.MapFrom(s => s.GenerationGroup.Users.Select(x => x.FullName)))
+                .ForMember(d => d.Approvers, opt => opt.MapFrom(s => s.ApprovalGroup.Users.Select(x => x.FullName)))
+                .ForMember(d => d.Submitters, opt => opt.MapFrom(s => s.SubmissionGroup.Users.Select(x => x.FullName)))
+                ;
 
-
-            //    //.ForMember(d => d.GenerationUserGroup, opt => opt.MapFrom(src => src.GenerationUserGroup))
-            //    //.ForAllOtherMembers(opts => opts.Ignore());
-            //    ;
             //CreateMap<UpdateFileSpecificationDto, FileSpecification>()
             //    .ForMember(d => d.Id, opt => opt.MapFrom(s => s.Id))
             //    .ForMember(d => d.FileName, opt => opt.MapFrom(s => s.FileName))

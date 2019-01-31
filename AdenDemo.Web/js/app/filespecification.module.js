@@ -71,6 +71,36 @@
             { dataField: 'approvalUserGroup', caption: 'Approval Group' },
             { dataField: 'submissionUserGroup', caption: 'Submission Group' },
             {
+                dataField: 'generators', caption: 'Generators', 
+                cellTemplate: function(container, options) {
+                    options.data.generators.forEach(function(item) { $('<span>' + item + '</span><br />').appendTo(container) });
+                }, 
+                allowFiltering:false, 
+                calculateDisplayValue: function(rowData) {
+                    return rowData.generators.join(", ");
+                }
+            },
+            {
+                dataField: 'approvers', caption: 'Approvers', 
+                cellTemplate: function(container, options) {
+                    options.data.approvers.forEach(function(item) { $('<span>' + item + '</span><br />').appendTo(container) });
+                }, 
+                allowFiltering:false, 
+                calculateDisplayValue: function(rowData) {
+                    return rowData.approvers.join(", ");
+                }
+            },
+            {
+                dataField: 'submitters', caption: 'Submitters', 
+                cellTemplate: function(container, options) {
+                    options.data.submitters.forEach(function(item) { $('<span>' + item + '</span><br />').appendTo(container) });
+                }, 
+                allowFiltering:false, 
+                calculateDisplayValue: function(rowData) {
+                    return rowData.submitters.join(", ");
+                }
+            },
+            {
                 width: 120,
                 alignment: 'center',
                 cellTemplate: function (container, options) {

@@ -3,6 +3,8 @@ using AdenDemo.Web.Data;
 using ALSDE.Services;
 using System.Linq;
 using System.Web.Http;
+using AdenDemo.Web.ViewModels;
+using AutoMapper.QueryableExtensions;
 
 namespace AdenDemo.Web.Controllers.api
 {
@@ -33,11 +35,18 @@ namespace AdenDemo.Web.Controllers.api
         [HttpGet, Route("specs")]
         public object Specs()
         {
+            //var dto = _context.FileSpecifications
+            //    .Include(x => x.GenerationGroup.Users)
+            //    .Include(x => x.ApprovalGroup.Users)
+            //    .Include(x => x.SubmissionGroup.Users)
+            //    .Where(x => x.FileNumber == "029").ToList();
+
             var dto = _context.FileSpecifications
                 .Include(x => x.GenerationGroup.Users)
                 .Include(x => x.ApprovalGroup.Users)
                 .Include(x => x.SubmissionGroup.Users)
-                .Where(x => x.FileNumber == "029").ToList();
+                .Where(x => x.FileNumber == "029").ProjectTo<FileSpecificationViewDto>().ToList();
+
             return Ok(dto);
         }
     }
