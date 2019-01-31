@@ -2,6 +2,7 @@
 using AdenDemo.Web.Models;
 using System;
 using System.Data.Entity;
+using System.Diagnostics;
 
 namespace AdenDemo.Web.Data
 {
@@ -10,7 +11,7 @@ namespace AdenDemo.Web.Data
         public AdenContext()
             : base("AdenContext")
         {
-            //Database.Log = msg => Debug.WriteLine(msg);
+            Database.Log = msg => Debug.WriteLine(msg);
             Database.SetInitializer<AdenContext>(null);
         }
 
@@ -21,6 +22,9 @@ namespace AdenDemo.Web.Data
         public DbSet<ReportDocument> ReportDocuments { get; set; }
         public DbSet<Submission> Submissions { get; set; }
         public DbSet<SubmissionAudit> SubmissionAudits { get; set; }
+
+        public DbSet<UserProfile> Users { get; set; }
+        public DbSet<Group> Groups { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -39,6 +43,9 @@ namespace AdenDemo.Web.Data
             modelBuilder.Configurations.Add(new WorkItemConfiguration());
             modelBuilder.Configurations.Add(new WorkItemImageConfiguration());
             modelBuilder.Configurations.Add(new ReportDocumentConfiguration());
+            modelBuilder.Configurations.Add(new UserProfileConfiguration());
+            modelBuilder.Configurations.Add(new GroupConfiguration());
+
         }
     }
 }

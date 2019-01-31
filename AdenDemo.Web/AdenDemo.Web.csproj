@@ -224,6 +224,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\api\AuditController.cs" />
+    <Compile Include="Controllers\api\DemoController.cs" />
     <Compile Include="Controllers\api\DocumentController.cs" />
     <Compile Include="Controllers\api\FileSpecificationController.cs" />
     <Compile Include="Controllers\api\MembershipController.cs" />
@@ -232,6 +233,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Data\AdenContext.cs" />
     <Compile Include="Data\Configuration\FileSpecificationConfiguration.cs" />
+    <Compile Include="Data\Configuration\GroupConfiguration.cs" />
+    <Compile Include="Data\Configuration\UserProfileConfiguration.cs" />
     <Compile Include="Data\Configuration\ReportConfiguration.cs" />
     <Compile Include="Data\Configuration\ReportDocumentConfiguration.cs" />
     <Compile Include="Data\Configuration\SubmissionAuditConfiguration.cs" />
@@ -263,6 +266,8 @@
     <Compile Include="Models\Submission.cs" />
     <Compile Include="Models\SubmissionAudit.cs" />
     <Compile Include="Models\SubmissionState.cs" />
+    <Compile Include="Models\UserProfile.cs" />
+    <Compile Include="Models\Group.cs" />
     <Compile Include="Models\WorkItem.cs" />
     <Compile Include="Models\WorkItemActions.cs" />
     <Compile Include="Models\WorkItemImage.cs" />
