@@ -344,6 +344,7 @@
     <Content Include="js\app\app.min.js">
       <DependentUpon>app.js</DependentUpon>
     </Content>
+    <Content Include="js\app\app.module.js" />
     <Content Include="js\app\assignments.module.js" />
     <Content Include="js\app\filespecification.module.js" />
     <Content Include="js\app\review.module.js" />

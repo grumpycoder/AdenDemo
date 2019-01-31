@@ -177,6 +177,8 @@
 
     function complete(container, data) {
         var uri = '/api/workitem/complete/' + data.id;
+        $toggleWorkingButton(container);
+
         $.ajax({
             url: uri,
             type: 'POST',
@@ -189,11 +191,14 @@
                 //TODO: Toast error completing action
             }
         }).always(function () {
+            $toggleWorkingButton(container);
         });
     }
 
     function reject(container, data) {
         var uri = '/api/workitem/reject/' + data.id;
+        $toggleWorkingButton(container);
+
         $.ajax({
             url: uri,
             type: 'POST',
@@ -206,11 +211,13 @@
                 //TODO: Toast error completing action
             }
         }).always(function () {
+            $toggleWorkingButton(container);
         });
     }
 
     function cancel(container, data) {
         var uri = '/api/workitem/cancel/' + data.id;
+        $toggleWorkingButton(container);
         $.ajax({
             url: uri,
             type: 'POST',
@@ -223,6 +230,7 @@
                 //TODO: Toast error completing action
             }
         }).always(function () {
+            $toggleWorkingButton(container);
         });
     }
 
@@ -252,6 +260,10 @@
                     label: 'Save',
                     cssClass: 'btn-primary',
                     action: function (dialogRef) {
+                        dialogRef.enableButtons(false);
+                        dialogRef.setClosable(false);
+                        $showModalWorking($('.panel-body'));
+
                         $('#errorMessage').text('');
 
                         var formData = new FormData($('form')[0]);

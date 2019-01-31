@@ -186,6 +186,8 @@
 
     function activate(container, data) {
         var id = data.id;
+        $toggleWorkingButton(container);
+
         $.ajax({
             url: '/api/filespecification/activate/' + id,
             type: 'POST',
@@ -198,12 +200,14 @@
                 //TODO: Toast error retire action
             }
         }).always(function () {
-
+            $toggleWorkingButton(container);
         });
     }
 
     function retire(container, data) {
         var id = data.id; 
+        $toggleWorkingButton(container);
+
         $.ajax({
             url: '/api/filespecification/retire/' + id,
             type: 'POST',
@@ -216,7 +220,7 @@
                 //TODO: Toast error retire action
             }
         }).always(function () {
-            
+            $toggleWorkingButton(container);
         });
     }
 
@@ -246,6 +250,10 @@
                     label: 'Save',
                     cssClass: 'btn-primary',
                     action: function (dialogRef) {
+                        dialogRef.enableButtons(false);
+                        dialogRef.setClosable(false);
+                        $showModalWorking($('.panel-body'));
+
                         var data = $('form').serializeJSON(); 
                         $.ajax({
                             contentType: 'application/json; charset=utf-8',

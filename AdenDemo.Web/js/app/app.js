@@ -176,6 +176,8 @@
 
     function complete(container, data) {
         var uri = '/api/workitem/complete/' + data.id;
+        $toggleWorkingButton(container);
+
         $.ajax({
             url: uri,
             type: 'POST',
@@ -188,11 +190,14 @@
                 //TODO: Toast error completing action
             }
         }).always(function () {
+            $toggleWorkingButton(container);
         });
     }
 
     function reject(container, data) {
         var uri = '/api/workitem/reject/' + data.id;
+        $toggleWorkingButton(container);
+
         $.ajax({
             url: uri,
             type: 'POST',
@@ -205,11 +210,13 @@
                 //TODO: Toast error completing action
             }
         }).always(function () {
+            $toggleWorkingButton(container);
         });
     }
 
     function cancel(container, data) {
         var uri = '/api/workitem/cancel/' + data.id;
+        $toggleWorkingButton(container);
         $.ajax({
             url: uri,
             type: 'POST',
@@ -222,6 +229,7 @@
                 //TODO: Toast error completing action
             }
         }).always(function () {
+            $toggleWorkingButton(container);
         });
     }
 
@@ -251,6 +259,10 @@
                     label: 'Save',
                     cssClass: 'btn-primary',
                     action: function (dialogRef) {
+                        dialogRef.enableButtons(false);
+                        dialogRef.setClosable(false);
+                        $showModalWorking($('.panel-body'));
+
                         $('#errorMessage').text('');
 
                         var formData = new FormData($('form')[0]);
@@ -507,6 +519,8 @@
 
     function activate(container, data) {
         var id = data.id;
+        $toggleWorkingButton(container);
+
         $.ajax({
             url: '/api/filespecification/activate/' + id,
             type: 'POST',
@@ -519,12 +533,14 @@
                 //TODO: Toast error retire action
             }
         }).always(function () {
-
+            $toggleWorkingButton(container);
         });
     }
 
     function retire(container, data) {
         var id = data.id; 
+        $toggleWorkingButton(container);
+
         $.ajax({
             url: '/api/filespecification/retire/' + id,
             type: 'POST',
@@ -537,7 +553,7 @@
                 //TODO: Toast error retire action
             }
         }).always(function () {
-            
+            $toggleWorkingButton(container);
         });
     }
 
@@ -567,6 +583,10 @@
                     label: 'Save',
                     cssClass: 'btn-primary',
                     action: function (dialogRef) {
+                        dialogRef.enableButtons(false);
+                        dialogRef.setClosable(false);
+                        $showModalWorking($('.panel-body'));
+
                         var data = $('form').serializeJSON(); 
                         $.ajax({
                             contentType: 'application/json; charset=utf-8',
@@ -910,6 +930,7 @@ $(function () {
 
     function startWorkFlow(container, data) {
         var id = data.id;
+        $toggleWorkingButton(container);
         $.ajax({
             url: '/api/submission/start/' + id,
             type: 'POST',
@@ -924,6 +945,7 @@ $(function () {
             },
             complete: function (status) {
                 console.log('complete', status);
+                $toggleWorkingButton(container);
             }
         });
 
@@ -932,7 +954,7 @@ $(function () {
 
     function cancelWorkFlow(container, data) {
         var id = data.id;
-        
+        $toggleWorkingButton(container);
         $.ajax({
             url: '/api/submission/cancel/' + id,
             type: 'POST',
@@ -947,6 +969,7 @@ $(function () {
             },
             complete: function (status) {
                 console.log('complete', status);
+                $toggleWorkingButton(container);
             }
         });
 
@@ -957,6 +980,7 @@ $(function () {
         var url = '/home/reopen/' + data.id;
         var title = 'Reopen Reason';
         var postUrl = '/api/submission/reopen/' + data.id;
+
 
         BootstrapDialog.show({
             size: window.BootstrapDialog.SIZE_WIDE,
@@ -978,7 +1002,11 @@ $(function () {
                     label: 'Save',
                     cssClass: 'btn-primary',
                     action: function (dialogRef) {
-                        var data = $('form').serializeJSON(); 
+                        dialogRef.enableButtons(false);
+                        dialogRef.setClosable(false);
+                        $showModalWorking($('.panel-body'));
+
+                        var data = $('form').serializeJSON();
 
                         $.ajax({
                             contentType: 'application/json;',
@@ -1032,6 +1060,10 @@ $(function () {
                     label: 'Save',
                     cssClass: 'btn-primary',
                     action: function(dialogRef) {
+                        dialogRef.enableButtons(false);
+                        dialogRef.setClosable(false);
+                        $showModalWorking($('.panel-body'));
+
                         var data = $('form').serializeJSON(); 
 
                         $.ajax({

@@ -319,6 +319,12 @@ form-data@~2.3.2:
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
 
+gasparesganga-jquery-loading-overlay@2.1.6:
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/gasparesganga-jquery-loading-overlay/-/gasparesganga-jquery-loading-overlay-2.1.6.tgz#97f66e01eac5ceebd18d6839b42be841ff0a2615"
+  dependencies:
+    jquery ">=1.7.0"
+
 get-caller-file@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-1.0.3.tgz#f978fa4c90d1dfe7ff2d6beda2a515e713bdcf4a"
@@ -414,7 +420,7 @@ jquery-serializejson@2.9.0:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/jquery-serializejson/-/jquery-serializejson-2.9.0.tgz#03e3764e3a4b42c1c5aae9f93d7f19320c5f35a6"
 
-jquery@3.3.1:
+jquery@3.3.1, jquery@>=1.7.0:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
 

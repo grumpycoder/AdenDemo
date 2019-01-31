@@ -97,13 +97,13 @@ namespace AdenDemo.Web.Controllers.api
             };
             report.WorkItems.Add(workItem);
 
-            WorkEmailer.Send(workItem, submission);
+            //WorkEmailer.Send(workItem, submission);
 
-            _context.SaveChanges();
+            //_context.SaveChanges();
 
-            submission.CurrentReportId = report.Id;
+            //submission.CurrentReportId = report.Id;
 
-            _context.SaveChanges();
+            //_context.SaveChanges();
 
             return Ok(submission);
         }

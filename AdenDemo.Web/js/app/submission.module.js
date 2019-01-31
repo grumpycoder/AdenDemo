@@ -268,6 +268,7 @@
 
     function startWorkFlow(container, data) {
         var id = data.id;
+        $toggleWorkingButton(container);
         $.ajax({
             url: '/api/submission/start/' + id,
             type: 'POST',
@@ -282,6 +283,7 @@
             },
             complete: function (status) {
                 console.log('complete', status);
+                $toggleWorkingButton(container);
             }
         });
 
@@ -290,7 +292,7 @@
 
     function cancelWorkFlow(container, data) {
         var id = data.id;
-        
+        $toggleWorkingButton(container);
         $.ajax({
             url: '/api/submission/cancel/' + id,
             type: 'POST',
@@ -305,6 +307,7 @@
             },
             complete: function (status) {
                 console.log('complete', status);
+                $toggleWorkingButton(container);
             }
         });
 
@@ -315,6 +318,7 @@
         var url = '/home/reopen/' + data.id;
         var title = 'Reopen Reason';
         var postUrl = '/api/submission/reopen/' + data.id;
+
 
         BootstrapDialog.show({
             size: window.BootstrapDialog.SIZE_WIDE,
@@ -336,7 +340,11 @@
                     label: 'Save',
                     cssClass: 'btn-primary',
                     action: function (dialogRef) {
-                        var data = $('form').serializeJSON(); 
+                        dialogRef.enableButtons(false);
+                        dialogRef.setClosable(false);
+                        $showModalWorking($('.panel-body'));
+
+                        var data = $('form').serializeJSON();
 
                         $.ajax({
                             contentType: 'application/json;',
@@ -390,6 +398,10 @@
                     label: 'Save',
                     cssClass: 'btn-primary',
                     action: function(dialogRef) {
+                        dialogRef.enableButtons(false);
+                        dialogRef.setClosable(false);
+                        $showModalWorking($('.panel-body'));
+
                         var data = $('form').serializeJSON(); 
 
                         $.ajax({
