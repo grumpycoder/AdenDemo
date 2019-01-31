@@ -22,6 +22,14 @@ namespace AdenDemo.Web.Models
         public string ApprovalUserGroup { get; set; }
         public string SubmissionUserGroup { get; set; }
 
+        public int? GenerationGroupId { get; set; }
+        public int? ApprovalGroupId { get; set; }
+        public int? SubmissionGroupId { get; set; }
+
+        public Group GenerationGroup { get; set; }
+        public Group ApprovalGroup { get; set; }
+        public Group SubmissionGroup { get; set; }
+
         public bool IsSEA { get; set; }
         public bool IsLEA { get; set; }
         public bool IsSCH { get; set; }
@@ -39,6 +47,7 @@ namespace AdenDemo.Web.Models
         {
             return $"{FileNumber} {FileName}";
         }
+
 
 
     }
