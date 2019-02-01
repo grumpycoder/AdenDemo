@@ -235,7 +235,7 @@
                             dataGrid.state({});
                         }
                     }
-                },
+                }
                 
             );
         }
@@ -244,7 +244,7 @@
     function showHistory(e) {
         var title = 'History';
         var url = '/history/' + e.row.data.id;
-        console.log(e.row.data);
+
         BootstrapDialog.show({
             size: window.BootstrapDialog.SIZE_WIDE,
             draggable: true,

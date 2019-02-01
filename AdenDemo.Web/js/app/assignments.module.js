@@ -96,7 +96,7 @@
                             dataGrid.refresh();
                         }
                     }
-                },
+                }
             );
         }
     }).dxDataGrid("instance");
@@ -169,7 +169,7 @@
                             dataGrid.refresh();
                         }
                     }
-                },
+                }
             );
         }
     }).dxDataGrid("instance");

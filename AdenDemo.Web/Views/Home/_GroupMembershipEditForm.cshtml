@@ -1,8 +1,8 @@
-﻿<h3>
-    @ViewBag.DisplayGroupName
-</h3>
+﻿@model Group
 
-@if (!(bool)ViewBag.IsGroupDefined)
+
+
+@if (@Model == null)
 {
     <div class="row">
         <div class="col-md-12">
@@ -12,85 +12,104 @@
 }
 else
 {
+    <h3>
+        @Model.Name
+    </h3>
+
     <div class="row">
 
-            <form role="form" id="groupForm" name="groupForm">
-                <input type="hidden" name="groupName" id="groupName" value="@ViewBag.GroupName" />
+        <form role="form" id="groupForm" name="groupForm">
+            <input type="hidden" name="groupId" id="groupId" value="@Model.Id" />
+            <input type="hidden" name="identityGuid" id="identityGuid" value="" />
+            <div class="col-md-12">
+                <div class="form-group">
 
-                <div class="col-md-12">
-                    <div class="form-group">
 
-
-                        <label class="control-label">
-                            Add member
-                            <input type="text" id="email" name="email" class="form-control typeahead" data-provide="typeahead" autocomplete="off">
-                        </label>
-                        <button class="btn btn-default" id="btnAddGroupMember" disabled="disabled" aria-disabled="True">Add</button>
-                    </div>
+                    <label class="control-label">
+                        Add member
+                        <input type="text" id="email" name="email" class="form-control typeahead" data-provide="typeahead" autocomplete="off">
+                    </label>
+                    <button class="btn btn-default" id="btnAddGroupMember" disabled="disabled" aria-disabled="True">Add</button>
                 </div>
-            </form>
+            </div>
+        </form>
 
     </div>
 
     <div class="row">
         <div class="col-md-12">
             <form id="memberForm" role="form">
-                <input type="hidden" name="groupName" value="@ViewBag.GroupName" />
+                <input type="hidden" name="id" value="@Model.Id" />
                 <input type="hidden" name="email" id="email" />
             </form>
             <label class="control-label">
                 Current Members
             </label>
-            <ul class="list-group" id="memberlist">
-                @if (Enumerable.Count(ViewBag.Members) == 0)
-                {
-                    <li class="list-group-item">Group contains no members</li>
-                }
-                @foreach (var member in ViewBag.Members)
-                {
-                    <li class="list-group-item">
-                        <a href="#" id="btnRemoveGroupMember" data-email="@member"><i class="fa fa-trash"></i></a> <span>@member</span>
-                    </li>
-                }
-            </ul>
+            <div id="gridMembers"></div>
         </div>
     </div>
+
 }
+
+
 
 <script>
 
-    var selectedUser = '';
+    var $gridMembers = $('#gridMembers').dxDataGrid({
+        dataSource: "/api/membership/groupmembers/" + @Model.Id,
+        columns: [
+            { dataField: 'fullName', caption: 'Name' },
+            { dataField: 'emailAddress', caption: 'Email Address' },
+            {
+                width: 50,
+                type: "buttons",
+                buttons: [
+                    "edit", "delete", {
+                        text: "History",
+                        icon: "fa fa-trash",
+                        hint: "History",
+                        onClick: function(e) {
+                            deleteUser(e);
+                        }
+                    }
+                ]
+            }
+        ]
+
+    }).dxDataGrid("instance");
 
     $('input.typeahead').typeahead({
-        source: function(query, response) {
-            return $.get('/api/membership/users/?username=' + query,
-                { query: query },
-                function(data) {
-                    return response(data);
-                });
-        },
-        items: 15,
-        displayText: function (item) {
-            return item.firstname + ' ' + item.lastname + ' (' + item.emailAddress + ')';
-        },
-        afterSelect: function (item) {
-            selectedUser = item.firstname + ' ' + item.lastname + ' (' + item.emailAddress + ') - requested';
-            this.$element[0].value = item.emailAddress;
-        },
-        delay: 500,
-        minLength: 0,
-        autoSelect: true,
-    }).bind('change blur', function (e) {
-        if (e.currentTarget.value === undefined || e.currentTarget.value === '') {
-            $('#btnAddGroupMember').prop('disabled', true);
-        } else {
-            $('#btnAddGroupMember').prop('disabled', false);
-        }
-    });
+            source: function(query, response) {
+                return $.get('/api/membership/users/?username=' + query,
+                    { query: query },
+                    function(data) {
+                        return response(data);
+                    });
+            },
+            items: 15,
+            displayText: function(item) {
+                return item.firstname + ' ' + item.lastname + ' (' + item.emailAddress + ')';
+            },
+            afterSelect: function(item) {
+                console.log('item', item);
+                this.$element[0].text = item.firstname + ' ' + item.lastname;
+                $('#identityGuid').val(item.identityGuid);
+            },
+            delay: 500,
+            minLength: 1,
+            autoSelect: true
+    }).bind('change blur',
+        function(e) {
+            if (e.currentTarget.value === undefined || e.currentTarget.value === '') {
+                $('#btnAddGroupMember').prop('disabled', true);
+            } else {
+                $('#btnAddGroupMember').prop('disabled', false);
+            }
+        });
 
 
     $('#btnAddGroupMember').on('click',
-        function (e) {
+        function(e) {
             e.preventDefault();
 
             var url = '/api/membership/groupmembers/';
@@ -98,55 +117,41 @@ else
                 type: "PUT",
                 url: url,
                 data: $('#groupForm').serialize(),
-                success: function (data) {
-                    console.log('success', data);
-                    //TODO: Toast success message
-                    $('.list-group').append("<li class='list-group-item'><span>" + selectedUser + "</span></li>");
+                success: function(data) {
                     $('input.typeahead').val('');
                     $('#btnAddGroupMember').prop('disabled', true);
-                    console.log('Request has been sent to HelpDesk. Check back in 24 hours. ');
+                    $gridMembers.refresh();
                 },
-                error: function (err) {
+                error: function(err) {
                     //TODO: Toast error message
                     console.log('error', err);
                 }
-            }).always(function () {
+            }).always(function() {
 
             });
 
         });
 
-    $('#btnRemoveGroupMember').on('click',
-        function (e) {
-            e.preventDefault();
-            console.log('click', e);
-            var $btn = $(this);
+    function deleteUser(e) {
+        var url = '/api/membership/groupmembers/';
 
-            var url = '/api/membership/groupmembers/';
-            var email = $btn.data('email');
-            $('#memberForm #email').val(email);
+        $('#identityGuid').val(e.row.data.identityGuid);
 
-            $.ajax({
-                type: "DELETE",
-                url: url,
-                data: $('#memberForm').serialize(),
-                processData: false,
-                success: function (data) {
-                    //TODO: Toast success message
-                    console.log('Request has been sent to HelpDesk. Check back in 24 hours. ');
-                    $btn.parent().remove();
-                    if ($btn.parent().parent().children().length === 0) {
-                        $('.list-group').append("<li class='list-group-item'>No Members</li>");
-                    }
-                },
-                error: function (err) {
-                    console.log('error', err);
-                    //TODO: Toast error message
-                }
-            }).always(function () {
-
-            });
-
+        $.ajax({
+            type: "DELETE",
+            url: url,
+            data: $('#groupForm').serializeJSON(),
+            success: function(data) {
+                //TODO: Toast success message
+                $gridMembers.refresh();
+            },
+            error: function(err) {
+                console.log('error', err);
+                //TODO: Toast error message
+            }
+        }).always(function() {
         });
+
+    }
 
 </script>

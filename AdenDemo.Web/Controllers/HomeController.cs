@@ -5,8 +5,6 @@ using AdenDemo.Web.Models;
 using AdenDemo.Web.Services;
 using AdenDemo.Web.ViewModels;
 using Alsde.Extensions;
-using ALSDE.Idem;
-using ALSDE.Idem.Web.UI.AimBanner;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Humanizer;
@@ -101,7 +99,11 @@ namespace AdenDemo.Web.Controllers
 
         public ActionResult EditFileSpecification(int id)
         {
-            var model = _context.FileSpecifications.Find(id);
+            var model = _context.FileSpecifications
+                .Include(g => g.GenerationGroup.Users)
+                .Include(g => g.ApprovalGroup.Users)
+                .Include(g => g.SubmissionGroup.Users)
+                .FirstOrDefault(x => x.Id == id);
 
             var dto = Mapper.Map<UpdateFileSpecificationDto>(model);
 
@@ -130,12 +132,19 @@ namespace AdenDemo.Web.Controllers
                 new SelectListItem(){ Value = "Schedules", Text = "Schedules"}
             };
 
-            var applications = IdemApplications.Applications.ConvertAll(a => new SelectListItem() { Text = a.Title, Value = a.Title });
+            //var applications = IdemApplications.Applications.ConvertAll(a => new SelectListItem() { Text = a.Title, Value = a.Title });
 
-            ViewBag.GenerationGroupMemberCount = GroupHelper.GetGroupMembers(model?.GenerationUserGroup)?.Count ?? 0;
-            ViewBag.ApprovalGroupMemberCount = GroupHelper.GetGroupMembers(model?.ApprovalUserGroup)?.Count ?? 0;
+            //TODO: Get this from local group membership
+            ViewBag.GenerationGroupMemberCount = model?.GenerationGroup?.Users?.Count ?? 0; //GroupHelper.GetGroupMembers(model?.GenerationUserGroup)?.Count ?? 0;
+            ViewBag.ApprovalGroupMemberCount = model?.ApprovalGroup?.Users?.Count ?? 0; //GroupHelper.GetGroupMembers(model?.ApprovalUserGroup)?.Count ?? 0;
 
-            ViewBag.Applications = applications;
+
+            ViewBag.Groups = _context.Groups.OrderBy(g => g.Name).ToList()
+                .ConvertAll(a => new SelectListItem() { Text = a.Name, Value = a.Id.ToString() });
+
+
+            //ViewBag.Applications = applications;
+            ViewBag.Applications = new List<SelectListItem>();
             ViewBag.DataGroups = dataGroups;
             ViewBag.Collections = collections;
             return PartialView("_FileSpecificationEditForm", dto);
@@ -231,29 +240,43 @@ namespace AdenDemo.Web.Controllers
 
         }
 
-        public ActionResult EditGroupMembership(string id)
+        public ActionResult EditGroupMembership(int id)
         {
-            var displayGroupName = id.Humanize().ToTitleCase().RemoveExactWord("App");
-            ViewBag.GroupName = id;
+            var dto = _context.Groups.Include(u => u.Users).FirstOrDefault(x => x.Id == id);
+
+
+            //return PartialView("_GroupMembershipEditForm", dto);
+
+            var displayGroupName = dto.Name.Humanize().ToTitleCase().RemoveExactWord("App");
+            ViewBag.GroupName = dto.Name;
             ViewBag.DisplayGroupName = displayGroupName;
             ViewBag.IsGroupDefined = true;
 
-            var groupExists = _membershipService.GroupExists(id);
 
-            if (!groupExists)
-            {
-                ViewBag.IsGroupDefined = false;
-                return PartialView("_GroupMembershipEditForm");
-            }
+            //var displayGroupName = id.Humanize().ToTitleCase().RemoveExactWord("App");
+            //ViewBag.GroupName = id;
+            //ViewBag.DisplayGroupName = displayGroupName;
+            //ViewBag.IsGroupDefined = true;
 
-            var membersResult = _membershipService.GetGroupMembers(id);
+            //var groupExists = _membershipService.GroupExists(id);
 
-            if (membersResult.IsSuccess) ViewBag.Members = membersResult.Value;
+            //if (!groupExists)
+            //{
+            //    ViewBag.IsGroupDefined = false;
+            //    return PartialView("_GroupMembershipEditForm");
+            //}
+
+            //var membersResult = _membershipService.GetGroupMembers(id);
+
+            //if (membersResult.IsSuccess) ViewBag.Members = membersResult.Value;
 
 
-            if (membersResult.IsFailure) ViewBag.IsGroupDefined = false;
+            //if (membersResult.IsFailure) ViewBag.IsGroupDefined = false;
 
-            return PartialView("_GroupMembershipEditForm");
+            //return PartialView("_GroupMembershipEditForm");
+
+            return PartialView("_GroupMembershipEditForm", dto);
+
         }
     }
 }

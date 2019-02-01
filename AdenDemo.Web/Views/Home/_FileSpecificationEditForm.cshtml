@@ -19,7 +19,9 @@
 </style>
 <form id="form" name="form" role="form">
     <div id="error">
-
+        <pre>
+@Model.ToString()
+</pre>
     </div>
 
     <div class="form-horizontal">
@@ -88,7 +90,9 @@
                 <div class="form-group">
                     <label class="control-label full-width">
                         Select group members
-                        <button class="btn btn-info btn-block" data-membership id="btnGenerationGroup" data-id="@Model.Id" data-modify-group data-group-name="@Model.GenerationUserGroup" @(Model.GenerationUserGroup == null ? "disabled='disabled'" : "")>Generation Group Members (@ViewBag.GenerationGroupMemberCount)</button>
+                        <button class="btn btn-info btn-block" data-membership id="btnGenerationGroup" data-group-id="@Model.GenerationGroupId" @(Model.GenerationGroupId == null ? "disabled='disabled'" : "")>
+                            @(Model.GenerationGroupId == null ? "Not a valid group" : $"Generation Group Members ({Model.GenerationGroupCount})")
+                        </button>
                     </label>
                 </div>
             </div>
@@ -110,7 +114,11 @@
                 <div class="form-group">
                     <label class="control-label full-width">
                         Select group members
-                        <button class="btn btn-info btn-block" data-membership id="btnApprovalGroup" data-id="@Model.Id" data-modify-group data-group-name="@Model.ApprovalUserGroup" @(Model.ApprovalUserGroup == null ? "disabled='disabled'" : "")>Approval Group Members (@ViewBag.ApprovalGroupMemberCount)</button>
+                        <button class="btn btn-info btn-block" data-membership id="btnApprovalGroup" data-group-id="@Model.ApprovalGroupId" @(Model.ApprovalGroupId == null ? "disabled='disabled'" : "")>
+                            
+                            @(Model.ApprovalGroupId == null ? "Not a valid group" : $"Approval Group Members ({Model.ApprovalGroupCount})")
+
+                        </button>
                     </label>
                 </div>
             </div>
@@ -141,9 +149,8 @@
                 <div class="form-group">
                     <label class="control-label full-width">
                         Generation User Group
-                        @Html.TextBoxFor(model => model.GenerationUserGroup, new { @class = "form-control", autofocus = "autofocus" })
+                        @Html.DropDownListFor(m => m.GenerationGroupId, new SelectList(ViewBag.Groups, "Value", "Text"), "Select Group", new { @class = "form-control" })
                     </label>
-                    @Html.ValidationMessageFor(model => model.GenerationUserGroup, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -151,9 +158,9 @@
                 <div class="form-group">
                     <label class="control-label full-width">
                         Approval User Group
-                        @Html.TextBoxFor(model => model.ApprovalUserGroup, new { @class = "form-control" })
+                        @Html.DropDownListFor(m => m.ApprovalGroupId, new SelectList(ViewBag.Groups, "Value", "Text"), "Select Group", new { @class = "form-control" })
+                        @*@Html.TextBoxFor(model => model.GenerationGroup.Name, new { @class = "form-control" })*@
                     </label>
-                    @Html.ValidationMessageFor(model => model.ApprovalUserGroup, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -161,9 +168,8 @@
                 <div class="form-group">
                     <label class="control-label full-width">
                         Submission User Group
-                        @Html.TextBoxFor(model => model.SubmissionUserGroup, new { @class = "form-control" })
+                        @Html.DropDownListFor(m => m.SubmissionGroupId, new SelectList(ViewBag.Groups, "Value", "Text"), "Select Group", new { @class = "form-control" })
                     </label>
-                    @Html.ValidationMessageFor(model => model.SubmissionUserGroup, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
@@ -208,10 +214,8 @@
     $('[data-membership]').on('click',
             function(e) {
                 e.preventDefault();
-                var groupName = $(this).data('group-name'); 
-                console.log('e', groupName);
-                console.log('show generators');
-                var url = '/home/EditGroupMembership/' + groupName;
+                var id = $(this).data('group-id'); 
+                var url = '/home/EditGroupMembership/' + id;
                 var title = 'Edit Group Members';
 
                 BootstrapDialog.show({
@@ -224,7 +228,7 @@
                         if (status === 'error') {
                             console.log('status', status);
                             console.log('resp', resp);
-                            window.$log.error('Error showing group membership');
+                            console.log('Error showing group membership');
                         }
                     }),
                     buttons: [

@@ -45,17 +45,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ALSDE.Core.4, Version=2018.5.21.6716, Culture=neutral, PublicKeyToken=9c039b0383290564, processorArchitecture=MSIL">
-      <HintPath>..\packages\ALSDE.Core.4.2018.5.21.6716\lib\net40\ALSDE.Core.4.dll</HintPath>
-    </Reference>
     <Reference Include="Alsde.Entity, Version=2018.4.9.25674, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Entity.2018.4.3\lib\net451\Alsde.Entity.dll</HintPath>
     </Reference>
     <Reference Include="Alsde.Extensions, Version=2018.11.16.6895, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Extensions.2018.11.0\lib\net451\Alsde.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="ALSDE.IdemLib, Version=2019.1.30.6970, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ALSDE.IdemLib.2019.1.0-beta\lib\net40\ALSDE.IdemLib.dll</HintPath>
+    <Reference Include="ALSDE.IdemLib, Version=2019.1.31.6971, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ALSDE.IdemLib.2019.1.0-beta-02\lib\net40\ALSDE.IdemLib.dll</HintPath>
     </Reference>
     <Reference Include="Alsde.Security, Version=2019.1.30.6969, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Security.2019.1.0-beta-01\lib\net451\Alsde.Security.dll</HintPath>
@@ -231,6 +228,7 @@
     <Compile Include="Controllers\api\SubmissionController.cs" />
     <Compile Include="Controllers\api\WorkItemController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Data\IdemContext.cs" />
     <Compile Include="Data\AdenContext.cs" />
     <Compile Include="Data\Configuration\FileSpecificationConfiguration.cs" />
     <Compile Include="Data\Configuration\GroupConfiguration.cs" />
@@ -441,7 +439,9 @@
     <Content Include="src\scss\main\main.min.css">
       <DependentUpon>main.css</DependentUpon>
     </Content>
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

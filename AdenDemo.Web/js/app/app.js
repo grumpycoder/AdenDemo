@@ -95,7 +95,7 @@
                             dataGrid.refresh();
                         }
                     }
-                },
+                }
             );
         }
     }).dxDataGrid("instance");
@@ -168,7 +168,7 @@
                             dataGrid.refresh();
                         }
                     }
-                },
+                }
             );
         }
     }).dxDataGrid("instance");
@@ -343,6 +343,7 @@
         }),
         remoteOperations: true,
         allowColumnResizing: true,
+        allowColumnReordering: true,
         showBorders: true,
         wordWrapEnabled: true,
         'export': {
@@ -380,8 +381,8 @@
         columnMinWidth: 50,
         columnAutoWidth: true,
         columns: [
-            { dataField: 'fileNumber', caption: 'File Number' },
-            { dataField: 'fileName', caption: 'File Name' },
+            { dataField: 'fileNumber', caption: 'File Number', dataType: 'string' },
+            { dataField: 'fileName', caption: 'File Name', dataType: 'string' },
             {
                 dataField: 'isRetired',
                 caption: 'Retired',
@@ -396,15 +397,15 @@
                     return 'No';
                 },
             },
-            { dataField: 'section', caption: 'Section' },
-            { dataField: 'supportGroup', caption: 'Support Group', },
-            { dataField: 'application', caption: 'Application', },
-            { dataField: 'collection', caption: 'Collection' },
-            { dataField: 'generationUserGroup', caption: 'Generation Group' },
-            { dataField: 'approvalUserGroup', caption: 'Approval Group' },
-            { dataField: 'submissionUserGroup', caption: 'Submission Group' },
+            { dataField: 'section', caption: 'Section', dataType: 'string' },
+            { dataField: 'supportGroup', caption: 'Support Group', dataType: 'string' },
+            { dataField: 'application', caption: 'Application', dataType: 'string'},
+            { dataField: 'collection', caption: 'Collection', dataType: 'string' },
+            { dataField: 'generationUserGroup', caption: 'Generation Group', dataType: 'string' },
+            { dataField: 'approvalUserGroup', caption: 'Approval Group', dataType: 'string' },
+            { dataField: 'submissionUserGroup', caption: 'Submission Group', dataType: 'string' },
             {
-                dataField: 'generators', caption: 'Generators', 
+                dataField: 'generators', caption: 'Generators', dataType: 'string', 
                 cellTemplate: function(container, options) {
                     options.data.generators.forEach(function(item) { $('<span>' + item + '</span><br />').appendTo(container) });
                 }, 
@@ -414,7 +415,7 @@
                 }
             },
             {
-                dataField: 'approvers', caption: 'Approvers', 
+                dataField: 'approvers', caption: 'Approvers', dataType: 'string', 
                 cellTemplate: function(container, options) {
                     options.data.approvers.forEach(function(item) { $('<span>' + item + '</span><br />').appendTo(container) });
                 }, 
@@ -424,7 +425,7 @@
                 }
             },
             {
-                dataField: 'submitters', caption: 'Submitters', 
+                dataField: 'submitters', caption: 'Submitters', dataType: 'string',
                 cellTemplate: function(container, options) {
                     options.data.submitters.forEach(function(item) { $('<span>' + item + '</span><br />').appendTo(container) });
                 }, 
@@ -540,7 +541,7 @@
                             dataGrid.state({});
                         }
                     }
-                },
+                }
                 
             );
         }
@@ -927,7 +928,7 @@ $(function () {
                             dataGrid.state({});
                         }
                     }
-                },
+                }
                 
             );
         }
@@ -936,7 +937,7 @@ $(function () {
     function showHistory(e) {
         var title = 'History';
         var url = '/history/' + e.row.data.id;
-        console.log(e.row.data);
+
         BootstrapDialog.show({
             size: window.BootstrapDialog.SIZE_WIDE,
             draggable: true,

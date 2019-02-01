@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using AdenDemo.Web.Models;
 
 namespace AdenDemo.Web.ViewModels
 {
@@ -18,12 +19,6 @@ namespace AdenDemo.Web.ViewModels
         public string Collection { get; set; }
         public string SupportGroup { get; set; }
 
-        [Display(Name = "Generation User Group")]
-        public string GenerationUserGroup { get; set; }
-        [Display(Name = "Approval User Group")]
-        public string ApprovalUserGroup { get; set; }
-        [Display(Name = "Submission User Group")]
-        public string SubmissionUserGroup { get; set; }
 
         [Display(Name = "Filename Format")]
         public string FileNameFormat { get; set; }
@@ -31,5 +26,16 @@ namespace AdenDemo.Web.ViewModels
         [Display(Name = "Report Action")]
         public string ReportAction { get; set; }
 
+
+        public Group GenerationGroup { get; set; }
+
+        public Group ApprovalGroup { get; set; }
+        public Group SubmissionGroup { get; set; }
+
+        public int? GenerationGroupCount { get; set; }
+        public int? ApprovalGroupCount { get; set; }
+        public int? GenerationGroupId { get; set; }
+        public int? ApprovalGroupId { get; set; }
+        public int? SubmissionGroupId { get; set; }
     }
 }
