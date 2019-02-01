@@ -1,4 +1,5 @@
 ﻿using AdenDemo.Web.Data;
+using AdenDemo.Web.Models;
 using ALSDE.Services;
 using CSharpFunctionalExtensions;
 using System.Collections.Generic;
@@ -15,13 +16,17 @@ namespace AdenDemo.Web.Services
             _context = new AdenContext();
         }
 
-        public string GetAssignee(string groupName)
+        //public string GetAssignee(string groupName)
+        public string GetAssignee(Group group)
         {
-            var members = GetGroupMembers(groupName).Value;
+            //TODO: Check for empty group users
+
+            var members = group.Users.ToList().Select(x => x.EmailAddress);
 
             var alreadyAssignedMembers = _context.WorkItems.AsNoTracking()
                 .Where(u => members.Contains(u.AssignedUser))
                 .ToLookup(m => m.AssignedUser);
+
 
             var firstAvailableMember = members.FirstOrDefault(x => !alreadyAssignedMembers.Contains(x));
 

@@ -110,13 +110,20 @@ namespace AdenDemo.Web.Controllers.api
 
             if (workItem == null) return NotFound();
 
-            var report = await _context.Reports.Include(s => s.Submission.FileSpecification).SingleOrDefaultAsync(r => r.Id == workItem.ReportId);
+            //TODO: Pulling too much data here
+            var report = await _context.Reports
+                .Include(s => s.Submission.FileSpecification.GenerationGroup.Users)
+                .Include(s => s.Submission.FileSpecification.ApprovalGroup.Users)
+                .Include(s => s.Submission.FileSpecification.SubmissionGroup.Users)
+                .SingleOrDefaultAsync(r => r.Id == workItem.ReportId);
 
             if (report == null) return BadRequest("No report for work item task");
 
 
             if (workItem.WorkItemAction == WorkItemAction.Generate)
             {
+                if (string.IsNullOrWhiteSpace(report.Submission.FileSpecification.ReportAction)) return BadRequest("No report action assigned to generate documents");
+
                 //Create documents
                 //TODO: Flesh out Generate documents from stored procdure
                 var version = 1;
@@ -154,7 +161,7 @@ namespace AdenDemo.Web.Controllers.api
             //Start new work item
             var wi = new WorkItem() { WorkItemState = WorkItemState.NotStarted, AssignedDate = DateTime.Now };
             report.Submission.LastUpdated = DateTime.Now;
-            var nextGroupName = report.Submission.FileSpecification.GenerationUserGroup;
+            var nextGroupName = report.Submission.FileSpecification.GenerationGroup;
 
             if (workItem.WorkItemAction == WorkItemAction.Generate)
             {
@@ -169,7 +176,7 @@ namespace AdenDemo.Web.Controllers.api
                 wi.AssignedUser = workItem.AssignedUser;
                 report.ReportState = ReportState.AwaitingApproval;
                 report.Submission.SubmissionState = SubmissionState.AwaitingApproval;
-                nextGroupName = report.Submission.FileSpecification.ApprovalUserGroup;
+                nextGroupName = report.Submission.FileSpecification.ApprovalGroup;
             }
 
             if (workItem.WorkItemAction == WorkItemAction.Approve)
@@ -177,7 +184,7 @@ namespace AdenDemo.Web.Controllers.api
                 wi.WorkItemAction = WorkItemAction.Submit;
                 report.ReportState = ReportState.AssignedForSubmission;
                 report.Submission.SubmissionState = SubmissionState.AssignedForSubmission;
-                nextGroupName = report.Submission.FileSpecification.SubmissionUserGroup;
+                nextGroupName = report.Submission.FileSpecification.SubmissionGroup;
             }
 
             if (workItem.WorkItemAction == WorkItemAction.ReviewError)
@@ -185,7 +192,7 @@ namespace AdenDemo.Web.Controllers.api
                 wi.WorkItemAction = WorkItemAction.Generate;
                 report.ReportState = ReportState.AssignedForGeneration;
                 report.Submission.SubmissionState = SubmissionState.AssignedForGeneration;
-                nextGroupName = report.Submission.FileSpecification.GenerationUserGroup;
+                nextGroupName = report.Submission.FileSpecification.GenerationGroup;
             }
 
             if (workItem.WorkItemAction == WorkItemAction.Submit)
@@ -194,8 +201,10 @@ namespace AdenDemo.Web.Controllers.api
                 report.Submission.SubmissionState = SubmissionState.Complete;
             }
 
+            if (!nextGroupName.Users.Any()) return BadRequest("No group members to assign next task. ");
 
             var assignedUser = _membershipService.GetAssignee(nextGroupName);
+
 
             wi.AssignedUser = assignedUser;
             report.Submission.CurrentAssignee = assignedUser;
@@ -218,13 +227,13 @@ namespace AdenDemo.Web.Controllers.api
 
             if (workItem == null) return NotFound();
 
-            var report = await _context.Reports.Include(s => s.Submission.FileSpecification).SingleOrDefaultAsync(r => r.Id == workItem.ReportId);
+            var report = await _context.Reports.Include(s => s.Submission.FileSpecification.GenerationGroup).SingleOrDefaultAsync(r => r.Id == workItem.ReportId);
 
             workItem.WorkItemState = WorkItemState.Reject;
             workItem.CompletedDate = DateTime.Now;
 
             //Start new work item
-            var assignedUser = _membershipService.GetAssignee(report.Submission.FileSpecification.GenerationUserGroup);
+            var assignedUser = _membershipService.GetAssignee(report.Submission.FileSpecification.GenerationGroup);
 
             var wi = new WorkItem()
             {

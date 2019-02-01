@@ -69,14 +69,19 @@ namespace AdenDemo.Web.Controllers.api
         [HttpPost, Route("start/{id}")]
         public async Task<object> Start(int id)
         {
-            var submission = await _context.Submissions.Include(f => f.FileSpecification).FirstOrDefaultAsync(x => x.Id == id);
+            //TODO: Getting too much data
+            var submission = await _context.Submissions.Include(f => f.FileSpecification.GenerationGroup.Users).FirstOrDefaultAsync(x => x.Id == id);
             if (submission == null) return NotFound();
 
-            if (string.IsNullOrWhiteSpace(submission.FileSpecification.GenerationUserGroup))
+            if (submission.FileSpecification.GenerationUserGroup == null)
                 return BadRequest($"No generation group defined for File { submission.FileSpecification.FileNumber }");
 
+            if (!submission.FileSpecification.GenerationGroup.Users.Any())
+                return BadRequest($"No group members to assign next task. ");
 
-            var assignedUser = _membershipService.GetAssignee(submission.FileSpecification.GenerationUserGroup);
+            var assignedUser = _membershipService.GetAssignee(submission.FileSpecification.GenerationGroup);
+
+            if (string.IsNullOrWhiteSpace(assignedUser)) return BadRequest("No group members to assign next task. ");
 
             //Change state
             submission.SubmissionState = SubmissionState.AssignedForGeneration;
@@ -99,11 +104,11 @@ namespace AdenDemo.Web.Controllers.api
 
             //WorkEmailer.Send(workItem, submission);
 
-            //_context.SaveChanges();
+            _context.SaveChanges();
 
-            //submission.CurrentReportId = report.Id;
+            submission.CurrentReportId = report.Id;
 
-            //_context.SaveChanges();
+            _context.SaveChanges();
 
             return Ok(submission);
         }
@@ -163,7 +168,7 @@ namespace AdenDemo.Web.Controllers.api
             var audit = new SubmissionAudit(submission.Id, message);
             submission.SubmissionAudits.Add(audit);
 
-            var assignedUser = _membershipService.GetAssignee(submission.FileSpecification.GenerationUserGroup);
+            var assignedUser = _membershipService.GetAssignee(submission.FileSpecification.GenerationGroup);
 
             //Change state
             submission.SubmissionState = SubmissionState.AssignedForGeneration;
