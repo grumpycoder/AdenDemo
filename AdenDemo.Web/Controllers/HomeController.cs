@@ -73,6 +73,8 @@ namespace AdenDemo.Web.Controllers
                 });
             }
 
+            var list = dto.SelectMany(x => x.Documents.Where(d => d.Version < x.CurrentDocumentVersion)).ToList();
+            ViewBag.Old = list; 
             return View(dto);
             ;
         }

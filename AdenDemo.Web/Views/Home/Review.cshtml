@@ -1,8 +1,7 @@
 ﻿@model List<ReportViewDto>
 @{
     ViewBag.Title = "Files";
-    int count = 0;
-    int mostRecentVersion = 1;
+    int count = 0; 
 }
 
 <style>
@@ -24,10 +23,11 @@
 <section class="content">
     <div class="row">
         <div class="col-md-12">
+
             <div class="panel panel-default">
 
                 <div class="panel-heading">
-                    <span class="panel-title"> Files</span>
+                    <span class="panel-title">Files</span>
                     <span class="panel-subtitle">Eden report generation and submission results</span>
                 </div>
 
@@ -35,206 +35,96 @@
                     @foreach (var report in Model.OrderByDescending(x => x.Id))
                     {
                         count += 1;
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h3 class="alert alert-@report.PanelClass">
-                                    @report.DisplayFileName
-                                    @if (count == 1 && Model.Count > 1)
+
+
+                        <div class="panel panel-@report.PanelClass">
+                            <div class="panel-heading">
+                                <span class="panel-title">@report.DisplayFileName</span>
+                                <span class="panel-subtitle">
+                                    @if (Model.Count > 1 & count == 1)
                                     {
-                                        <span>(Reopened Submission)</span>
+                                        <span>- Reopened current version</span>
                                     }
-                                </h3>
-
-                                <hr />
+                                </span>
+                                
                             </div>
-                        </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <dl>
+                                            <dt>Data Year</dt>
+                                            <dd>@report.DisplayDataYear</dd>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <dl>
-                                    <dt>Data Year</dt>
-                                    <dd>@report.DisplayDataYear</dd>
+                                            <dt>Submission Due Date</dt>
+                                            <dd>@report.SubmissionDueDate.ToString("M/dd/yyyy")</dd>
+                                            <dt>Status</dt>
+                                            <dd>@report.ReportStateDisplay</dd>
 
-                                    <dt>Submission Due Date</dt>
-                                    <dd>@report.SubmissionDueDate.ToString("M/dd/yyyy")</dd>
-                                    <dt>Status</dt>
-                                    <dd>@report.ReportStateDisplay</dd>
-
-                                    <dt>Generated</dt>
-                                    <dd>
-                                        @report.GeneratedDate
-                                        @if (!report.GeneratedDate.HasValue)
-                                        {
-                                            <text>Not yet generated</text>
-                                        }
-                                    </dd>
-
-                                    <dt>Approved</dt>
-                                    <dd>
-                                        @report.ApprovedDate
-                                        @if (!report.ApprovedDate.HasValue)
-                                        {
-                                            <text>Not yet approved</text>
-                                        }
-                                    </dd>
-
-                                    <dt>Submitted</dt>
-                                    <dd>
-
-                                        @report.SubmittedDate
-                                        @if (!report.SubmittedDate.HasValue)
-                                        {
-                                            <text>Not yet submitted</text>
-                                        }
-                                    </dd>
-
-                                </dl>
-
-                            </div>
-                           
-                            <div class="col-md-6">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <span class="panel-title">
-                                            Current File Revision
-                                        </span>
-                                    </div>
-                                    <div class="panel-body">
-                                        <table class="table table-responsive">
-
-                                            <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Version</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @if (report.Documents.Any())
+                                            <dt>Generated</dt>
+                                            <dd>
+                                                @report.GeneratedDate
+                                                @if (!report.GeneratedDate.HasValue)
                                                 {
-
-                                                    mostRecentVersion = report.Documents.OrderByDescending(d => d.Version).FirstOrDefault().Version;
-
-
-                                                    foreach (var doc in report.Documents.Where(d => d.Version == mostRecentVersion).OrderByDescending(d => d.Version))
-                                                    {
-                                                        <tr>
-                                                            <td>
-                                                                @if (doc.FileSizeMb > 0)
-                                                                {
-                                                                    <a href="#" class="btn btn-sm btn-default"
-                                                                       data-document-viewer
-                                                                       data-doc-id=@doc.Id
-                                                                       data-url="/document/@doc.Id"
-                                                                       data-title="File must be downloaded"
-                                                                       title="File must be downloaded"
-                                                                       data-placement="right"
-                                                                       data-toggle="tooltip"
-                                                                       data-original-title="@doc.Filename" disabled aria-disabled="True">View</a>
-                                                                }
-                                                                else
-                                                                {
-                                                                    <a href="#" class="btn btn-sm btn-default"
-                                                                       data-document-viewer
-                                                                       data-doc-id=@doc.Id
-                                                                       data-url="/document/@doc.Id"
-                                                                       data-title="@doc.Filename"
-                                                                       title="@doc.Filename"
-                                                                       data-placement="right"
-                                                                       data-original-title="@doc.Filename">View</a>
-                                                                }
-                                                                <a href="/download/@doc.Id" class="btn btn-sm btn-default" download>Download</a>
-                                                                <span>
-                                                                    @doc.Filename<span> - </span><span class="small">(@doc.FileSizeInMb)</span>
-                                                                </span>
-                                                            </td>
-                                                            <td>@doc.Version</td>
-                                                        </tr>
-                                                    }
+                                                    <text>Not yet generated</text>
                                                 }
-                                                else
+                                            </dd>
+
+                                            <dt>Approved</dt>
+                                            <dd>
+                                                @report.ApprovedDate
+                                                @if (!report.ApprovedDate.HasValue)
                                                 {
-                                                    <div>No documents generated</div>
+                                                    <text>Not yet approved</text>
                                                 }
-                                            </tbody>
-                                        </table>
+                                            </dd>
+
+                                            <dt>Submitted</dt>
+                                            <dd>
+
+                                                @report.SubmittedDate
+                                                @if (!report.SubmittedDate.HasValue)
+                                                {
+                                                    <text>Not yet submitted</text>
+                                                }
+                                            </dd>
+
+                                        </dl>
+
                                     </div>
+
+                                    <div class="col-md-6">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <span class="panel-title">
+                                                    Current File Revision
+                                                </span>
+                                            </div>
+                                            <div class="panel-body">
+                                                @Html.Partial("_ReportDocuments", report.Documents)
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="col-md-6 col-md-offset-6">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <span class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#faq" href="#fileHistory" aria-expanded="false" aria-controls="fileHistory">
+                                                        Revision History
+                                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="panel-body panel-collapse collapse" id="fileHistory" role="tabpanel" aria-labelledby="fileHistory">
+                                                @Html.Partial("_ReportDocuments", report.Documents.Where(d => d.Version < report.CurrentDocumentVersion).ToList())
+                                            </div>
+                                        </div>
+
+                                    </div>
+
                                 </div>
-
-
                             </div>
-
-                            <div class="col-md-6 col-md-offset-6">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <span class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#faq" href="#fileHistory" aria-expanded="false" aria-controls="fileHistory">
-                                                Revision History
-                                            </a>
-                                        </span>
-                                    </div>
-                                    <div class="panel-body panel-collapse collapse" id="fileHistory" role="tabpanel" aria-labelledby="fileHistory">
-                                        @{
-                                            if (report.Documents.Any(d => d.Version < mostRecentVersion))
-                                            {
-                                                <table class="table table-responsive">
-
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Name</th>
-                                                            <th>Version</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-
-                                                        @foreach (var doc in report.Documents.Where(d => d.Version < mostRecentVersion).OrderByDescending(d => d.Version))
-                                                        {
-                                                            <tr>
-                                                                <td>
-                                                                    @if (doc.FileSizeMb > 0)
-                                                                    {
-                                                                        <a href="#" class="btn btn-sm btn-default"
-                                                                           data-document-viewer
-                                                                           data-doc-id=@doc.Id
-                                                                           data-url="/document/@doc.Id"
-                                                                           data-title="@doc.Filename"
-                                                                           title="@doc.Filename"
-                                                                           data-placement="right"
-                                                                           data-original-title="@doc.Filename" disabled aria-disabled="True">View</a>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <a href="#" class="btn btn-sm btn-default"
-                                                                           data-document-viewer
-                                                                           data-doc-id=@doc.Id
-                                                                           data-url="/document/@doc.Id"
-                                                                           data-title="@doc.Filename"
-                                                                           title="@doc.Filename"
-                                                                           data-placement="right"
-                                                                           data-original-title="@doc.Filename">View</a>
-                                                                    }
-                                                                    <a href="/download/@doc.Id" class="btn btn-sm btn-default" download>Download</a>
-                                                                    <span>
-                                                                        @doc.Filename<span> - </span><span class="small">(@doc.FileSizeInMb)</span>
-                                                                    </span>
-                                                                </td>
-                                                                <td>@doc.Version</td>
-                                                            </tr>
-                                                        }
-                                                    </tbody>
-                                                </table>
-                                            }
-                                            else
-                                            {
-                                                <h5>No earlier revisions</h5>
-                                            }
-                                        }
-
-                                    </div>
-                                </div>
-
-
-                            </div>
-
                         </div>
 
                     }

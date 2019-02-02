@@ -26,6 +26,7 @@ namespace AdenDemo.Web.ViewModels
 
         public List<DocumentViewDto> Documents { get; set; }
 
+        public int CurrentDocumentVersion { get; set; }
         public string PanelClass
         {
             get

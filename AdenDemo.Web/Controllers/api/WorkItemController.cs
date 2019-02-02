@@ -126,14 +126,15 @@ namespace AdenDemo.Web.Controllers.api
 
                 //Create documents
                 //TODO: Flesh out Generate documents from stored procdure
-                var version = 1;
+                var version = report.CurrentDocumentVersion + 1;
                 string filename;
+                 
                 if (report.Submission.FileSpecification.IsSCH)
                 {
                     filename = report.Submission.FileSpecification.FileNameFormat.Replace("{level}", ReportLevel.SCH.GetDisplayName()).Replace("{version}", string.Format("v{0}.csv", version));
 
                     var file = ExecuteDocumentCreationToFile(report, ReportLevel.SCH);
-                    var doc = new ReportDocument() { FileData = file, ReportLevel = ReportLevel.SCH, Filename = filename, FileSize = file.Length };
+                    var doc = new ReportDocument() { FileData = file, ReportLevel = ReportLevel.SCH, Filename = filename, FileSize = file.Length, Version = version };
                     report.Documents.Add(doc);
 
                 }
@@ -141,17 +142,18 @@ namespace AdenDemo.Web.Controllers.api
                 {
                     filename = report.Submission.FileSpecification.FileNameFormat.Replace("{level}", ReportLevel.LEA.GetDisplayName()).Replace("{version}", string.Format("v{0}.csv", version));
                     var file = ExecuteDocumentCreationToFile(report, ReportLevel.LEA);
-                    var doc = new ReportDocument() { FileData = file, ReportLevel = ReportLevel.SCH, Filename = filename, FileSize = file.Length };
+                    var doc = new ReportDocument() { FileData = file, ReportLevel = ReportLevel.SCH, Filename = filename, FileSize = file.Length, Version = version };
                     report.Documents.Add(doc);
                 }
                 if (report.Submission.FileSpecification.IsSEA)
                 {
                     filename = report.Submission.FileSpecification.FileNameFormat.Replace("{level}", ReportLevel.SEA.GetDisplayName()).Replace("{version}", string.Format("v{0}.csv", version));
                     var file = ExecuteDocumentCreationToFile(report, ReportLevel.SEA);
-                    var doc = new ReportDocument() { FileData = file, ReportLevel = ReportLevel.SCH, Filename = filename, FileSize = file.Length };
+                    var doc = new ReportDocument() { FileData = file, ReportLevel = ReportLevel.SCH, Filename = filename, FileSize = file.Length, Version = version };
                     report.Documents.Add(doc);
                 }
                 report.GeneratedDate = DateTime.Now;
+                report.CurrentDocumentVersion = version; 
             }
 
             //Complete work item
@@ -230,7 +232,12 @@ namespace AdenDemo.Web.Controllers.api
 
             if (workItem == null) return NotFound();
 
-            var report = await _context.Reports.Include(s => s.Submission.FileSpecification.GenerationGroup).SingleOrDefaultAsync(r => r.Id == workItem.ReportId);
+            //TODO: Pulling too much data here
+            var report = await _context.Reports.Include(s => s.Submission.FileSpecification.GenerationGroup.Users).SingleOrDefaultAsync(r => r.Id == workItem.ReportId);
+
+            if (report == null) return BadRequest("No group members to assign next task. ");
+
+            if (!report.Submission.FileSpecification.GenerationGroup.Users.Any()) return BadRequest("No users"); 
 
             workItem.WorkItemState = WorkItemState.Reject;
             workItem.CompletedDate = DateTime.Now;
