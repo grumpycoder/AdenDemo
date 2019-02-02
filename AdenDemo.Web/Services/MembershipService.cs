@@ -16,10 +16,9 @@ namespace AdenDemo.Web.Services
             _context = new AdenContext();
         }
 
-        //public string GetAssignee(string groupName)
         public string GetAssignee(Group group)
         {
-            //TODO: Check for empty group users
+            if (!group.Users.Any()) return string.Empty;
 
             var members = group.Users.ToList().Select(x => x.EmailAddress);
 
