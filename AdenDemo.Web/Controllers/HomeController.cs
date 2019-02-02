@@ -74,7 +74,7 @@ namespace AdenDemo.Web.Controllers
             }
 
             var list = dto.SelectMany(x => x.Documents.Where(d => d.Version < x.CurrentDocumentVersion)).ToList();
-            ViewBag.Old = list; 
+            ViewBag.Old = list;
             return View(dto);
             ;
         }
@@ -111,7 +111,6 @@ namespace AdenDemo.Web.Controllers
 
             //TODO: Check for null file specification
 
-
             var dataGroups = new List<SelectListItem>()
             {
                 new SelectListItem(){ Value = "Data", Text = "Data"},
@@ -134,19 +133,13 @@ namespace AdenDemo.Web.Controllers
                 new SelectListItem(){ Value = "Schedules", Text = "Schedules"}
             };
 
-            //var applications = IdemApplications.Applications.ConvertAll(a => new SelectListItem() { Text = a.Title, Value = a.Title });
-
-            //TODO: Get this from local group membership
-            ViewBag.GenerationGroupMemberCount = model?.GenerationGroup?.Users?.Count ?? 0; //GroupHelper.GetGroupMembers(model?.GenerationUserGroup)?.Count ?? 0;
-            ViewBag.ApprovalGroupMemberCount = model?.ApprovalGroup?.Users?.Count ?? 0; //GroupHelper.GetGroupMembers(model?.ApprovalUserGroup)?.Count ?? 0;
-
+            var applications = new IdemService().GetApplication().ConvertAll(a => new SelectListItem() { Text = a.Title, Value = a.Title });
 
             ViewBag.Groups = _context.Groups.OrderBy(g => g.Name).ToList()
                 .ConvertAll(a => new SelectListItem() { Text = a.Name, Value = a.Id.ToString() });
 
 
-            //ViewBag.Applications = applications;
-            ViewBag.Applications = new List<SelectListItem>();
+            ViewBag.Applications = applications;
             ViewBag.DataGroups = dataGroups;
             ViewBag.Collections = collections;
             return PartialView("_FileSpecificationEditForm", dto);

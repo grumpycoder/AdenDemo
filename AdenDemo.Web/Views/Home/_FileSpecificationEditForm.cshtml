@@ -91,7 +91,7 @@
                     <label class="control-label full-width">
                         Select group members
                         <button class="btn btn-info btn-block" data-membership id="btnGenerationGroup" data-group-id="@Model.GenerationGroupId" @(Model.GenerationGroupId == null ? "disabled='disabled'" : "")>
-                            @(Model.GenerationGroupId == null ? "Not a valid group" : $"Generation Group Members ({Model.GenerationGroupCount})")
+                            @(Model.GenerationGroupId == null ? "Not a valid group" : $"Generation Group Members ({Model?.GenerationGroup?.Users?.Count ?? 0})")
                         </button>
                     </label>
                 </div>
@@ -116,7 +116,7 @@
                         Select group members
                         <button class="btn btn-info btn-block" data-membership id="btnApprovalGroup" data-group-id="@Model.ApprovalGroupId" @(Model.ApprovalGroupId == null ? "disabled='disabled'" : "")>
                             
-                            @(Model.ApprovalGroupId == null ? "Not a valid group" : $"Approval Group Members ({Model.ApprovalGroupCount})")
+                            @(Model.ApprovalGroupId == null ? "Not a valid group" : $"Approval Group Members ({Model.ApprovalGroup?.Users?.Count ?? 0})")
 
                         </button>
                     </label>
@@ -159,8 +159,7 @@
                     <label class="control-label full-width">
                         Approval User Group
                         @Html.DropDownListFor(m => m.ApprovalGroupId, new SelectList(ViewBag.Groups, "Value", "Text"), "Select Group", new { @class = "form-control" })
-                        @*@Html.TextBoxFor(model => model.GenerationGroup.Name, new { @class = "form-control" })*@
-                    </label>
+                      </label>
                 </div>
             </div>
 
