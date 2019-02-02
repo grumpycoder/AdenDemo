@@ -157,7 +157,8 @@ namespace AdenDemo.Web.Controllers.api
 
             if (model == null) return BadRequest("No audit entry found in request");
 
-            var submission = await _context.Submissions.Include(f => f.FileSpecification).FirstOrDefaultAsync(x => x.Id == id);
+            //TODO: Pulling too much data here
+            var submission = await _context.Submissions.Include(f => f.FileSpecification.GenerationGroup.Users).FirstOrDefaultAsync(x => x.Id == id);
             if (submission == null) return NotFound();
 
             if (string.IsNullOrWhiteSpace(submission.FileSpecification.GenerationUserGroup))
@@ -189,7 +190,7 @@ namespace AdenDemo.Web.Controllers.api
             };
             report.WorkItems.Add(workItem);
 
-            WorkEmailer.Send(workItem, submission);
+            //WorkEmailer.Send(workItem, submission);
 
             _context.SaveChanges();
 

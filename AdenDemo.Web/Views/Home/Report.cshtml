@@ -38,8 +38,8 @@
                         count += 1;
                         <div class="row">
                             <div class="col-md-12">
-                                <h3 class="alert alert-info">
-                                    @report.DisplayFileName
+                                <h3 class="alert alert-@report.PanelClass">
+                                    @report.DisplayFileName - @report.PanelClass
                                     @if (count == 1 && Model.Count > 1)
                                     {
                                         <span>(Reopened Submission)</span>

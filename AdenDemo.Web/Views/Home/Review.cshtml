@@ -32,12 +32,12 @@
                 </div>
 
                 <div class="panel-body">
-                    @foreach (var report in Model)
+                    @foreach (var report in Model.OrderByDescending(x => x.Id))
                     {
                         count += 1;
                         <div class="row">
                             <div class="col-md-12">
-                                <h3 class="alert alert-info">
+                                <h3 class="alert alert-@report.PanelClass">
                                     @report.DisplayFileName
                                     @if (count == 1 && Model.Count > 1)
                                     {
@@ -55,6 +55,8 @@
                                     <dt>Data Year</dt>
                                     <dd>@report.DisplayDataYear</dd>
 
+                                    <dt>Submission Due Date</dt>
+                                    <dd>@report.SubmissionDueDate.ToString("M/dd/yyyy")</dd>
                                     <dt>Status</dt>
                                     <dd>@report.ReportStateDisplay</dd>
 
@@ -89,6 +91,7 @@
                                 </dl>
 
                             </div>
+                           
                             <div class="col-md-6">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
@@ -106,43 +109,51 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @{
-                                                    mostRecentVersion = report.Documents.OrderByDescending(d => d.Version).FirstOrDefault().Version;
-                                                }
-                                                @foreach (var doc in report.Documents.Where(d => d.Version == mostRecentVersion).OrderByDescending(d => d.Version))
+                                                @if (report.Documents.Any())
                                                 {
-                                                    <tr>
-                                                        <td>
-                                                            @if (doc.FileSizeMb > 0)
-                                                            {
-                                                                <a href="#" class="btn btn-sm btn-default"
-                                                                   data-document-viewer
-                                                                   data-doc-id=@doc.Id
-                                                                   data-url="/document/@doc.Id"
-                                                                   data-title="File must be downloaded"
-                                                                   title="File must be downloaded"
-                                                                   data-placement="right"
-                                                                   data-toggle="tooltip"
-                                                                   data-original-title="@doc.Filename" disabled aria-disabled="True">View</a>
-                                                            }
-                                                            else
-                                                            {
-                                                                <a href="#" class="btn btn-sm btn-default"
-                                                                   data-document-viewer
-                                                                   data-doc-id=@doc.Id
-                                                                   data-url="/document/@doc.Id"
-                                                                   data-title="@doc.Filename"
-                                                                   title="@doc.Filename"
-                                                                   data-placement="right"
-                                                                   data-original-title="@doc.Filename">View</a>
-                                                            }
-                                                            <a href="/download/@doc.Id" class="btn btn-sm btn-default" download>Download</a>
-                                                            <span>
-                                                                @doc.Filename<span> - </span><span class="small">(@doc.FileSizeInMb)</span>
-                                                            </span>
-                                                        </td>
-                                                        <td>@doc.Version</td>
-                                                    </tr>
+
+                                                    mostRecentVersion = report.Documents.OrderByDescending(d => d.Version).FirstOrDefault().Version;
+
+
+                                                    foreach (var doc in report.Documents.Where(d => d.Version == mostRecentVersion).OrderByDescending(d => d.Version))
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                @if (doc.FileSizeMb > 0)
+                                                                {
+                                                                    <a href="#" class="btn btn-sm btn-default"
+                                                                       data-document-viewer
+                                                                       data-doc-id=@doc.Id
+                                                                       data-url="/document/@doc.Id"
+                                                                       data-title="File must be downloaded"
+                                                                       title="File must be downloaded"
+                                                                       data-placement="right"
+                                                                       data-toggle="tooltip"
+                                                                       data-original-title="@doc.Filename" disabled aria-disabled="True">View</a>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <a href="#" class="btn btn-sm btn-default"
+                                                                       data-document-viewer
+                                                                       data-doc-id=@doc.Id
+                                                                       data-url="/document/@doc.Id"
+                                                                       data-title="@doc.Filename"
+                                                                       title="@doc.Filename"
+                                                                       data-placement="right"
+                                                                       data-original-title="@doc.Filename">View</a>
+                                                                }
+                                                                <a href="/download/@doc.Id" class="btn btn-sm btn-default" download>Download</a>
+                                                                <span>
+                                                                    @doc.Filename<span> - </span><span class="small">(@doc.FileSizeInMb)</span>
+                                                                </span>
+                                                            </td>
+                                                            <td>@doc.Version</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <div>No documents generated</div>
                                                 }
                                             </tbody>
                                         </table>

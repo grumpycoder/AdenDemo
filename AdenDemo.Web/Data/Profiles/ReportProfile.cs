@@ -21,6 +21,7 @@ namespace AdenDemo.Web.Data.Profiles
                .ForMember(d => d.GeneratedDate, opt => opt.MapFrom(s => s.GeneratedDate))
                .ForMember(d => d.SubmittedDate, opt => opt.MapFrom(s => s.SubmittedDate))
                .ForMember(d => d.Documents, opt => opt.MapFrom(s => s.Documents))
+               .ForMember(d => d.SubmissionDueDate, opt => opt.MapFrom(s => s.Submission.NextDueDate ?? s.Submission.DueDate))
                ;
 
             CreateMap<ReportDocument, DocumentViewDto>()

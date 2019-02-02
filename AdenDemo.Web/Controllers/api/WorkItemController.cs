@@ -151,6 +151,7 @@ namespace AdenDemo.Web.Controllers.api
                     var doc = new ReportDocument() { FileData = file, ReportLevel = ReportLevel.SCH, Filename = filename, FileSize = file.Length };
                     report.Documents.Add(doc);
                 }
+                report.GeneratedDate = DateTime.Now;
             }
 
             //Complete work item
@@ -185,6 +186,7 @@ namespace AdenDemo.Web.Controllers.api
                 report.ReportState = ReportState.AssignedForSubmission;
                 report.Submission.SubmissionState = SubmissionState.AssignedForSubmission;
                 nextGroupName = report.Submission.FileSpecification.SubmissionGroup;
+                report.ApprovedDate = DateTime.Now;
             }
 
             if (workItem.WorkItemAction == WorkItemAction.ReviewError)
@@ -199,6 +201,7 @@ namespace AdenDemo.Web.Controllers.api
             {
                 report.ReportState = ReportState.Complete;
                 report.Submission.SubmissionState = SubmissionState.Complete;
+                report.SubmittedDate = DateTime.Now;
             }
 
             if (!nextGroupName.Users.Any()) return BadRequest("No group members to assign next task. ");

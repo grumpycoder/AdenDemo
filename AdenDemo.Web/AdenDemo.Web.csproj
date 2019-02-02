@@ -497,6 +497,7 @@
     <Content Include="Views\Account\LoginFailure.cshtml" />
     <Content Include="Views\Home\_GroupMembershipEditForm.cshtml" />
     <Content Include="Templates\UserRequestEmailTemplate.cshtml" />
+    <Content Include="Views\Shared\_ReportDocuments.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

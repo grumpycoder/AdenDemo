@@ -14,6 +14,8 @@ namespace AdenDemo.Web.ViewModels
 
         public int DataYear { get; set; }
 
+        public DateTime SubmissionDueDate { get; set; }
+
         public string DisplayDataYear => $"{DataYear - 1}-{DataYear}";
 
         public ReportState ReportState { get; set; }
@@ -23,5 +25,33 @@ namespace AdenDemo.Web.ViewModels
         public DateTime? SubmittedDate { get; set; }
 
         public List<DocumentViewDto> Documents { get; set; }
+
+        public string PanelClass
+        {
+            get
+            {
+                {
+                    var panelClass = "danger";
+                    switch (ReportState)
+                    {
+                        case ReportState.AssignedForReview:
+                            panelClass = "info";
+                            break;
+                        case ReportState.AwaitingApproval:
+                            panelClass = "warning";
+                            break;
+                        case ReportState.CompleteWithError:
+                            panelClass = "danger";
+                            break;
+                        case ReportState.Complete:
+                            panelClass = "success";
+                            break;
+                        default:
+                            break;
+                    }
+                    return panelClass;
+                }
+            }
+        }
     }
 }
