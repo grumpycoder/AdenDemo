@@ -48,11 +48,9 @@ namespace AdenDemo.Web.Controllers
 
         public ActionResult History(int id)
         {
-            //TODO: Refactor using ViewBag for CurrentReport
-            var dto = _context.Submissions.FirstOrDefault(x => x.Id == id);
-            ViewBag.CurrentReportId = dto.CurrentReportId;
-            ViewBag.SubmissionId = id;
-            return PartialView("_History");
+            var submission = _context.Submissions.FirstOrDefault(x => x.Id == id);
+            var dto = new HistoryViewDto() { CurrentReportId = submission.CurrentReportId, SubmissionId = submission.Id };
+            return PartialView("_History", dto);
         }
 
         public async Task<ActionResult> Review(int dataYear, string filenumber)
