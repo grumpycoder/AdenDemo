@@ -44,7 +44,7 @@ namespace AdenDemo.Web.Controllers.api
             if (_currentUusername == null) return NotFound();
 
             var dto = await _context.WorkItems
-                .Where(u => u.AssignedUser == _currentUusername && u.WorkItemState == WorkItemState.NotStarted)
+                .Where(u => u.AssignedUser == _currentUusername && (u.WorkItemState == WorkItemState.NotStarted || u.WorkItemState == WorkItemState.Reassigned))
                 .ProjectTo<WorkItemViewDto>().ToListAsync();
 
             return Ok(DataSourceLoader.Load(dto.OrderBy(x => x.AssignedDate), loadOptions));
@@ -81,17 +81,7 @@ namespace AdenDemo.Web.Controllers.api
                 .Include(s => s.FileSpecification)
                 .FirstOrDefaultAsync(x => x.Id == workItem.Report.SubmissionId);
 
-            //Update assigned user
-            workItem.AssignedUser = model.AssignedUser;
-            workItem.WorkItemState = WorkItemState.Reassigned;
-
-
-            //Create Audit record
-            var message = $"{_currentUserFullName} reassigned from {workItem.AssignedUser} to {model.AssignedUser}: {model.Reason}";
-            var audit = new SubmissionAudit(submission.Id, message);
-            submission.SubmissionAudits.Add(audit);
-
-            submission.CurrentAssignee = model.AssignedUser;
+            submission.Reassign(_currentUserFullName, workItem, model.AssignedUser, model.Reason);
 
             _context.SaveChanges();
 

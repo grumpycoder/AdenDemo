@@ -136,5 +136,20 @@ namespace AdenDemo.Web.Models
             report.WorkItems.Add(workItem);
 
         }
+
+        public void Reassign(string currentUser, WorkItem workItem, string assignee, string reason)
+        {
+
+            //Create Audit record
+            var message = $"{currentUser} reassigned from {workItem.AssignedUser} to {assignee}: {reason}";
+            var audit = new SubmissionAudit(Id, message);
+            SubmissionAudits.Add(audit);
+
+            //Update assigned user
+            workItem.AssignedUser = assignee;
+            workItem.WorkItemState = WorkItemState.Reassigned;
+
+            CurrentAssignee = assignee;
+        }
     }
 }
