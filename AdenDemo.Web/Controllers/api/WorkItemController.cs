@@ -125,10 +125,10 @@ namespace AdenDemo.Web.Controllers.api
                 if (string.IsNullOrWhiteSpace(report.Submission.FileSpecification.ReportAction)) return BadRequest("No report action assigned to generate documents");
 
                 //Create documents
-                //TODO: Flesh out Generate documents from stored procdure
+                //TODO: Flesh out Generate documents from stored procedure into external library
                 var version = report.CurrentDocumentVersion + 1;
                 string filename;
-                 
+
                 if (report.Submission.FileSpecification.IsSCH)
                 {
                     filename = report.Submission.FileSpecification.FileNameFormat.Replace("{level}", ReportLevel.SCH.GetDisplayName()).Replace("{version}", string.Format("v{0}.csv", version));
@@ -153,7 +153,7 @@ namespace AdenDemo.Web.Controllers.api
                     report.Documents.Add(doc);
                 }
                 report.GeneratedDate = DateTime.Now;
-                report.CurrentDocumentVersion = version; 
+                report.CurrentDocumentVersion = version;
             }
 
             //Complete work item
@@ -237,7 +237,7 @@ namespace AdenDemo.Web.Controllers.api
 
             if (report == null) return BadRequest("No group members to assign next task. ");
 
-            if (!report.Submission.FileSpecification.GenerationGroup.Users.Any()) return BadRequest("No users"); 
+            if (!report.Submission.FileSpecification.GenerationGroup.Users.Any()) return BadRequest("No users");
 
             workItem.WorkItemState = WorkItemState.Reject;
             workItem.CompletedDate = DateTime.Now;

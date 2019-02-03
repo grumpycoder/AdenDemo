@@ -1,10 +1,9 @@
 ﻿using AdenDemo.Web.Data;
-using ALSDE.Dtos;
-using Dapper;
+using AdenDemo.Web.Models;
+using AdenDemo.Web.Services;
 using System;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -26,17 +25,9 @@ namespace AdenDemo.Web.Controllers.api
         [HttpGet, Route("{username}")]
         public object Users(string username = null)
         {
-            //TODO: Move to external library
-            var query = "select top 15 LastName, FirstName, EmailAddress, " +
-                        "IdentityGuid from Idem.Identities " +
-                        "WHERE EmailAddress like '%' + @SearchString + '%' OR " +
-                        "LastName like '%' + @SearchString + '%' OR " +
-                        "PrintName like '%' + @SearchString + '%'";
-            using (var cn = new SqlConnection(_idemContext.Database.Connection.ConnectionString))
-            {
-                var list = cn.Query<AuthenticatedUserDto>(query, new { @SearchString = username }).ToList();
-                return Ok(list);
-            }
+            var users = new IdemService().FindUsers(username);
+            return Ok(users);
+
         }
 
         [HttpGet, Route("groupmembers/{groupId}")]
@@ -54,17 +45,9 @@ namespace AdenDemo.Web.Controllers.api
 
             if (group == null) return BadRequest("Group does not exists");
 
-            var user = _context.Users.FirstOrDefault(x => x.IdentityGuid == model.IdentityGuid);
+            var user = _context.Users.FirstOrDefault(x => x.IdentityGuid == model.IdentityGuid) ?? new UserProfile();
 
-            AuthenticatedUserDto idemUser;
-
-
-            //TODO: Move to external library
-            var query = "select top 1 LastName, FirstName, EmailAddress, IdentityGuid from Idem.Identities WHERE IdentityGuid = @IdentityGuid";
-            using (var cn = new SqlConnection(_idemContext.Database.Connection.ConnectionString))
-            {
-                idemUser = cn.Query<AuthenticatedUserDto>(query, new { @IdentityGuid = model.IdentityGuid }).SingleOrDefault();
-            }
+            var idemUser = new IdemService().GetUser(model.IdentityGuid);
 
             if (idemUser != null)
             {
