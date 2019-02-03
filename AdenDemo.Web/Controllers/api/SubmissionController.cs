@@ -46,21 +46,8 @@ namespace AdenDemo.Web.Controllers.api
             var submission = await _context.Submissions.FirstOrDefaultAsync(s => s.Id == id);
             if (submission == null) return NotFound();
 
-            //TODO: Refactor model to be less anemic
-            //Change state
-            submission.SubmissionState = SubmissionState.Waived;
-            submission.LastUpdated = DateTime.Now;
+            submission.Waive(model.Message, _currentUserFullName);
 
-            //Create waived report
-            var report = new Report() { SubmissionId = submission.Id, DataYear = submission.DataYear, ReportState = ReportState.Waived };
-            submission.Reports.Add(report);
-
-            //Create Audit record
-            var message = $"{_currentUserFullName} waived submission: {model.Message}";
-            var audit = new SubmissionAudit(submission.Id, message);
-            submission.SubmissionAudits.Add(audit);
-
-            //Save changes
             _context.SaveChanges();
 
             return Ok("Success");

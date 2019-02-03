@@ -28,5 +28,21 @@ namespace AdenDemo.Web.Models
             Reports = new List<Report>();
             SubmissionAudits = new List<SubmissionAudit>();
         }
+
+        public void Waive(string message, string userFullName)
+        {
+            SubmissionState = SubmissionState.Waived;
+            LastUpdated = DateTime.Now;
+
+            var report = new Report() { SubmissionId = Id, DataYear = DataYear, ReportState = ReportState.Waived };
+            Reports.Add(report);
+
+            CurrentReportId = report.Id; 
+
+            var msg = $"{userFullName} waived submission: {message}";
+            var audit = new SubmissionAudit(Id, msg);
+            SubmissionAudits.Add(audit);
+
+        }
     }
 }

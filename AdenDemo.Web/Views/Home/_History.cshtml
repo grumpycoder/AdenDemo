@@ -9,8 +9,9 @@
 <div id="gridAudit"></div>
 
 <script>
+    console.log('submission', @Model.SubmissionId);
 
-    var historyUri = '/api/workitem/history/' + @Model.CurrentReportId;
+    var historyUri = '/api/workitem/history/' + @(Model.CurrentReportId ?? 0);
 
     var $historyGrid = $('#historyGrid').dxDataGrid(
         {
@@ -61,7 +62,7 @@
         }).dxDataGrid('instance');
 
 
-    var auditUri = '/api/audit/' + @Model.SubmissionId;
+    var auditUri = '/api/audit/' + @(Model.SubmissionId ?? 0);
 
     var $gridAudit = $('#gridAudit').dxDataGrid(
         {
