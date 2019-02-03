@@ -113,5 +113,28 @@ namespace AdenDemo.Web.Models
 
 
         }
+
+        public void Start(string assignee)
+        {
+            //Change state
+            SubmissionState = SubmissionState.AssignedForGeneration;
+            CurrentAssignee = assignee;
+            LastUpdated = DateTime.Now;
+
+            //Create report
+            var report = new Report() { SubmissionId = Id, DataYear = DataYear, ReportState = ReportState.AssignedForGeneration };
+            Reports.Add(report);
+
+            //Create work item
+            var workItem = new WorkItem()
+            {
+                WorkItemAction = WorkItemAction.Generate,
+                WorkItemState = WorkItemState.NotStarted,
+                AssignedDate = DateTime.Now,
+                AssignedUser = assignee
+            };
+            report.WorkItems.Add(workItem);
+
+        }
     }
 }

@@ -6,7 +6,6 @@ using AutoMapper.QueryableExtensions;
 using CSharpFunctionalExtensions;
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
-using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Claims;
@@ -74,32 +73,16 @@ namespace AdenDemo.Web.Controllers.api
 
             var assignedUser = _membershipService.GetAssignee(submission.FileSpecification.GenerationGroup);
 
+
             if (string.IsNullOrWhiteSpace(assignedUser)) return BadRequest("No group members to assign next task. ");
 
-            //Change state
-            submission.SubmissionState = SubmissionState.AssignedForGeneration;
-            submission.CurrentAssignee = assignedUser;
-            submission.LastUpdated = DateTime.Now;
-
-            //Create report
-            var report = new Report() { SubmissionId = submission.Id, DataYear = submission.DataYear, ReportState = ReportState.AssignedForGeneration };
-            submission.Reports.Add(report);
-
-            //Create work item
-            var workItem = new WorkItem()
-            {
-                WorkItemAction = WorkItemAction.Generate,
-                WorkItemState = WorkItemState.NotStarted,
-                AssignedDate = DateTime.Now,
-                AssignedUser = assignedUser
-            };
-            report.WorkItems.Add(workItem);
+            submission.Start(assignedUser);
 
             //WorkEmailer.Send(workItem, submission);
 
             _context.SaveChanges();
 
-            submission.CurrentReportId = report.Id;
+            submission.CurrentReportId = submission.Reports.LastOrDefault().Id;
 
             _context.SaveChanges();
 
