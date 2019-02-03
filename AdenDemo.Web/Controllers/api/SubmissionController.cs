@@ -137,7 +137,6 @@ namespace AdenDemo.Web.Controllers.api
 
         }
 
-        //[HttpPost, Route("restart")]
         [HttpPost, Route("reopen/{id}")]
         public async Task<object> ReOpen(int id, SubmissionReOpenAuditEntryDto model)
         {
@@ -151,31 +150,10 @@ namespace AdenDemo.Web.Controllers.api
             if (string.IsNullOrWhiteSpace(submission.FileSpecification.GenerationUserGroup))
                 return BadRequest($"No generation group defined for File { submission.FileSpecification.FileNumber }");
 
-            //Create Audit record
-            var message = $"{_currentUserFullName} reopened submission: { model.Message }";
-            var audit = new SubmissionAudit(submission.Id, message);
-            submission.SubmissionAudits.Add(audit);
 
             var assignedUser = _membershipService.GetAssignee(submission.FileSpecification.GenerationGroup);
 
-            //Change state
-            submission.SubmissionState = SubmissionState.AssignedForGeneration;
-            submission.CurrentAssignee = assignedUser;
-            submission.LastUpdated = DateTime.Now;
-            submission.NextDueDate = model.NextSubmissionDate;
-
-            //Create report
-            var report = new Report() { SubmissionId = submission.Id, DataYear = submission.DataYear, ReportState = ReportState.AssignedForGeneration };
-            submission.Reports.Add(report);
-
-            //Create work item
-            var workItem = new WorkItem()
-            {
-                WorkItemAction = WorkItemAction.Generate,
-                WorkItemState = WorkItemState.NotStarted,
-                AssignedUser = assignedUser
-            };
-            report.WorkItems.Add(workItem);
+            submission.Reopen(_currentUserFullName, model.Message, assignedUser, model.NextSubmissionDate);
 
             //WorkEmailer.Send(workItem, submission);
 

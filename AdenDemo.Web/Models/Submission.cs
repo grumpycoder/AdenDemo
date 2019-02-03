@@ -37,11 +37,41 @@ namespace AdenDemo.Web.Models
             var report = new Report() { SubmissionId = Id, DataYear = DataYear, ReportState = ReportState.Waived };
             Reports.Add(report);
 
-            CurrentReportId = report.Id; 
+            CurrentReportId = report.Id;
 
             var msg = $"{userFullName} waived submission: {message}";
             var audit = new SubmissionAudit(Id, msg);
             SubmissionAudits.Add(audit);
+
+        }
+
+        public void Reopen(string currentUser, string message, string assignee, DateTime dueDate)
+        {
+
+            //Create Audit record
+            var msg = $"{currentUser} reopened submission: { message }";
+            var audit = new SubmissionAudit(Id, message);
+            SubmissionAudits.Add(audit);
+
+            //Create report
+            var report = new Report() { SubmissionId = Id, DataYear = DataYear, ReportState = ReportState.AssignedForGeneration };
+            Reports.Add(report);
+
+            //Change state
+            SubmissionState = SubmissionState.AssignedForGeneration;
+            CurrentAssignee = assignee;
+            LastUpdated = DateTime.Now;
+            NextDueDate = dueDate;
+
+            //Create work item
+            var workItem = new WorkItem()
+            {
+                WorkItemAction = WorkItemAction.Generate,
+                WorkItemState = WorkItemState.NotStarted,
+                AssignedDate =  DateTime.Now, 
+                AssignedUser = assignee
+            };
+            report.WorkItems.Add(workItem);
 
         }
     }
