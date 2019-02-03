@@ -27,23 +27,24 @@ namespace AdenDemo.Web.Controllers.api
         private AdenContext _context;
         private MembershipService _membershipService;
         private string _currentUserFullName;
+        private string _currentUusername;
 
         public WorkItemController()
         {
             _context = new AdenContext();
             _membershipService = new MembershipService(_context);
             _currentUserFullName = ((ClaimsIdentity)HttpContext.Current.User.Identity).Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+            _currentUusername = User.Identity.Name;
 
         }
 
         [HttpGet, Route("")]
         public async Task<object> Get(DataSourceLoadOptions loadOptions)
         {
-            var username = User.Identity.Name;
-            if (username == null) return NotFound();
+            if (_currentUusername == null) return NotFound();
 
             var dto = await _context.WorkItems
-                .Where(u => u.AssignedUser == username && u.WorkItemState == WorkItemState.NotStarted)
+                .Where(u => u.AssignedUser == _currentUusername && u.WorkItemState == WorkItemState.NotStarted)
                 .ProjectTo<WorkItemViewDto>().ToListAsync();
 
             return Ok(DataSourceLoader.Load(dto.OrderBy(x => x.AssignedDate), loadOptions));
@@ -52,12 +53,10 @@ namespace AdenDemo.Web.Controllers.api
         [HttpGet, Route("finished")]
         public async Task<object> Finished(DataSourceLoadOptions loadOptions)
         {
-            var username = User.Identity.Name;
-
-            if (username == null) return NotFound();
+            if (_currentUusername == null) return NotFound();
 
             var dto = await _context.WorkItems
-                .Where(u => u.AssignedUser == username && u.WorkItemState == WorkItemState.Completed)
+                .Where(u => u.AssignedUser == _currentUusername && u.WorkItemState == WorkItemState.Completed)
                 .ProjectTo<WorkItemViewDto>().ToListAsync();
 
             return Ok(DataSourceLoader.Load(dto.OrderByDescending(x => x.CompletedDate).ThenByDescending(d => d.Action), loadOptions));
@@ -269,7 +268,7 @@ namespace AdenDemo.Web.Controllers.api
         }
 
 
-
+        //TODO: Refactor to external library
         private byte[] ExecuteDocumentCreationToFile(Report report, ReportLevel reportLevel)
         {
             var dataTable = new DataTable();
