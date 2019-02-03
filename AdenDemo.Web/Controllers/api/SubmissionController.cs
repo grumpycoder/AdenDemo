@@ -48,6 +48,12 @@ namespace AdenDemo.Web.Controllers.api
 
             submission.Waive(model.Message, _currentUserFullName);
 
+
+            _context.SaveChanges();
+
+            //TODO: Refactor. Do not have access to new report until after save
+            submission.CurrentReportId = submission.Reports.LastOrDefault().Id;
+
             _context.SaveChanges();
 
             return Ok("Success");
@@ -106,19 +112,12 @@ namespace AdenDemo.Web.Controllers.api
             var submission = await _context.Submissions.Include(f => f.FileSpecification).FirstOrDefaultAsync(x => x.Id == id);
             if (submission == null) return NotFound();
 
+            //TODO: Need to remove retrieval to current work item
             var workItem = _context.WorkItems.SingleOrDefault(x => x.ReportId == submission.CurrentReportId && x.WorkItemState == WorkItemState.NotStarted);
 
-            //Set Submission State and clear assignee
-            submission.SubmissionState = SubmissionState.NotStarted;
-            submission.CurrentAssignee = string.Empty;
-
-            //Create Audit record
-            var message = $"{_currentUserFullName} cancelled submission";
-            var audit = new SubmissionAudit(submission.Id, message);
-            submission.SubmissionAudits.Add(audit);
-
+            //TODO: Submission does not need to be aware of data context
             //Remove Reports/Documents/WorkItems
-            var report = await _context.Reports.FirstOrDefaultAsync(r => r.SubmissionId == id);
+            var report = await _context.Reports.FirstOrDefaultAsync(r => r.Id == submission.CurrentReportId);
             if (report != null)
             {
                 var workItems = _context.WorkItems.Where(w => w.ReportId == report.Id);
@@ -130,7 +129,9 @@ namespace AdenDemo.Web.Controllers.api
                 _context.Reports.Remove(report);
             }
 
-            WorkEmailer.Send(workItem, submission);
+            submission.Cancel(_currentUserFullName);
+
+            //WorkEmailer.Send(workItem, submission);
             _context.SaveChanges();
 
             return Ok();
@@ -156,6 +157,12 @@ namespace AdenDemo.Web.Controllers.api
             submission.Reopen(_currentUserFullName, model.Message, assignedUser, model.NextSubmissionDate);
 
             //WorkEmailer.Send(workItem, submission);
+
+
+            _context.SaveChanges();
+
+            //TODO: Refactor. Do not have access to new report until after save
+            submission.CurrentReportId = submission.Reports.LastOrDefault().Id;
 
             _context.SaveChanges();
 

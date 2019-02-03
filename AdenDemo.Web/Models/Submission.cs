@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AdenDemo.Web.Models
 {
@@ -21,7 +22,7 @@ namespace AdenDemo.Web.Models
         public int FileSpecificationId { get; set; }
         public FileSpecification FileSpecification { get; set; }
         public string CurrentAssignee { get; set; }
-        public int? CurrentReportId { get; internal set; }
+        public int CurrentReportId { get; internal set; }
 
         public Submission()
         {
@@ -34,10 +35,16 @@ namespace AdenDemo.Web.Models
             SubmissionState = SubmissionState.Waived;
             LastUpdated = DateTime.Now;
 
-            var report = new Report() { SubmissionId = Id, DataYear = DataYear, ReportState = ReportState.Waived };
+            var report = new Report
+            {
+                SubmissionId = Id,
+                DataYear = DataYear,
+                ReportState = ReportState.Waived
+            };
             Reports.Add(report);
 
-            CurrentReportId = report.Id;
+            //TODO: ReportId not available yet
+            CurrentReportId = 0;
 
             var msg = $"{userFullName} waived submission: {message}";
             var audit = new SubmissionAudit(Id, msg);
@@ -50,11 +57,16 @@ namespace AdenDemo.Web.Models
 
             //Create Audit record
             var msg = $"{currentUser} reopened submission: { message }";
-            var audit = new SubmissionAudit(Id, message);
+            var audit = new SubmissionAudit(Id, msg);
             SubmissionAudits.Add(audit);
 
             //Create report
-            var report = new Report() { SubmissionId = Id, DataYear = DataYear, ReportState = ReportState.AssignedForGeneration };
+            var report = new Report
+            {
+                SubmissionId = Id,
+                DataYear = DataYear,
+                ReportState = ReportState.AssignedForGeneration
+            };
             Reports.Add(report);
 
             //Change state
@@ -62,16 +74,43 @@ namespace AdenDemo.Web.Models
             CurrentAssignee = assignee;
             LastUpdated = DateTime.Now;
             NextDueDate = dueDate;
+            CurrentReportId = report.Id;
 
             //Create work item
             var workItem = new WorkItem()
             {
                 WorkItemAction = WorkItemAction.Generate,
                 WorkItemState = WorkItemState.NotStarted,
-                AssignedDate =  DateTime.Now, 
+                AssignedDate = DateTime.Now,
                 AssignedUser = assignee
             };
             report.WorkItems.Add(workItem);
+
+        }
+
+        public void Cancel(string currentUser)
+        {
+
+            //Set Submission State and clear assignee
+            SubmissionState = SubmissionState.NotStarted;
+            CurrentAssignee = string.Empty;
+
+            var lastReport = Reports.LastOrDefault();
+
+            if (lastReport != null)
+            {
+                CurrentReportId = lastReport.Id;
+
+                if (lastReport.ReportState == ReportState.Waived) SubmissionState = SubmissionState.Waived;
+            }
+
+
+            //Create Audit record
+            var msg = $"{currentUser} cancelled submission";
+            var audit = new SubmissionAudit(Id, msg);
+            SubmissionAudits.Add(audit);
+
+
 
         }
     }
