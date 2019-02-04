@@ -4,10 +4,8 @@ using AdenDemo.Web.Helpers;
 using AdenDemo.Web.Models;
 using AdenDemo.Web.Services;
 using AdenDemo.Web.ViewModels;
-using Alsde.Extensions;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Humanizer;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -193,9 +191,9 @@ namespace AdenDemo.Web.Controllers
 
             var workItem = await _context.WorkItems.Include(x => x.Report).FirstOrDefaultAsync(x => x.Id == id);
             if (workItem == null) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            
+
             var submission = _context.Submissions.Include(f => f.FileSpecification.GenerationGroup.Users).FirstOrDefault(s => s.Id == workItem.Report.SubmissionId);
-            
+
             var assignedUser = _membershipService.GetAssignee(submission.FileSpecification.GenerationGroup);
 
             var wi = submission.CompleteWork(workItem, assignedUser, generateErrorTask: true);
@@ -215,40 +213,7 @@ namespace AdenDemo.Web.Controllers
         public ActionResult EditGroupMembership(int id)
         {
             var dto = _context.Groups.Include(u => u.Users).FirstOrDefault(x => x.Id == id);
-
-
-            //return PartialView("_GroupMembershipEditForm", dto);
-
-            var displayGroupName = dto.Name.Humanize().ToTitleCase().RemoveExactWord("App");
-            ViewBag.GroupName = dto.Name;
-            ViewBag.DisplayGroupName = displayGroupName;
-            ViewBag.IsGroupDefined = true;
-
-
-            //var displayGroupName = id.Humanize().ToTitleCase().RemoveExactWord("App");
-            //ViewBag.GroupName = id;
-            //ViewBag.DisplayGroupName = displayGroupName;
-            //ViewBag.IsGroupDefined = true;
-
-            //var groupExists = _membershipService.GroupExists(id);
-
-            //if (!groupExists)
-            //{
-            //    ViewBag.IsGroupDefined = false;
-            //    return PartialView("_GroupMembershipEditForm");
-            //}
-
-            //var membersResult = _membershipService.GetGroupMembers(id);
-
-            //if (membersResult.IsSuccess) ViewBag.Members = membersResult.Value;
-
-
-            //if (membersResult.IsFailure) ViewBag.IsGroupDefined = false;
-
-            //return PartialView("_GroupMembershipEditForm");
-
             return PartialView("_GroupMembershipEditForm", dto);
-
         }
     }
 }

@@ -91,7 +91,6 @@ else
                 return item.firstname + ' ' + item.lastname + ' (' + item.emailAddress + ')';
             },
             afterSelect: function(item) {
-                console.log('item', item);
                 this.$element[0].text = item.firstname + ' ' + item.lastname;
                 $('#identityGuid').val(item.identityGuid);
             },
@@ -124,6 +123,7 @@ else
                 },
                 error: function(err) {
                     //TODO: Toast error message
+                    toastr.error('Error adding group member');
                     console.log('error', err);
                 }
             }).always(function() {

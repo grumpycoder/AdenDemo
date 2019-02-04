@@ -105,7 +105,7 @@ namespace AdenDemo.Web.Controllers.api
             var workItem = _context.WorkItems.SingleOrDefault(x => x.ReportId == submission.CurrentReportId && x.WorkItemState == WorkItemState.NotStarted);
 
             //TODO: Submission does not need to be aware of data context
-            //Remove Reports/Documents/WorkItems
+            //Remove Reports/Documents/WorkItems from submission
             var report = await _context.Reports.FirstOrDefaultAsync(r => r.Id == submission.CurrentReportId);
             if (report != null)
             {

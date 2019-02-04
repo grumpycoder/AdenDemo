@@ -55,9 +55,9 @@
             { dataField: 'supportGroup', caption: 'Support Group', dataType: 'string' },
             { dataField: 'application', caption: 'Application', dataType: 'string'},
             { dataField: 'collection', caption: 'Collection', dataType: 'string' },
-            { dataField: 'generationGroup', caption: 'Generation Group', dataType: 'string' },
-            { dataField: 'approvalGroup', caption: 'Approval Group', dataType: 'string' },
-            { dataField: 'submissionGroup', caption: 'Submission Group', dataType: 'string' },
+            { dataField: 'generationGroup', caption: 'Generation Group', dataType: 'string', visible: false },
+            { dataField: 'approvalGroup', caption: 'Approval Group', dataType: 'string', visible: false },
+            { dataField: 'submissionGroup', caption: 'Submission Group', dataType: 'string', visible: false },
             {
                 dataField: 'generators', caption: 'Generators', dataType: 'string', 
                 cellTemplate: function(container, options) {
@@ -87,6 +87,44 @@
                 calculateDisplayValue: function(rowData) {
                     return rowData.submitters.join(", ");
                 }
+            },
+            {
+                dataField: 'isSEA', caption: 'SEA',
+                dataType: 'boolean',
+                visible: false,
+                showEditorAlways: false,
+                trueText: 'Yes',
+                falseText: 'No',
+                customizeText: function (cellInfo) {
+                    if (cellInfo.value) return 'Yes';
+
+                    return 'No';
+                },
+            },
+            {
+                dataField: 'isLEA', caption: 'LEA', dataType: 'boolean',
+                visible: false,
+                showEditorAlways: false,
+                trueText: 'Yes',
+                falseText: 'No',
+                customizeText: function (cellInfo) {
+                    if (cellInfo.value) return 'Yes';
+
+                    return 'No';
+                },
+            },
+            {
+                dataField: 'isSCH', caption: 'SCH',
+                dataType: 'boolean',
+                visible: false,
+                showEditorAlways: false,
+                trueText: 'Yes',
+                falseText: 'No',
+                customizeText: function (cellInfo) {
+                    if (cellInfo.value) return 'Yes';
+
+                    return 'No';
+                },
             },
             {
                 width: 120,

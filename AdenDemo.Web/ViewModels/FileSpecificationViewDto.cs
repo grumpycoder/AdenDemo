@@ -20,12 +20,16 @@ namespace AdenDemo.Web.ViewModels
         public string Collection { get; set; }
         public string SupportGroup { get; set; }
 
+        public bool IsSEA { get; set; }
+        public bool IsLEA { get; set; }
+        public bool IsSCH { get; set; }
+
         public bool CanRetire => (bool)(IsRetired.HasValue ? !IsRetired : true);
         public bool CanActivate => !CanRetire;
 
 
 
-        public string GeneratorGroup { get; set; }
+        public string GenerationGroup { get; set; }
         public string ApprovalGroup { get; set; }
         public string SubmissionGroup { get; set; }
 

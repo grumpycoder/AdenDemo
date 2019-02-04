@@ -30,12 +30,12 @@ namespace AdenDemo.Web.Controllers.api
             var dto = await _context.FileSpecifications.ProjectTo<FileSpecificationViewDto>().ToListAsync();
 
             //TODO: Move closer to mapping
-            //foreach (var d in dto)
-            //{
-            //    d.GenerationUserGroup = d.GenerationUserGroup?.Humanize(LetterCasing.Title);
-            //    d.ApprovalUserGroup = d.ApprovalUserGroup?.Humanize(LetterCasing.Title);
-            //    d.SubmissionUserGroup = d.SubmissionUserGroup?.Humanize(LetterCasing.Title);
-            //}
+            foreach (var d in dto)
+            {
+                d.GenerationGroup = d.GenerationGroup?.Humanize(LetterCasing.Title);
+                d.ApprovalGroup = d.ApprovalGroup?.Humanize(LetterCasing.Title);
+                d.SubmissionGroup = d.SubmissionGroup?.Humanize(LetterCasing.Title);
+            }
             return Ok(DataSourceLoader.Load(dto, loadOptions));
         }
 
