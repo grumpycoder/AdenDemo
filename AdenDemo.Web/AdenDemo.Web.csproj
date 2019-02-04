@@ -54,6 +54,9 @@
     <Reference Include="ALSDE.IdemLib, Version=2019.1.31.6971, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ALSDE.IdemLib.2019.1.0-beta-02\lib\net40\ALSDE.IdemLib.dll</HintPath>
     </Reference>
+    <Reference Include="Alsde.Mvc.Logging, Version=2018.8.6800.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Alsde.Mvc.Logging.2018.8.1\lib\net471\Alsde.Mvc.Logging.dll</HintPath>
+    </Reference>
     <Reference Include="Alsde.Security, Version=2019.1.30.6969, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Security.2019.1.0-beta-01\lib\net451\Alsde.Security.dll</HintPath>
     </Reference>
@@ -136,6 +139,18 @@
     </Reference>
     <Reference Include="RazorEngine, Version=3.2.0.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
       <HintPath>..\packages\RazorEngine.3.2.0\lib\net40\RazorEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.2.7.1\lib\net46\Serilog.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.File, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.File.4.0.0\lib\net45\Serilog.Sinks.File.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.MSSqlServer, Version=5.1.2.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.MSSqlServer.5.1.2\lib\net452\Serilog.Sinks.MSSqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.PeriodicBatching, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.PeriodicBatching.2.1.1\lib\net45\Serilog.Sinks.PeriodicBatching.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -227,6 +242,7 @@
     <Compile Include="Controllers\api\MembershipController.cs" />
     <Compile Include="Controllers\api\SubmissionController.cs" />
     <Compile Include="Controllers\api\WorkItemController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Data\IdemContext.cs" />
     <Compile Include="Data\AdenContext.cs" />
@@ -252,10 +268,12 @@
     <Compile Include="Helpers\AssemblyExtensions.cs" />
     <Compile Include="Helpers\DataTableHelper.cs" />
     <Compile Include="Helpers\EnumHelper.cs" />
+    <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\FileExtensions.cs" />
     <Compile Include="Helpers\HtmlHelper.cs" />
     <Compile Include="Helpers\ImageHelpers.cs" />
     <Compile Include="Helpers\StringExtensions.cs" />
+    <Compile Include="Helpers\WebHelpers.cs" />
     <Compile Include="Models\FileSpecification.cs" />
     <Compile Include="Models\Report.cs" />
     <Compile Include="Models\ReportDocument.cs" />
@@ -401,6 +419,7 @@
     <Content Include="css\icons\dxiconsmaterial.woff" />
     <Content Include="css\icons\dxiconsmaterial.woff2" />
     <Content Include="css\font-awesome.css.map" />
+    <Content Include="Alsde Logging Readme.md" />
     <None Include="fonts\fontawesome-webfont.eot" />
     <None Include="fonts\fontawesome-webfont.ttf" />
     <None Include="fonts\fontawesome-webfont.woff" />
@@ -500,6 +519,9 @@
     <Content Include="Views\Home\_GroupMembershipEditForm.cshtml" />
     <Content Include="Templates\UserRequestEmailTemplate.cshtml" />
     <Content Include="Views\Shared\_ReportDocuments.cshtml" />
+    <Content Include="Views\Error\Index.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\Shared\Unauthorized.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

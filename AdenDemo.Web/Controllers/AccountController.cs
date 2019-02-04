@@ -1,10 +1,10 @@
 ﻿using Alsde.Extensions;
+using Alsde.Security.Identity;
 //using Alsde.Security.Identity;
 using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Web.Mvc;
-using Alsde.Security.Identity;
 
 namespace AdenDemo.Web.Controllers
 {
@@ -43,6 +43,7 @@ namespace AdenDemo.Web.Controllers
 
                 var sectionName = string.Join(" ", section.Skip(idxApp + 1).Take(idxSection - idxApp - 1).ToList());
                 identity.AddClaim(new Claim("Section", sectionName));
+                //identity.AddClaim(new Claim(ClaimTypes.Role, "AdenAppUsers"));
             }
 
             if (isAdministrator) return RedirectToAction("Submissions", "Home");
@@ -54,9 +55,7 @@ namespace AdenDemo.Web.Controllers
 
         public ActionResult Signout()
         {
-            //IdentityManager.IdentitySignout();
-
-            //var env = Constants.Environment.ToLower() == "production" ? string.Empty : Constants.Environment.ToLower();
+            IdentityManager.IdentitySignout();
 
             var logoutUrl = $"https://{Constants.LogoutUrl}{Constants.AimApplicationViewKey}";
 

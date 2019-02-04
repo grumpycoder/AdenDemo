@@ -9,6 +9,7 @@ using System.Web.Http;
 namespace AdenDemo.Web.Controllers.api
 {
     [RoutePrefix("api/audit")]
+    [Authorize(Roles = "AdenAppUsers")]
     public class AuditController : ApiController
     {
         private AdenContext _context;

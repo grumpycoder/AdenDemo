@@ -1,5 +1,4 @@
 ﻿using AdenDemo.Web.Data;
-using AdenDemo.Web.Helpers;
 using AdenDemo.Web.Models;
 using AdenDemo.Web.Services;
 using AdenDemo.Web.ViewModels;
@@ -8,13 +7,10 @@ using AutoMapper.QueryableExtensions;
 using CSharpFunctionalExtensions;
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
-using System;
 using System.Data;
 using System.Data.Entity;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
@@ -22,11 +18,12 @@ using System.Web.Http;
 namespace AdenDemo.Web.Controllers.api
 {
     [RoutePrefix("api/workitem")]
+    [Authorize(Roles = "AdenAppUsers")]
     public class WorkItemController : ApiController
     {
         private AdenContext _context;
         private MembershipService _membershipService;
-        private DocumentService _documentService; 
+        private DocumentService _documentService;
         private string _currentUserFullName;
         private string _currentUusername;
 
@@ -92,7 +89,7 @@ namespace AdenDemo.Web.Controllers.api
 
             return Ok(model);
         }
-        
+
         [HttpPost, Route("complete/{id}")]
         public async Task<object> Complete(int id)
         {
@@ -134,7 +131,7 @@ namespace AdenDemo.Web.Controllers.api
             WorkEmailer.Send(wi, submission);
 
             _context.SaveChanges();
-            
+
             return Ok("completed work item task");
 
         }

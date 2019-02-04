@@ -8,6 +8,7 @@ using System.Web.Http;
 namespace AdenDemo.Web.Controllers.api
 {
     [RoutePrefix("api/document")]
+    [Authorize(Roles = "AdenAppUsers")]
     public class DocumentController : ApiController
     {
         private AdenContext _context;

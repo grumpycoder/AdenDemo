@@ -11,6 +11,7 @@ using System.Web.Http;
 namespace AdenDemo.Web.Controllers.api
 {
     [RoutePrefix("api/membership")]
+    [Authorize(Roles = "AdenAppUsers")]
     public class MembershipController : ApiController
     {
         private AdenContext _context;

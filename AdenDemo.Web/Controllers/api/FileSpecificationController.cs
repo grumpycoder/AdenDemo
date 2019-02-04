@@ -15,6 +15,7 @@ using Z.EntityFramework.Plus;
 namespace AdenDemo.Web.Controllers.api
 {
     [RoutePrefix("api/filespecification")]
+    [Authorize(Roles = "AdenAppUsers")]
     public class FileSpecificationController : ApiController
     {
         private AdenContext _context;

@@ -10,7 +10,6 @@ namespace AdenDemo.Web.Data.Profiles
     {
         public FileSpecificationProfile()
         {
-            CreateMap<FileSpecification, FileSpecificationViewDto>();
 
             CreateMap<UpdateFileSpecificationDto, FileSpecification>()
                 .ForMember(d => d.FileName, opt => opt.MapFrom(s => s.FileName))
@@ -30,7 +29,7 @@ namespace AdenDemo.Web.Data.Profiles
                 .ForMember(d => d.GenerationGroupId, opt => opt.MapFrom(s => s.GenerationGroup.Id))
                 .ForMember(d => d.ApprovalGroupId, opt => opt.MapFrom(s => s.ApprovalGroup.Id))
                 .ForMember(d => d.SubmissionGroupId, opt => opt.MapFrom(s => s.SubmissionGroup.Id))
-                //.ForAllOtherMembers(d => d.Ignore());
+                .ForAllOtherMembers(d => d.Ignore())
             ;
 
             CreateMap<FileSpecification, FileSpecificationViewDto>()

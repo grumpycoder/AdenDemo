@@ -4,6 +4,9 @@ namespace AdenDemo.Web
 {
     public static class Constants
     {
+        public const string ApplicationName = "Aden";
+        public const string LayerName = "WebApp";
+        public const string WebApiLayerName = "WebApi";
 
         public static string TpaAccessKey => AppSettings.Get<string>("TPA_AccessKey");
         public static string DatabaseContextName => "AdenContext";
@@ -22,6 +25,7 @@ namespace AdenDemo.Web
 
         public static int CommandTimeout => AppSettings.Get<int>("CommandTimeout");
         public static string GlobalAdministrators => AppSettings.Get<string>("GlobalAdministratorsGroupName");
+
 
 
         //Email variables

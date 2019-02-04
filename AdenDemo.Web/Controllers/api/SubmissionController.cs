@@ -16,6 +16,7 @@ using System.Web.Http;
 namespace AdenDemo.Web.Controllers.api
 {
     [RoutePrefix("api/submission")]
+    [Authorize(Roles = "AdenAppUsers")]
     public class SubmissionController : ApiController
     {
         private AdenContext _context;
