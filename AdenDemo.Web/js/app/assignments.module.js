@@ -272,7 +272,7 @@
                                 toastr.error('Error saving reporting errors for ' + data.fileName + ' (' + data.fileNumber + ')');
                             },
                             complete: function () {
-
+                                dialogRef.close();
                             }
                         });
 

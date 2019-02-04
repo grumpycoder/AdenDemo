@@ -8,7 +8,6 @@ using Alsde.Extensions;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Humanizer;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -192,46 +191,22 @@ namespace AdenDemo.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            //TODO: Refactor to submission model
-
-            var workItem = await _context.WorkItems.FindAsync(id);
+            var workItem = await _context.WorkItems.Include(x => x.Report).FirstOrDefaultAsync(x => x.Id == id);
             if (workItem == null) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-
-            //Complete current work item
-            workItem.CompletedDate = DateTime.Now;
-            workItem.WorkItemState = WorkItemState.Completed;
-
-            //Create new generation work item
-            var report = await _context.Reports.Include(s => s.Submission.FileSpecification.GenerationGroup.Users).SingleOrDefaultAsync(r => r.Id == workItem.ReportId);
-
             
-            var assignedUser = _membershipService.GetAssignee(report.Submission.FileSpecification.GenerationGroup);
+            var submission = _context.Submissions.Include(f => f.FileSpecification.GenerationGroup.Users).FirstOrDefault(s => s.Id == workItem.Report.SubmissionId);
+            
+            var assignedUser = _membershipService.GetAssignee(submission.FileSpecification.GenerationGroup);
 
-            var wi = new WorkItem()
-            {
-                WorkItemState = WorkItemState.NotStarted,
-                AssignedDate = DateTime.Now,
-                WorkItemAction = WorkItemAction.ReviewError,
-                AssignedUser = assignedUser,
-                Description = model.Description
-            };
-            report.Submission.LastUpdated = DateTime.Now;
-
-            report.ReportState = ReportState.CompleteWithError;
-            report.Submission.SubmissionState = SubmissionState.CompleteWithError;
-            report.Submission.CurrentAssignee = assignedUser;
-
+            var wi = submission.CompleteWork(workItem, assignedUser, generateErrorTask: true);
+            wi.Description = model.Description;
 
             foreach (var f in model.Files)
             {
                 wi.WorkItemImages.Add(new WorkItemImage() { Image = f.ConvertToByte(), });
             }
 
-            report.WorkItems.Add(wi);
-
-            //WorkEmailer.Send(wi, report.Submission, model.Files);
-
-            //await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
 

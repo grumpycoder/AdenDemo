@@ -86,7 +86,7 @@ namespace AdenDemo.Web.Models
             };
             report.WorkItems.Add(workItem);
 
-            return workItem; 
+            return workItem;
         }
 
         public void Cancel(string currentUser)
@@ -180,7 +180,7 @@ namespace AdenDemo.Web.Models
             return wi;
         }
 
-        public WorkItem CompleteWork(WorkItem workItem, string nextAssignee)
+        public WorkItem CompleteWork(WorkItem workItem, string nextAssignee, bool generateErrorTask = false)
         {
             var report = Reports.FirstOrDefault(x => x.Id == CurrentReportId);
             workItem.CompletedDate = DateTime.Now;
@@ -190,6 +190,16 @@ namespace AdenDemo.Web.Models
             var wi = new WorkItem() { WorkItemState = WorkItemState.NotStarted, AssignedDate = DateTime.Now };
             LastUpdated = DateTime.Now;
             wi.AssignedUser = nextAssignee;
+
+            if (generateErrorTask)
+            {
+                wi.WorkItemAction = WorkItemAction.ReviewError;
+                report.ReportState = ReportState.CompleteWithError;
+                report.Submission.SubmissionState = SubmissionState.CompleteWithError;
+                report.SubmittedDate = DateTime.Now;
+                report.WorkItems.Add(wi);
+                return wi;
+            }
 
             switch (workItem.WorkItemAction)
             {
