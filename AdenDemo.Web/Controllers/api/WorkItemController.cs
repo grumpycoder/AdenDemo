@@ -132,7 +132,9 @@ namespace AdenDemo.Web.Controllers.api
 
             _context.SaveChanges();
 
-            return Ok("completed work item task");
+            var dto = Mapper.Map<WorkItemViewDto>(workItem);
+
+            return Ok(dto);
 
         }
 

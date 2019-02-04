@@ -166,10 +166,11 @@
             success: function (data) {
                 $gridCurrent.refresh();
                 $gridComplete.refresh();
-                //TODO: Toast success completed action
+                console.log('data', data);
+                toastr.success('Completed task for ' + data.fileName + ' (' + data.fileNumber + ')');
             },
             error: function (err) {
-                //TODO: Toast error completing action
+                toastr.error('Error completing task');
             }
         }).always(function () {
             $toggleWorkingButton(container);
@@ -186,10 +187,11 @@
             success: function (data) {
                 $gridCurrent.refresh();
                 $gridComplete.refresh();
-                //TODO: Toast success completed action
+                toastr.warning('Rejected file for ' + data.fileName + ' (' + data.fileNumber + ')');
+
             },
             error: function (err) {
-                //TODO: Toast error completing action
+                toastr.error('Error rejecting file');
             }
         }).always(function () {
             $toggleWorkingButton(container);
@@ -205,10 +207,10 @@
             success: function (data) {
                 $gridCurrent.refresh();
                 $gridComplete.refresh();
-                //TODO: Toast success completed action
+                toastr.success('Cancelled task for ' + data.fileName + ' (' + data.fileNumber + ')');
             },
             error: function (err) {
-                //TODO: Toast error completing action
+                toastr.error('Error cancelling task');
             }
         }).always(function () {
             $toggleWorkingButton(container);
@@ -227,7 +229,7 @@
             title: title,
             message: $('<div></div>').load(url, function (resp, status, xhr) {
                 if (status === 'error') {
-                    //TODO: toast error message
+                    toastr.error('Error retrieving reporting errors form');
                 }
             }),
             buttons: [
@@ -263,11 +265,11 @@
                             success: function (response) {
                                 $gridCurrent.refresh();
                                 $gridComplete.refresh();
-                                //TODO: Toast success completed action
                                 dialogRef.close();
+                                toastr.success('Saved errors and created task for ' + data.fileName + ' (' + data.fileNumber + ')');
                             },
                             error: function (error) {
-                                //TODO: Toast error completing action
+                                toastr.error('Error saving reporting errors for ' + data.fileName + ' (' + data.fileNumber + ')');
                             },
                             complete: function () {
 

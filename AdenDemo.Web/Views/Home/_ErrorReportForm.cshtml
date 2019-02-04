@@ -16,12 +16,11 @@
 
     <div class="form-group">
         <label for="description" class="control-label">Description:</label>
-        <textarea class="form-control" id="description" name="description" required="" placeholder="Enter details here...">Test</textarea>
+        <textarea class="form-control" id="description" name="description" required="" placeholder="Enter details here..."></textarea>
     </div>
 
     <div class="form-group">
         <label for="files" class="control-label">Report Data Files:</label>
-        @*@Html.TextBoxFor(m => m.Files, new {type = "file", id="files", name="files"})*@
         <input type="file" id="files" name="files" multiple="multiple" class="form-control" />
     </div>
 
