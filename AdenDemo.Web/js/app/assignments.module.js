@@ -219,7 +219,6 @@
     }
 
     function showReportErrors(container, data) {
-        console.log('show report errors');
         var title = 'Submission Errors';
         var url = '/home/errorreport/' + data.id;
         var postUrl = '/home/reporterror'; // + data.id;

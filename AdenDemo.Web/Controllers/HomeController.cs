@@ -192,6 +192,8 @@ namespace AdenDemo.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
+            //TODO: Refactor to submission model
+
             var workItem = await _context.WorkItems.FindAsync(id);
             if (workItem == null) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 
@@ -200,9 +202,10 @@ namespace AdenDemo.Web.Controllers
             workItem.WorkItemState = WorkItemState.Completed;
 
             //Create new generation work item
-            var report = await _context.Reports.Include(s => s.Submission.FileSpecification).SingleOrDefaultAsync(r => r.Id == workItem.ReportId);
+            var report = await _context.Reports.Include(s => s.Submission.FileSpecification.GenerationGroup.Users).SingleOrDefaultAsync(r => r.Id == workItem.ReportId);
 
-            var assignedUser = "mark@mail.com";
+            
+            var assignedUser = _membershipService.GetAssignee(report.Submission.FileSpecification.GenerationGroup);
 
             var wi = new WorkItem()
             {
@@ -226,9 +229,9 @@ namespace AdenDemo.Web.Controllers
 
             report.WorkItems.Add(wi);
 
-            WorkEmailer.Send(wi, report.Submission, model.Files);
+            //WorkEmailer.Send(wi, report.Submission, model.Files);
 
-            await _context.SaveChangesAsync();
+            //await _context.SaveChangesAsync();
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
 
