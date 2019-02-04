@@ -2,6 +2,7 @@
 using AdenDemo.Web.Models;
 using AdenDemo.Web.Services;
 using AdenDemo.Web.ViewModels;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using CSharpFunctionalExtensions;
 using DevExtreme.AspNet.Data;
@@ -43,7 +44,7 @@ namespace AdenDemo.Web.Controllers.api
         {
             if (string.IsNullOrWhiteSpace(model.Message)) return BadRequest("No message provided");
 
-            var submission = await _context.Submissions.FirstOrDefaultAsync(s => s.Id == id);
+            var submission = await _context.Submissions.Include(f => f.FileSpecification).FirstOrDefaultAsync(s => s.Id == id);
             if (submission == null) return NotFound();
 
             submission.Waive(model.Message, _currentUserFullName);
@@ -56,7 +57,9 @@ namespace AdenDemo.Web.Controllers.api
 
             _context.SaveChanges();
 
-            return Ok("Success");
+            var dto = Mapper.Map<SubmissionViewDto>(submission);
+
+            return Ok(dto);
         }
 
         [HttpPost, Route("start/{id}")]
@@ -87,7 +90,9 @@ namespace AdenDemo.Web.Controllers.api
 
             _context.SaveChanges();
 
-            return Ok(submission);
+            var dto = Mapper.Map<SubmissionViewDto>(submission);
+
+            return Ok(dto);
         }
 
         [HttpPost, Route("cancel/{id}")]
@@ -116,9 +121,12 @@ namespace AdenDemo.Web.Controllers.api
             submission.Cancel(_currentUserFullName);
 
             WorkEmailer.Send(workItem, submission);
+
             _context.SaveChanges();
 
-            return Ok();
+            var dto = Mapper.Map<SubmissionViewDto>(submission);
+
+            return Ok(dto);
 
         }
 
@@ -150,7 +158,9 @@ namespace AdenDemo.Web.Controllers.api
 
             _context.SaveChanges();
 
-            return Ok("Successfully repopened");
+            var dto = Mapper.Map<SubmissionViewDto>(submission);
+
+            return Ok(dto);
 
         }
 

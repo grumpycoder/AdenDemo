@@ -926,7 +926,7 @@ $(function () {
             title: title,
             message: $('<div></div>').load(url, function (resp, status, xhr) {
                 if (status === 'error') {
-                    //TODO: toast error message
+                    toastr.error('Error retrieving history');
                 }
             }),
             buttons: [
@@ -948,16 +948,14 @@ $(function () {
             url: '/api/submission/start/' + id,
             type: 'POST',
             success: function (response) {
-                //TODO: toast success
-                console.log('success', response);
+                toastr.success('Started submission process for ' + response.fileName + ' (' + response.fileNumber + ')');
                 $grid.refresh();
             },
             error: function (error) {
-                //TODO: toast error
-                console.log('error', error);
+                toastr.error('Error starting submission process');
             },
             complete: function (status) {
-                console.log('complete', status);
+                
                 $toggleWorkingButton(container);
             }
         });
@@ -972,16 +970,13 @@ $(function () {
             url: '/api/submission/cancel/' + id,
             type: 'POST',
             success: function (response) {
-                //TODO: toast success
-                console.log('success', response);
+                toastr.warning('Cancelled submission process for ' + response.fileName + ' (' + response.fileNumber + ')');
                 $grid.refresh();
             },
             error: function (error) {
-                //TODO: toast error
-                console.log('error', error);
+                toastr.error('Error cancelling submission process');
             },
             complete: function (status) {
-                console.log('complete', status);
                 $toggleWorkingButton(container);
             }
         });
@@ -1028,17 +1023,14 @@ $(function () {
                             data: JSON.stringify(data),
                             dataType: 'json',
                             success: function (response) {
-                                console.log('success', response);
-                                //TODO: toast success
+                                toastr.success('Reopened submission process for ' + response.fileName + ' (' + response.fileNumber + ')');
                                 dialogRef.close();
                                 $grid.refresh();
                             },
                             error: function (error) {
-                                //TODO: toast error
-                                console.log('error', error);
+                                toastr.error('Error reopening submission process');
                             },
                             complete: function (status) {
-                                console.log('complete', status);
                             }
                         });
                     }
@@ -1085,16 +1077,14 @@ $(function () {
                             url: postUrl, 
                             data: JSON.stringify(data), 
                             success: function (response) {
-                                //TODO: toast success
+                                toastr.success('Waived submission process for ' + response.fileName + ' (' + response.fileNumber + ')');
                                 dialogRef.close();
                                 $grid.refresh();
                             },
                             error: function (error) {
-                                //TODO: toast error
-                                console.log('error', error);
+                                toastr.error('Error waiving submission process');
                             },
                             complete: function (status) {
-                                console.log('complete', status);
                             }
                         });
                     }
