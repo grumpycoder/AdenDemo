@@ -1,4 +1,5 @@
 ﻿using AdenDemo.Web.Data;
+using AdenDemo.Web.Filters;
 using AdenDemo.Web.Helpers;
 using AdenDemo.Web.Models;
 using AdenDemo.Web.Services;
@@ -14,7 +15,6 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using AdenDemo.Web.Filters;
 
 namespace AdenDemo.Web.Controllers
 {
@@ -36,7 +36,7 @@ namespace AdenDemo.Web.Controllers
             return View();
         }
 
-        [CustomAuthorize(Roles = "IdemAppProgrammerEditor")]
+        [CustomAuthorize(Roles = Constants.FileSpecificationAdministratorGroup)]
         public ActionResult FileSpecifications()
         {
             return View();
