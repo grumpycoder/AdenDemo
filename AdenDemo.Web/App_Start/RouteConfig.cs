@@ -9,6 +9,12 @@ namespace AdenDemo.Web
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapMvcAttributeRoutes();
+
+            routes.LowercaseUrls = true;
+
+            routes.MapRoute("HomeActions", "{action}", new { controller = "Home" });
+
             routes.MapRoute
                             (
                             name: "Reassign",

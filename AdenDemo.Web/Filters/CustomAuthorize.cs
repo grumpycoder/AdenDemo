@@ -6,7 +6,7 @@ namespace AdenDemo.Web.Filters
     {
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
-            filterContext.Result = new HttpUnauthorizedResult(); // Try this but i'm not sure
+            //filterContext.Result = new HttpUnauthorizedResult(); // Try this but i'm not sure
             var httpContext = filterContext.HttpContext;
             var request = httpContext.Request;
             var response = httpContext.Response;

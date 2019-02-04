@@ -14,10 +14,11 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using AdenDemo.Web.Filters;
 
 namespace AdenDemo.Web.Controllers
 {
-    [Authorize(Roles = "AdenAppUsers")]
+    [CustomAuthorize(Roles = "AdenAppUsers")]
     public class HomeController : Controller
     {
 
@@ -35,6 +36,7 @@ namespace AdenDemo.Web.Controllers
             return View();
         }
 
+        [CustomAuthorize(Roles = "IdemAppProgrammerEditor")]
         public ActionResult FileSpecifications()
         {
             return View();
