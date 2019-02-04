@@ -55,10 +55,7 @@ namespace AdenDemo.Web.Services
                     .Subject(subject)
                     .BodyAsHtml()
                     .Body("")
-                    //.UsingTemplateEngine(new RazorRenderer())
-                    .UsingTemplateFromFile(templatePath, model)
-                //.Send();
-                ;
+                    .UsingTemplateFromFile(templatePath, model);
 
             if (files != null)
             {

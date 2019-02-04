@@ -7,26 +7,23 @@
     var $gridCurrent = $('#gridCurrent').dxDataGrid({
         dataSource: DevExpress.data.AspNet.createStore({
             key: 'id',
-            loadUrl: uriCurrent,
+            loadUrl: uriCurrent
         }),
         remoteOperations: true,
         allowColumnResizing: true,
         showBorders: true,
+        scrolling: { mode: "infinite" },
+        paging: { pageSize: 20 },
         columnResizingMode: "nextColumn",
         columnMinWidth: 50,
         columnAutoWidth: true,
         wordWrapEnabled: true,
         height: 300,
-        filterRow: { visible: false },
-        headerFilter: { visible: false },
-        groupPanel: { visible: false },
-        scrolling: { mode: "virtual", rowRenderingMode: "virtual", },
-        paging: { pageSize: 20 },
         columns: [
             { dataField: 'displayFileName', caption: 'File Name' },
-            { dataField: 'dataYear', caption: 'Data Year', width: 75, },
-            { dataField: 'assignedDate', caption: 'Assigned', dataType: 'datetime', width: 150, },
-            { dataField: 'dueDate', caption: 'Due', dataType: 'datetime', width: 150, },
+            { dataField: 'dataYear', caption: 'Data Year', width: 75 },
+            { dataField: 'assignedDate', caption: 'Assigned', dataType: 'datetime', width: 150 },
+            { dataField: 'dueDate', caption: 'Due', dataType: 'datetime', width: 150 },
             {
                 width: 375,
                 alignment: 'center',
@@ -79,10 +76,10 @@
                     }
 
                 }
-            },
+            }
         ],
         onToolbarPreparing: function (e) {
-            var dataGrid = e.component;
+            var currentGrid = e.component;
 
             e.toolbarOptions.items.unshift(
                 {
@@ -93,7 +90,7 @@
                         icon: "refresh",
                         hint: 'Refresh', 
                         onClick: function () {
-                            dataGrid.refresh();
+                            currentGrid.refresh();
                         }
                     }
                 }
@@ -104,11 +101,13 @@
     var $gridComplete = $('#gridComplete').dxDataGrid({
         dataSource: DevExpress.data.AspNet.createStore({
             key: 'id',
-            loadUrl: uriComplete,
+            loadUrl: uriComplete
         }),
         remoteOperations: true,
         allowColumnResizing: true,
         showBorders: true,
+        scrolling: { mode: "infinite" },
+        paging: { pageSize: 20 },
         columnResizingMode: "nextColumn",
         columnMinWidth: 50,
         columnAutoWidth: true,
@@ -135,27 +134,10 @@
                             .appendTo(container);
                     }
                 }
-            },
+            }
         ],
-        filterRow: {
-            visible: false
-        },
-        headerFilter: {
-            visible: false
-        },
-        groupPanel: {
-            visible: false
-        },
-        scrolling: {
-            mode: "virtual",
-            rowRenderingMode: "virtual",
-        },
-        paging: {
-            pageSize: 20
-        },
-
         onToolbarPreparing: function (e) {
-            var dataGrid = e.component;
+            var historyGrid = e.component;
 
             e.toolbarOptions.items.unshift(
                 {
@@ -166,7 +148,7 @@
                         icon: "refresh",
                         hint: 'Refresh', 
                         onClick: function () {
-                            dataGrid.refresh();
+                            historyGrid.refresh();
                         }
                     }
                 }

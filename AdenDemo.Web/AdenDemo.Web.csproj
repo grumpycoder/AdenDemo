@@ -271,6 +271,7 @@
     <Compile Include="Models\WorkItemImage.cs" />
     <Compile Include="Models\WorkItemState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\DocumentService.cs" />
     <Compile Include="Services\IdemService.cs" />
     <Compile Include="Services\MembershipService.cs" />
     <Compile Include="Services\WorkEmailer.cs" />

@@ -76,9 +76,9 @@ namespace AdenDemo.Web.Controllers.api
 
             if (string.IsNullOrWhiteSpace(assignedUser)) return BadRequest("No group members to assign next task. ");
 
-            submission.Start(assignedUser);
+            var workItem = submission.Start(assignedUser);
 
-            //WorkEmailer.Send(workItem, submission);
+            WorkEmailer.Send(workItem, submission);
 
             _context.SaveChanges();
 
@@ -114,7 +114,7 @@ namespace AdenDemo.Web.Controllers.api
 
             submission.Cancel(_currentUserFullName);
 
-            //WorkEmailer.Send(workItem, submission);
+            WorkEmailer.Send(workItem, submission);
             _context.SaveChanges();
 
             return Ok();
@@ -137,9 +137,9 @@ namespace AdenDemo.Web.Controllers.api
 
             var assignedUser = _membershipService.GetAssignee(submission.FileSpecification.GenerationGroup);
 
-            submission.Reopen(_currentUserFullName, model.Message, assignedUser, model.NextSubmissionDate);
+            var workItem = submission.Reopen(_currentUserFullName, model.Message, assignedUser, model.NextSubmissionDate);
 
-            //WorkEmailer.Send(workItem, submission);
+            WorkEmailer.Send(workItem, submission);
 
 
             _context.SaveChanges();

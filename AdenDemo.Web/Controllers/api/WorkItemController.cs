@@ -26,6 +26,7 @@ namespace AdenDemo.Web.Controllers.api
     {
         private AdenContext _context;
         private MembershipService _membershipService;
+        private DocumentService _documentService; 
         private string _currentUserFullName;
         private string _currentUusername;
 
@@ -35,6 +36,7 @@ namespace AdenDemo.Web.Controllers.api
             _membershipService = new MembershipService(_context);
             _currentUserFullName = ((ClaimsIdentity)HttpContext.Current.User.Identity).Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
             _currentUusername = User.Identity.Name;
+            _documentService = new DocumentService(_context);
 
         }
 
@@ -90,126 +92,49 @@ namespace AdenDemo.Web.Controllers.api
 
             return Ok(model);
         }
-
-
+        
         [HttpPost, Route("complete/{id}")]
         public async Task<object> Complete(int id)
         {
-            var workItem = await _context.WorkItems.FindAsync(id);
+            var workItem = await _context.WorkItems.Include(x => x.Report.Submission).FirstOrDefaultAsync(x => x.Id == id);
 
             if (workItem == null) return NotFound();
 
             //TODO: Pulling too much data here
-            var report = await _context.Reports
-                .Include(s => s.Submission.FileSpecification.GenerationGroup.Users)
-                .Include(s => s.Submission.FileSpecification.ApprovalGroup.Users)
-                .Include(s => s.Submission.FileSpecification.SubmissionGroup.Users)
-                .SingleOrDefaultAsync(r => r.Id == workItem.ReportId);
-
-            if (report == null) return BadRequest("No report for work item task");
+            var submission = _context.Submissions
+                .Include(f => f.FileSpecification.GenerationGroup.Users)
+                .Include(f => f.FileSpecification.ApprovalGroup.Users)
+                .Include(f => f.FileSpecification.SubmissionGroup.Users)
+                .FirstOrDefault(x => x.Id == workItem.Report.SubmissionId);
 
 
+            var currentReport = submission.Reports.FirstOrDefault(x => x.Id == submission.CurrentReportId);
             if (workItem.WorkItemAction == WorkItemAction.Generate)
             {
-                if (string.IsNullOrWhiteSpace(report.Submission.FileSpecification.ReportAction)) return BadRequest("No report action assigned to generate documents");
-
-                //Create documents
-                //TODO: Flesh out Generate documents from stored procedure into external library
-                var version = report.CurrentDocumentVersion + 1;
-                string filename;
-
-                if (report.Submission.FileSpecification.IsSCH)
-                {
-                    filename = report.Submission.FileSpecification.FileNameFormat.Replace("{level}", ReportLevel.SCH.GetDisplayName()).Replace("{version}", string.Format("v{0}.csv", version));
-
-                    var file = ExecuteDocumentCreationToFile(report, ReportLevel.SCH);
-                    var doc = new ReportDocument() { FileData = file, ReportLevel = ReportLevel.SCH, Filename = filename, FileSize = file.Length, Version = version };
-                    report.Documents.Add(doc);
-
-                }
-                if (report.Submission.FileSpecification.IsLEA)
-                {
-                    filename = report.Submission.FileSpecification.FileNameFormat.Replace("{level}", ReportLevel.LEA.GetDisplayName()).Replace("{version}", string.Format("v{0}.csv", version));
-                    var file = ExecuteDocumentCreationToFile(report, ReportLevel.LEA);
-                    var doc = new ReportDocument() { FileData = file, ReportLevel = ReportLevel.SCH, Filename = filename, FileSize = file.Length, Version = version };
-                    report.Documents.Add(doc);
-                }
-                if (report.Submission.FileSpecification.IsSEA)
-                {
-                    filename = report.Submission.FileSpecification.FileNameFormat.Replace("{level}", ReportLevel.SEA.GetDisplayName()).Replace("{version}", string.Format("v{0}.csv", version));
-                    var file = ExecuteDocumentCreationToFile(report, ReportLevel.SEA);
-                    var doc = new ReportDocument() { FileData = file, ReportLevel = ReportLevel.SCH, Filename = filename, FileSize = file.Length, Version = version };
-                    report.Documents.Add(doc);
-                }
-                report.GeneratedDate = DateTime.Now;
-                report.CurrentDocumentVersion = version;
+                _documentService.GenerateDocuments(currentReport);
             }
 
-            //Complete work item
-            workItem.CompletedDate = DateTime.Now;
-            workItem.WorkItemState = WorkItemState.Completed;
-
-
-            //Start new work item
-            var wi = new WorkItem() { WorkItemState = WorkItemState.NotStarted, AssignedDate = DateTime.Now };
-            report.Submission.LastUpdated = DateTime.Now;
-            var nextGroupName = report.Submission.FileSpecification.GenerationGroup;
-
-            if (workItem.WorkItemAction == WorkItemAction.Generate)
+            Group group;
+            switch (workItem.WorkItemAction)
             {
-                wi.WorkItemAction = WorkItemAction.Review;
-                report.ReportState = ReportState.AssignedForReview;
-                report.Submission.SubmissionState = SubmissionState.AssignedForReview;
+                case WorkItemAction.Approve:
+                    group = submission.FileSpecification.ApprovalGroup;
+                    break;
+                case WorkItemAction.Submit:
+                    group = submission.FileSpecification.SubmissionGroup;
+                    break;
+                default:
+                    group = submission.FileSpecification.ApprovalGroup;
+                    break;
             }
+            var assignee = _membershipService.GetAssignee(group);
 
-            if (workItem.WorkItemAction == WorkItemAction.Review)
-            {
-                wi.WorkItemAction = WorkItemAction.Approve;
-                wi.AssignedUser = workItem.AssignedUser;
-                report.ReportState = ReportState.AwaitingApproval;
-                report.Submission.SubmissionState = SubmissionState.AwaitingApproval;
-                nextGroupName = report.Submission.FileSpecification.ApprovalGroup;
-            }
+            var wi = submission.CompleteWork(workItem, assignee);
 
-            if (workItem.WorkItemAction == WorkItemAction.Approve)
-            {
-                wi.WorkItemAction = WorkItemAction.Submit;
-                report.ReportState = ReportState.AssignedForSubmission;
-                report.Submission.SubmissionState = SubmissionState.AssignedForSubmission;
-                nextGroupName = report.Submission.FileSpecification.SubmissionGroup;
-                report.ApprovedDate = DateTime.Now;
-            }
-
-            if (workItem.WorkItemAction == WorkItemAction.ReviewError)
-            {
-                wi.WorkItemAction = WorkItemAction.Generate;
-                report.ReportState = ReportState.AssignedForGeneration;
-                report.Submission.SubmissionState = SubmissionState.AssignedForGeneration;
-                nextGroupName = report.Submission.FileSpecification.GenerationGroup;
-            }
-
-            if (workItem.WorkItemAction == WorkItemAction.Submit)
-            {
-                report.ReportState = ReportState.Complete;
-                report.Submission.SubmissionState = SubmissionState.Complete;
-                report.SubmittedDate = DateTime.Now;
-            }
-
-            if (!nextGroupName.Users.Any()) return BadRequest("No group members to assign next task. ");
-
-            var assignedUser = _membershipService.GetAssignee(nextGroupName);
-
-
-            wi.AssignedUser = assignedUser;
-            report.Submission.CurrentAssignee = assignedUser;
-
-            if (wi.WorkItemAction != 0) report.WorkItems.Add(wi);
-
-            WorkEmailer.Send(wi, report.Submission);
+            WorkEmailer.Send(wi, submission);
 
             _context.SaveChanges();
-
-
+            
             return Ok("completed work item task");
 
         }
@@ -238,41 +163,6 @@ namespace AdenDemo.Web.Controllers.api
             var dto = Mapper.Map<WorkItemViewDto>(wi);
             return Ok(dto);
         }
-
-
-        //TODO: Refactor to external library
-        private byte[] ExecuteDocumentCreationToFile(Report report, ReportLevel reportLevel)
-        {
-            var dataTable = new DataTable();
-            var ds = new DataSet();
-            using (var connection = new SqlConnection(_context.Database.Connection.ConnectionString))
-            {
-                using (var cmd = new SqlCommand(report.Submission.FileSpecification.ReportAction, connection))
-                {
-                    cmd.CommandTimeout = Constants.CommandTimeout;
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@DataYear", report.Submission.DataYear);
-                    cmd.Parameters.AddWithValue("@ReportLevel", reportLevel.GetDisplayName());
-                    var adapter = new SqlDataAdapter(cmd);
-                    adapter.Fill(dataTable);
-                    adapter.Fill(ds);
-                }
-            }
-
-            var version = 1; //report.GetNextFileVersionNumber(reportLevel);
-            var filename = report.Submission.FileSpecification.FileNameFormat.Replace("{level}", reportLevel.GetDisplayName()).Replace("{version}", string.Format("v{0}.csv", version));
-
-            var table1 = ds.Tables[0].UpdateFieldValue("Filename", filename).ToCsvString(false);
-            var table2 = ds.Tables[1].UpdateFieldValue("Filename", filename).ToCsvString(false);
-
-
-            var file = Encoding.ASCII.GetBytes(ds.Tables[0].Rows.Count > 1 ? string.Concat(table2, table1) : string.Concat(table1, table2)); ;
-
-            return file;
-
-        }
-
-
 
     }
 }

@@ -52,7 +52,7 @@ namespace AdenDemo.Web.Models
 
         }
 
-        public void Reopen(string currentUser, string message, string assignee, DateTime dueDate)
+        public WorkItem Reopen(string currentUser, string message, string assignee, DateTime dueDate)
         {
 
             //Create Audit record
@@ -86,6 +86,7 @@ namespace AdenDemo.Web.Models
             };
             report.WorkItems.Add(workItem);
 
+            return workItem; 
         }
 
         public void Cancel(string currentUser)
@@ -114,7 +115,7 @@ namespace AdenDemo.Web.Models
 
         }
 
-        public void Start(string assignee)
+        public WorkItem Start(string assignee)
         {
             //Change state
             SubmissionState = SubmissionState.AssignedForGeneration;
@@ -135,6 +136,7 @@ namespace AdenDemo.Web.Models
             };
             report.WorkItems.Add(workItem);
 
+            return workItem;
         }
 
         public void Reassign(string currentUser, WorkItem workItem, string assignee, string reason)
@@ -177,5 +179,55 @@ namespace AdenDemo.Web.Models
 
             return wi;
         }
+
+        public WorkItem CompleteWork(WorkItem workItem, string nextAssignee)
+        {
+            var report = Reports.FirstOrDefault(x => x.Id == CurrentReportId);
+            workItem.CompletedDate = DateTime.Now;
+            workItem.WorkItemState = WorkItemState.Completed;
+
+            //Start new work item
+            var wi = new WorkItem() { WorkItemState = WorkItemState.NotStarted, AssignedDate = DateTime.Now };
+            LastUpdated = DateTime.Now;
+            wi.AssignedUser = nextAssignee;
+
+            switch (workItem.WorkItemAction)
+            {
+                case WorkItemAction.Generate:
+                    wi.WorkItemAction = WorkItemAction.Review;
+                    report.ReportState = ReportState.AssignedForReview;
+                    report.Submission.SubmissionState = SubmissionState.AssignedForReview;
+                    break;
+                case WorkItemAction.Review:
+                    wi.WorkItemAction = WorkItemAction.Approve;
+                    wi.AssignedUser = workItem.AssignedUser;
+                    report.ReportState = ReportState.AwaitingApproval;
+                    report.Submission.SubmissionState = SubmissionState.AwaitingApproval;
+                    break;
+                case WorkItemAction.Approve:
+                    wi.WorkItemAction = WorkItemAction.Submit;
+                    report.ReportState = ReportState.AssignedForSubmission;
+                    report.Submission.SubmissionState = SubmissionState.AssignedForSubmission;
+                    report.ApprovedDate = DateTime.Now;
+                    break;
+                case WorkItemAction.Submit:
+                    report.ReportState = ReportState.Complete;
+                    report.Submission.SubmissionState = SubmissionState.Complete;
+                    report.SubmittedDate = DateTime.Now;
+                    break;
+                case WorkItemAction.ReviewError:
+                    wi.WorkItemAction = WorkItemAction.Generate;
+                    report.ReportState = ReportState.AssignedForGeneration;
+                    report.Submission.SubmissionState = SubmissionState.AssignedForGeneration;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            if (wi.WorkItemAction != 0) report.WorkItems.Add(wi);
+
+            return wi;
+        }
+
     }
 }
