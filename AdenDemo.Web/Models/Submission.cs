@@ -151,5 +151,31 @@ namespace AdenDemo.Web.Models
 
             CurrentAssignee = assignee;
         }
+
+        public WorkItem Reject(WorkItem workItem)
+        {
+            workItem.WorkItemState = WorkItemState.Reject;
+            workItem.CompletedDate = DateTime.Now;
+
+            LastUpdated = DateTime.Now;
+
+            var wi = new WorkItem()
+            {
+                WorkItemState = WorkItemState.NotStarted,
+                AssignedDate = DateTime.Now,
+                WorkItemAction = WorkItemAction.Generate,
+                AssignedUser = workItem.AssignedUser
+            };
+
+            var report = Reports.SingleOrDefault(x => x.Id == CurrentReportId);
+
+            report.ReportState = ReportState.AssignedForGeneration;
+            report.Submission.SubmissionState = SubmissionState.AssignedForGeneration;
+            report.Submission.CurrentAssignee = wi.AssignedUser;
+
+            report.WorkItems.Add(wi);
+
+            return wi;
+        }
     }
 }

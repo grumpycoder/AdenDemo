@@ -222,34 +222,16 @@ namespace AdenDemo.Web.Controllers.api
             if (workItem == null) return NotFound();
 
             //TODO: Pulling too much data here
-            var report = await _context.Reports.Include(s => s.Submission.FileSpecification.GenerationGroup.Users).SingleOrDefaultAsync(r => r.Id == workItem.ReportId);
+            var submission = await _context.Submissions
+                .Include(x => x.FileSpecification.GenerationGroup.Users)
+                .Include(r => r.Reports)
+                .FirstOrDefaultAsync(x => x.CurrentReportId == workItem.ReportId);
 
-            if (report == null) return BadRequest("No group members to assign next task. ");
+            if (!submission.FileSpecification.GenerationGroup.Users.Any()) return BadRequest("No group members to assign next task. ");
 
-            if (!report.Submission.FileSpecification.GenerationGroup.Users.Any()) return BadRequest("No users");
+            var wi = submission.Reject(workItem);
 
-            workItem.WorkItemState = WorkItemState.Reject;
-            workItem.CompletedDate = DateTime.Now;
-
-            //Start new work item
-            var assignedUser = _membershipService.GetAssignee(report.Submission.FileSpecification.GenerationGroup);
-
-            var wi = new WorkItem()
-            {
-                WorkItemState = WorkItemState.NotStarted,
-                AssignedDate = DateTime.Now,
-                WorkItemAction = WorkItemAction.Generate,
-                AssignedUser = assignedUser
-            };
-            report.Submission.LastUpdated = DateTime.Now;
-
-            report.ReportState = ReportState.AssignedForGeneration;
-            report.Submission.SubmissionState = SubmissionState.AssignedForGeneration;
-            report.Submission.CurrentAssignee = assignedUser;
-
-            report.WorkItems.Add(wi);
-
-            WorkEmailer.Send(wi, report.Submission);
+            WorkEmailer.Send(wi, submission);
 
             await _context.SaveChangesAsync();
 
