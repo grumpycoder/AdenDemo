@@ -339,26 +339,13 @@
             type: "localStorage",
             storageKey: "gridFileSpecificationFilterStorage"
         },
-        filterRow: {
-            visible: true
-        },
-        headerFilter: {
-            visible: true
-        },
-        groupPanel: {
-            visible: true
-        },
-        scrolling: {
-            mode: "virtual",
-            rowRenderingMode: "virtual",
-        },
-        paging: {
-            pageSize: 20
-        },
+        filterRow: { visible: true },
+        headerFilter: { visible: true },
+        groupPanel: { visible: true },
+        scrolling: { mode: "virtual", rowRenderingMode: "virtual" },
+        paging: { pageSize: 20 },
         height: 650,
-        columnChooser: {
-            enabled: true
-        },
+        columnChooser: { enabled: true },
         columnResizingMode: "nextColumn",
         columnMinWidth: 50,
         columnAutoWidth: true,
@@ -383,9 +370,9 @@
             { dataField: 'supportGroup', caption: 'Support Group', dataType: 'string' },
             { dataField: 'application', caption: 'Application', dataType: 'string'},
             { dataField: 'collection', caption: 'Collection', dataType: 'string' },
-            { dataField: 'generationUserGroup', caption: 'Generation Group', dataType: 'string' },
-            { dataField: 'approvalUserGroup', caption: 'Approval Group', dataType: 'string' },
-            { dataField: 'submissionUserGroup', caption: 'Submission Group', dataType: 'string' },
+            { dataField: 'generationGroup', caption: 'Generation Group', dataType: 'string' },
+            { dataField: 'approvalGroup', caption: 'Approval Group', dataType: 'string' },
+            { dataField: 'submissionGroup', caption: 'Submission Group', dataType: 'string' },
             {
                 dataField: 'generators', caption: 'Generators', dataType: 'string', 
                 cellTemplate: function(container, options) {
@@ -539,11 +526,10 @@
             type: 'POST',
             success: function (data) {
                 $grid.refresh();
-                //TODO: Toast success retire action
+                toastr.success('Activated file for ' + data.fileName + ' (' + data.fileNumber + ')');
             },
             error: function (err) {
-                console.log('err', err);
-                //TODO: Toast error retire action
+                toastr.error('Error activating file');
             }
         }).always(function () {
             $toggleWorkingButton(container);
@@ -558,12 +544,11 @@
             url: '/api/filespecification/retire/' + id,
             type: 'POST',
             success: function (data) {
+                toastr.warning('Retired file for ' + data.fileName + ' (' + data.fileNumber + ')');
                 $grid.refresh();
-                //TODO: Toast success retire action
             },
             error: function (err) {
-                console.log('err', err);
-                //TODO: Toast error retire action
+                toastr.error('Error retiring file');
             }
         }).always(function () {
             $toggleWorkingButton(container);
@@ -606,19 +591,17 @@
                             type: "PUT",
                             url: postUrl,
                             data: JSON.stringify(data),
-                            //data: $('form').serialize(),
                             dataType: 'json',
-                            success: function (response) {
-                                //TODO: toast success
+                            success: function (data) {
+                                toastr.success('Saved changes for ' + data.fileName + ' (' + data.fileNumber + ')');
                                 dialogRef.close();
                                 $grid.refresh();
                             },
                             error: function (error) {
-                                //TODO: toast error
-                                console.log('error', error);
+                                toastr.error('Error saving file changes');
                             },
                             complete: function (status) {
-                                console.log('complete', status);
+                                
                             }
                         });
                     }
@@ -947,8 +930,8 @@ $(function () {
         $.ajax({
             url: '/api/submission/start/' + id,
             type: 'POST',
-            success: function (response) {
-                toastr.success('Started submission process for ' + response.fileName + ' (' + response.fileNumber + ')');
+            success: function (data) {
+                toastr.success('Started submission process for ' + data.fileName + ' (' + data.fileNumber + ')');
                 $grid.refresh();
             },
             error: function (error) {

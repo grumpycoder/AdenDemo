@@ -272,8 +272,8 @@
         $.ajax({
             url: '/api/submission/start/' + id,
             type: 'POST',
-            success: function (response) {
-                toastr.success('Started submission process for ' + response.fileName + ' (' + response.fileNumber + ')');
+            success: function (data) {
+                toastr.success('Started submission process for ' + data.fileName + ' (' + data.fileNumber + ')');
                 $grid.refresh();
             },
             error: function (error) {
