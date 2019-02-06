@@ -49,7 +49,6 @@ namespace AdenDemo.Web.Controllers.api
 
             submission.Waive(model.Message, _currentUserFullName);
 
-
             _context.SaveChanges();
 
             //TODO: Refactor. Do not have access to new report until after save
@@ -65,7 +64,6 @@ namespace AdenDemo.Web.Controllers.api
         [HttpPost, Route("start/{id}")]
         public async Task<object> Start(int id)
         {
-            //TODO: Getting too much data
             var submission = await _context.Submissions
                 .Include(f => f.FileSpecification)
                 .FirstOrDefaultAsync(x => x.Id == id);
@@ -99,15 +97,23 @@ namespace AdenDemo.Web.Controllers.api
         [HttpPost, Route("cancel/{id}")]
         public async Task<object> Cancel(int id)
         {
-            var submission = await _context.Submissions.Include(f => f.FileSpecification).FirstOrDefaultAsync(x => x.Id == id);
+            var submission = await _context.Submissions
+                .Include(f => f.FileSpecification)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
             if (submission == null) return NotFound();
 
             //TODO: Need to remove retrieval to current work item
-            var workItem = _context.WorkItems.SingleOrDefault(x => x.ReportId == submission.CurrentReportId && x.WorkItemState == WorkItemState.NotStarted);
+            var workItem = _context.WorkItems.Include(x => x.AssignedUser)
+                .FirstOrDefault(x => x.ReportId == submission.CurrentReportId && x.WorkItemState == WorkItemState.NotStarted);
+
+            //Create copy because removing workitems produces null assignee 
+            var wi = workItem.DeepCopy();
 
             //TODO: Submission does not need to be aware of data context
             //Remove Reports/Documents/WorkItems from submission
-            var report = await _context.Reports.FirstOrDefaultAsync(r => r.Id == submission.CurrentReportId);
+            var report = await _context.Reports
+                .FirstOrDefaultAsync(r => r.Id == submission.CurrentReportId);
             if (report != null)
             {
                 var workItems = _context.WorkItems.Where(w => w.ReportId == report.Id);
@@ -121,7 +127,7 @@ namespace AdenDemo.Web.Controllers.api
 
             submission.Cancel(_currentUserFullName);
 
-            WorkEmailer.Send(workItem, submission);
+            WorkEmailer.Send(wi, submission);
 
             _context.SaveChanges();
 
@@ -138,19 +144,22 @@ namespace AdenDemo.Web.Controllers.api
             if (model == null) return BadRequest("No audit entry found in request");
 
             //TODO: Pulling too much data here
-            var submission = await _context.Submissions.Include(f => f.FileSpecification.GenerationGroup.Users).FirstOrDefaultAsync(x => x.Id == id);
+            var submission = await _context.Submissions
+                .Include(f => f.FileSpecification.GenerationGroup)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
             if (submission == null) return NotFound();
 
             if (string.IsNullOrWhiteSpace(submission.FileSpecification.GenerationUserGroup))
                 return BadRequest($"No generation group defined for File { submission.FileSpecification.FileNumber }");
 
-
-            var assignedUser = _membershipService.GetAssignee(submission.FileSpecification.GenerationGroup);
+            var group = _context.Groups.Include(x => x.Users)
+                .FirstOrDefault(x => x.Id == submission.FileSpecification.GenerationGroupId);
+            var assignedUser = _membershipService.GetAssignee(group);
 
             var workItem = submission.Reopen(_currentUserFullName, model.Message, assignedUser, model.NextSubmissionDate);
 
             WorkEmailer.Send(workItem, submission);
-
 
             _context.SaveChanges();
 

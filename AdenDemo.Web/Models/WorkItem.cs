@@ -23,5 +23,13 @@ namespace AdenDemo.Web.Models
             WorkItemImages = new List<WorkItemImage>();
         }
 
+        public WorkItem DeepCopy()
+        {
+            WorkItem other = (WorkItem)this.MemberwiseClone();
+            other.AssignedUser = AssignedUser;
+            
+            return other;
+        }
+
     }
 }

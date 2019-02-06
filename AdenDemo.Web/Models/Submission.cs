@@ -106,15 +106,12 @@ namespace AdenDemo.Web.Models
 
                 if (lastReport.ReportState == ReportState.Waived) SubmissionState = SubmissionState.Waived;
             }
-
-
+            
             //Create Audit record
             var msg = $"{currentUser} cancelled submission";
             var audit = new SubmissionAudit(Id, msg);
             SubmissionAudits.Add(audit);
-
-
-
+            
         }
 
         public WorkItem Start(UserProfile assignee)
