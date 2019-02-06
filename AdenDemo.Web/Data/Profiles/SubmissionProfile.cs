@@ -26,13 +26,9 @@ namespace AdenDemo.Web.Data.Profiles
                 .ForMember(d => d.GenerationUserGroup, opt => opt.MapFrom(s => s.FileSpecification.GenerationUserGroup))
                 .ForMember(d => d.ApprovalUserGroup, opt => opt.MapFrom(s => s.FileSpecification.ApprovalUserGroup))
                 .ForMember(d => d.SubmissionUserGroup, opt => opt.MapFrom(s => s.FileSpecification.SubmissionUserGroup))
-                //.ForMember(d => d.MostRecentReportId,
-                //    opt => opt.MapFrom(s => s.Reports.OrderByDescending(r => r.Id).FirstOrDefault().Id))
-                //.ForMember(d => d.SubmissionStateId, opt => opt.MapFrom(s => s.SubmissionState))
                 .ForMember(d => d.SubmissionState, opt => opt.MapFrom(s => s.SubmissionState))
-                .ForMember(d => d.CurrentAssignee, opt => opt.MapFrom(s => s.CurrentAssignee))
+                .ForMember(d => d.CurrentAssignment, opt => opt.MapFrom(s => s.CurrentAssignee.FullName))
                 .ForMember(d => d.CurrentReportId, opt => opt.MapFrom(s => s.CurrentReportId))
-                //.ForMember(d => d.SubmissionStateKey, opt => opt.MapFrom(s => s.SubmissionState.GetShortName()))
                 ;
         }
     }

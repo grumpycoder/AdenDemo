@@ -51,7 +51,7 @@ namespace AdenDemo.Web.Services
             };
             var email = Email
                     .From(sender, sender)
-                    .To(workItem.AssignedUser)
+                    .To(workItem.AssignedUser.EmailAddress)
                     .Subject(subject)
                     .BodyAsHtml()
                     .Body("")

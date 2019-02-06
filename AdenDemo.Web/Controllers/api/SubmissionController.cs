@@ -66,19 +66,20 @@ namespace AdenDemo.Web.Controllers.api
         public async Task<object> Start(int id)
         {
             //TODO: Getting too much data
-            var submission = await _context.Submissions.Include(f => f.FileSpecification.GenerationGroup.Users).FirstOrDefaultAsync(x => x.Id == id);
+            var submission = await _context.Submissions
+                .Include(f => f.FileSpecification)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
             if (submission == null) return NotFound();
 
             if (submission.FileSpecification.GenerationUserGroup == null)
                 return BadRequest($"No generation group defined for File { submission.FileSpecification.FileNumber }");
 
-            if (!submission.FileSpecification.GenerationGroup.Users.Any())
+            var group = _context.Groups.Include(x => x.Users).FirstOrDefault(x => x.Id == submission.FileSpecification.GenerationGroupId);
+            var assignedUser = _membershipService.GetAssignee(group);
+
+            if (assignedUser == null)
                 return BadRequest($"No group members to assign next task. ");
-
-            var assignedUser = _membershipService.GetAssignee(submission.FileSpecification.GenerationGroup);
-
-
-            if (string.IsNullOrWhiteSpace(assignedUser)) return BadRequest("No group members to assign next task. ");
 
             var workItem = submission.Start(assignedUser);
 

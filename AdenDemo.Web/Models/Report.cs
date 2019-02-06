@@ -15,7 +15,7 @@ namespace AdenDemo.Web.Models
         public string SubmittedUser { get; set; }
         public List<ReportDocument> Documents { get; set; }
         public int SubmissionId { get; set; }
-        public int CurrentDocumentVersion { get; set; }
+        public int? CurrentDocumentVersion { get; set; }
         public Submission Submission { get; set; }
         public ReportState ReportState { set; get; }
         public List<WorkItem> WorkItems { set; get; }

@@ -23,16 +23,18 @@ namespace AdenDemo.Web.Controllers.api
     {
         private AdenContext _context;
         private MembershipService _membershipService;
+        private IdemService _idemService;
         private DocumentService _documentService;
         private string _currentUserFullName;
-        private string _currentUusername;
+        private string _currentUsername;
 
         public WorkItemController()
         {
             _context = new AdenContext();
             _membershipService = new MembershipService(_context);
+            _idemService = new IdemService();
             _currentUserFullName = ((ClaimsIdentity)HttpContext.Current.User.Identity).Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
-            _currentUusername = User.Identity.Name;
+            _currentUsername = User.Identity.Name;
             _documentService = new DocumentService(_context);
 
         }
@@ -40,10 +42,10 @@ namespace AdenDemo.Web.Controllers.api
         [HttpGet, Route("")]
         public async Task<object> Get(DataSourceLoadOptions loadOptions)
         {
-            if (_currentUusername == null) return NotFound();
+            if (_currentUsername == null) return NotFound();
 
             var dto = await _context.WorkItems
-                .Where(u => u.AssignedUser == _currentUusername && (u.WorkItemState == WorkItemState.NotStarted || u.WorkItemState == WorkItemState.Reassigned))
+                .Where(u => u.AssignedUser.EmailAddress == _currentUsername && (u.WorkItemState == WorkItemState.NotStarted || u.WorkItemState == WorkItemState.Reassigned))
                 .ProjectTo<WorkItemViewDto>().ToListAsync();
 
             return Ok(DataSourceLoader.Load(dto.OrderBy(x => x.AssignedDate), loadOptions));
@@ -52,10 +54,10 @@ namespace AdenDemo.Web.Controllers.api
         [HttpGet, Route("finished")]
         public async Task<object> Finished(DataSourceLoadOptions loadOptions)
         {
-            if (_currentUusername == null) return NotFound();
+            if (_currentUsername == null) return NotFound();
 
             var dto = await _context.WorkItems
-                .Where(u => u.AssignedUser == _currentUusername && u.WorkItemState == WorkItemState.Completed)
+                .Where(u => u.AssignedUser.EmailAddress == _currentUsername && u.WorkItemState == WorkItemState.Completed)
                 .ProjectTo<WorkItemViewDto>().ToListAsync();
 
             return Ok(DataSourceLoader.Load(dto.OrderByDescending(x => x.CompletedDate).ThenByDescending(d => d.Action), loadOptions));
@@ -73,14 +75,22 @@ namespace AdenDemo.Web.Controllers.api
         [HttpPost, Route("assign")]
         public async Task<object> Assign(AssignmentDto model)
         {
-            var workItem = await _context.WorkItems.Include(r => r.Report).FirstOrDefaultAsync(x => x.Id == model.WorkItemId);
+            var workItem = await _context.WorkItems
+                .Include(r => r.Report)
+                .FirstOrDefaultAsync(x => x.Id == model.WorkItemId);
+
             if (workItem == null) return NotFound();
 
             var submission = await _context.Submissions
                 .Include(s => s.FileSpecification)
                 .FirstOrDefaultAsync(x => x.Id == workItem.Report.SubmissionId);
 
-            submission.Reassign(_currentUserFullName, workItem, model.AssignedUser, model.Reason);
+            var idemUser = _idemService.GetUser(model.IdentityGuid);
+            var user = _context.Users.FirstOrDefault(x => x.IdentityGuid == model.IdentityGuid) ?? new UserProfile();
+
+            Mapper.Map(idemUser, user);
+
+            submission.Reassign(_currentUserFullName, workItem, user, model.Reason);
 
             _context.SaveChanges();
 
@@ -93,7 +103,11 @@ namespace AdenDemo.Web.Controllers.api
         [HttpPost, Route("complete/{id}")]
         public async Task<object> Complete(int id)
         {
-            var workItem = await _context.WorkItems.Include(x => x.Report.Submission).FirstOrDefaultAsync(x => x.Id == id);
+            
+            var workItem = await _context.WorkItems
+                .Include(x => x.AssignedUser)
+                .Include(x => x.Report.Submission)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
             if (workItem == null) return NotFound();
 
@@ -103,35 +117,41 @@ namespace AdenDemo.Web.Controllers.api
                 .Include(f => f.FileSpecification.ApprovalGroup.Users)
                 .Include(f => f.FileSpecification.SubmissionGroup.Users)
                 .FirstOrDefault(x => x.Id == workItem.Report.SubmissionId);
-
-
+            
             var currentReport = submission.Reports.FirstOrDefault(x => x.Id == submission.CurrentReportId);
+
+            Group group = submission.FileSpecification.GenerationGroup;
+            switch (workItem.WorkItemAction)
+            {
+                case WorkItemAction.Generate:
+                    group = submission.FileSpecification.GenerationGroup;
+                    break;
+                case WorkItemAction.Review:
+                    group = submission.FileSpecification.ApprovalGroup;
+                    break;
+                case WorkItemAction.Approve:
+                    group = submission.FileSpecification.SubmissionGroup;
+                    break;
+            }
+
+            //If current workitem is a generation task, the review task should return to same user
+            var assignee = workItem.AssignedUser;
+            if (workItem.WorkItemAction != WorkItemAction.Generate || workItem.WorkItemAction == WorkItemAction.Submit) assignee = _membershipService.GetAssignee(group);
+
+            if (assignee == null) return BadRequest($"No members in {group.Name} to assign next task");
+
+            //TODO Move to comeplet work method
             if (workItem.WorkItemAction == WorkItemAction.Generate)
             {
                 _documentService.GenerateDocuments(currentReport);
             }
-
-            Group group;
-            switch (workItem.WorkItemAction)
-            {
-                case WorkItemAction.Approve:
-                    group = submission.FileSpecification.ApprovalGroup;
-                    break;
-                case WorkItemAction.Submit:
-                    group = submission.FileSpecification.SubmissionGroup;
-                    break;
-                default:
-                    group = submission.FileSpecification.ApprovalGroup;
-                    break;
-            }
-            var assignee = _membershipService.GetAssignee(group);
-
+            
             var wi = submission.CompleteWork(workItem, assignee);
 
             WorkEmailer.Send(wi, submission);
 
             _context.SaveChanges();
-
+            
             var dto = Mapper.Map<WorkItemViewDto>(workItem);
 
             return Ok(dto);
@@ -160,6 +180,7 @@ namespace AdenDemo.Web.Controllers.api
             await _context.SaveChangesAsync();
 
             var dto = Mapper.Map<WorkItemViewDto>(wi);
+
             return Ok(dto);
         }
 

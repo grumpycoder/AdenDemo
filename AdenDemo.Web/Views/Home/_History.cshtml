@@ -1,7 +1,7 @@
 ﻿@model HistoryViewDto
 
 <h3>History</h3>
-<div id="historyGrid">
+<div id="gridHistory">
 
 </div>
 
@@ -9,11 +9,10 @@
 <div id="gridAudit"></div>
 
 <script>
-    console.log('submission', @Model.SubmissionId);
 
     var historyUri = '/api/workitem/history/' + @(Model.CurrentReportId ?? 0);
 
-    var $historyGrid = $('#historyGrid').dxDataGrid(
+    var $gridHistory = $('#gridHistory').dxDataGrid(
         {
             dataSource: DevExpress.data.AspNet.createStore({
                 key: 'id',
@@ -57,8 +56,8 @@
                         }
 
                     }
-                },
-            ],
+                }
+            ]
         }).dxDataGrid('instance');
 
 
@@ -68,7 +67,7 @@
         {
             dataSource: DevExpress.data.AspNet.createStore({
                 key: 'id',
-                loadUrl: auditUri,
+                loadUrl: auditUri
             }),
             remoteOperations: true,
             allowColumnResizing: true,
@@ -79,18 +78,14 @@
             columnAutoWidth: true,
             height: 200, 
             wordWrapEnabled: true,
-            scrolling: {
-                mode: "virtual",
-                rowRenderingMode: "virtual",
-            },
+            scrolling: { mode: "virtual", rowRenderingMode: "virtual" },
             columns: [
                 { dataField: 'auditDate', caption: 'Date', dataType: 'datetime', width: 175 },
-                { dataField: 'message', caption: 'Message' },
+                { dataField: 'message', caption: 'Message' }
                 ]
     }).dxDataGrid('instance');
 
     function ShowReassign(container, data) {
-        console.log('reassign');
         var title = 'Reassign Task';
 
         var url = '/reassign/' + data.id;
@@ -99,12 +94,13 @@
             type: 'POST',
             success: function (data) {
                 BootstrapDialog.show({
-                    size: BootstrapDialog.SIZE_WIDE,
+                    //size: BootstrapDialog.SIZE_WIDE,
+                    closable: false,
                     draggable: true,
                     title: title,
                     message: $('<div></div>').load(url, function (resp, status, xhr) {
                         if (status === 'error') {
-                            //window.$log.error('Error showing history');
+                            toastr.error('Error showing history'); 
                         }
                     }),
                     buttons: [
@@ -118,21 +114,24 @@
                             label: 'Save',
                             cssClass: 'btn-primary',
                             action: function (dialogRef) {
-                                //window.$showModalWorking();
+                              
+                                window.$showModalWorking();
                                 var formData = $('form').serialize();
                                 $.ajax({
                                     type: "POST",
                                     url: '/api/workitem/assign',
                                     data: model = formData
                                 }).done(function (data) {
-                                    //window.$log.success('Reassigned task');
+                                    toastr.success('Reassigned task');
                                     $gridAudit.refresh();
-                                    $historyGrid.refresh();
+                                    $gridHistory.refresh();
+                                    $gridAudit.refresh();
+                                    window.assignmentUpdated = true; 
                                 }).fail(function (err) {
-                                    //window.$log.error('Failed to reassign task. ' + error);
+                                    toastr.error('Failed to reassign task. ');
                                 }).always(function () {
                                     dialogRef.close();
-                                    //window.$hideModalWorking();
+                                    window.$hideModalWorking();
                                 });
 
                             }
@@ -148,7 +147,6 @@
     };
 
     function showErrorDetails(container, data) {
-        console.log('show report errors');
         var title = 'Error Details';
         var url = '/home/workitemimages/' + data.id;
 
@@ -158,7 +156,7 @@
             title: title,
             message: $('<div></div>').load(url, function (resp, status, xhr) {
                 if (status === 'error') {
-                    //TODO: toast error message
+                    toastr.error('Error showing report error images'); 
                 }
             }),
             buttons: [

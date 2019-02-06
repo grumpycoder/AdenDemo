@@ -166,7 +166,6 @@
             success: function (data) {
                 $gridCurrent.refresh();
                 $gridComplete.refresh();
-                console.log('data', data);
                 toastr.success('Completed task for ' + data.fileName + ' (' + data.fileNumber + ')');
             },
             error: function (err) {
@@ -697,6 +696,9 @@
 
 $(function () {
     console.log('submission view ready');
+
+    window.assignmentUpdated = false;
+
     var uri = "/api/submission";
 
     var $grid = $('#grid').dxDataGrid({
@@ -720,29 +722,16 @@ $(function () {
             type: "localStorage",
             storageKey: "gridSubmissionFilterStorage"
         },
-        filterRow: {
-            visible: true
-        },
-        headerFilter: {
-            visible: true
-        },
-        groupPanel: {
-            visible: true
-        },
-        scrolling: {
-            mode: "virtual",
-            rowRenderingMode: "virtual",
-        },
-        paging: {
-            pageSize: 20
-        },
+        filterRow: { visible: true },
+        headerFilter: { visible: true },
+        groupPanel: { visible: true },
+        scrolling: { mode: "virtual", rowRenderingMode: "virtual" },
+        paging: { pageSize: 20 },
         height: 650,
         columnResizingMode: "nextColumn",
         columnMinWidth: 50,
         columnAutoWidth: true,
-        columnChooser: {
-            enabled: true
-        },
+        columnChooser: { enabled: true },
         columns: [
             {
                 width: 50,
@@ -760,7 +749,7 @@ $(function () {
             { dataField: 'fileNumber', caption: 'File Number' },
             { dataField: 'fileName', caption: 'File Name' },
             { dataField: 'submissionStateDisplay', caption: 'Status' },
-            { dataField: 'currentAssignee', caption: 'Assigned' },
+            { dataField: 'currentAssignment', caption: 'Assigned' },
             { dataField: 'lastUpdatedFriendly', caption: 'Last Update' },
             { dataField: 'deadlineDate', caption: 'Submission Deadline', dataType: 'date', },
             { dataField: 'submissionDate', caption: 'Date Submitted', dataType: 'date', },
@@ -945,6 +934,7 @@ $(function () {
         BootstrapDialog.show({
             size: window.BootstrapDialog.SIZE_WIDE,
             draggable: true,
+            closable: false,
             title: title,
             message: $('<div></div>').load(url, function (resp, status, xhr) {
                 if (status === 'error') {
@@ -955,6 +945,10 @@ $(function () {
                 {
                     label: 'Close',
                     action: function (dialogRef) {
+                        if (window.assignmentUpdated === true) {
+                            $grid.refresh();
+                            window.assignmentUpdated = false;
+                        }
                         dialogRef.close();
                     }
                 }

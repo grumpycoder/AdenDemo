@@ -3,6 +3,7 @@ using AdenDemo.Web.Models;
 using ALSDE.Services;
 using CSharpFunctionalExtensions;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace AdenDemo.Web.Services
@@ -16,30 +17,47 @@ namespace AdenDemo.Web.Services
             _context = new AdenContext();
         }
 
-        public string GetAssignee(Group group)
+        public UserProfile GetAssignee(Group group)
         {
-            if (!group.Users.Any()) return string.Empty;
+            if (!group.Users.Any()) return null;
 
-            var members = group.Users.ToList().Select(x => x.EmailAddress);
+            var members = group.Users.Select(x => x.EmailAddress);
 
-            var alreadyAssignedMembers = _context.WorkItems.AsNoTracking()
-                .Where(u => members.Contains(u.AssignedUser))
-                .ToLookup(m => m.AssignedUser);
+            var currentWorkItems = _context.WorkItems.AsNoTracking()
+                .Include(x => x.AssignedUser)
+                .Where(x => x.WorkItemState == WorkItemState.NotStarted).ToList();
 
+            var alreadyAssignedMembers = currentWorkItems
+                .Where(u => members.Contains(u.AssignedUser.EmailAddress))
+                .ToLookup(m => m.AssignedUser.EmailAddress);
 
             var firstAvailableMember = members.FirstOrDefault(x => !alreadyAssignedMembers.Contains(x));
 
-            if (firstAvailableMember != null) return firstAvailableMember;
+            if (firstAvailableMember != null)
+            {
+                var e = group.Users.FirstOrDefault(x => x.EmailAddress == firstAvailableMember);
+                return e;
+            }
 
-            var nextAvailable = _context.WorkItems.AsNoTracking()
-                .Where(u => members.Contains(u.AssignedUser)).ToList()
-                .GroupBy(u => u.AssignedUser).Select(n => new
+            var nextAvailable = currentWorkItems
+                .Where(u => members.Contains(u.AssignedUser.EmailAddress)).ToList()
+                .GroupBy(u => u.AssignedUser.EmailAddress).Select(n => new
                 {
                     n.Key,
                     Count = n.Count()
                 }).OrderBy(x => x.Count).FirstOrDefault();
 
-            return nextAvailable != null ? nextAvailable.Key : string.Empty;
+
+            //var nextAvailable = _context.WorkItems.AsNoTracking()
+            //    .Where(u => members.Contains(u.AssignedUser.EmailAddress)).ToList()
+            //    .GroupBy(u => u.AssignedUser.EmailAddress).Select(n => new
+            //    {
+            //        n.Key,
+            //        Count = n.Count()
+            //    }).OrderBy(x => x.Count).FirstOrDefault();
+
+
+            return nextAvailable == null ? null : group.Users.FirstOrDefault(x => x.EmailAddress == nextAvailable.Key);
 
         }
 

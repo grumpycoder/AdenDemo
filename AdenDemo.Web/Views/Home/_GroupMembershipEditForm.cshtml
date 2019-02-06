@@ -94,7 +94,7 @@ else
                 this.$element[0].text = item.firstname + ' ' + item.lastname;
                 $('#identityGuid').val(item.identityGuid);
             },
-            delay: 500,
+            delay: 100,
             minLength: 1,
             autoSelect: true
     }).bind('change blur',
@@ -122,9 +122,7 @@ else
                     $gridMembers.refresh();
                 },
                 error: function(err) {
-                    //TODO: Toast error message
                     toastr.error('Error adding group member');
-                    console.log('error', err);
                 }
             }).always(function() {
 
@@ -142,12 +140,10 @@ else
             url: url,
             data: $('#groupForm').serializeJSON(),
             success: function(data) {
-                //TODO: Toast success message
                 $gridMembers.refresh();
             },
             error: function(err) {
-                console.log('error', err);
-                //TODO: Toast error message
+                toastr.error('Error removing group member');
             }
         }).always(function() {
         });

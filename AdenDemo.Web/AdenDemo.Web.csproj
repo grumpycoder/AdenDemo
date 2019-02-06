@@ -258,6 +258,7 @@
     <Compile Include="Data\Profiles\FileSpecificationProfile.cs" />
     <Compile Include="Data\Profiles\ReportProfile.cs" />
     <Compile Include="Data\Profiles\SubmissionProfile.cs" />
+    <Compile Include="Data\Profiles\UserProfileProfile.cs" />
     <Compile Include="Data\Profiles\WorkItemProfile.cs" />
     <Compile Include="Filters\CustomAuthorize.cs" />
     <Compile Include="Filters\HandleUnauthorized.cs" />
@@ -396,7 +397,6 @@
       <DependentUpon>vendor.js</DependentUpon>
     </Content>
     <Content Include="libman.json" />
-    <Content Include="LICENSE.txt" />
     <Content Include="package.json" />
     <Content Include="css\fonts\Roboto-300.ttf" />
     <Content Include="css\fonts\Roboto-300.woff" />

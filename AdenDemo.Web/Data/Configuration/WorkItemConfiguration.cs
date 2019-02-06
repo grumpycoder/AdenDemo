@@ -12,8 +12,8 @@ namespace AdenDemo.Web.Data.Configuration
             Property(s => s.Id).HasColumnName("WorkItemId");
             Property(s => s.WorkItemAction).HasColumnName("WorkItemActionId");
             Property(s => s.WorkItemState).HasColumnName("WorkItemStateId");
-            Property(s => s.AssignedUser).HasMaxLength(75);
             Property(s => s.AssignedDate).HasColumnType("datetime2");
+            Property(s => s.AssignedUserId).HasColumnName("UserProfileId");
         }
     }
 }

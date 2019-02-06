@@ -18,6 +18,9 @@ namespace AdenDemo.Web.Data.Configuration
                     x.MapRightKey("GroupId");
                     x.ToTable("GroupUserProfiles", "Aden");
                 });
+
+           
+
         }
     }
 }

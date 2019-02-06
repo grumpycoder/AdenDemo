@@ -21,7 +21,8 @@ namespace AdenDemo.Web.Models
         public byte[] SpecificationDocument { get; set; }
         public int FileSpecificationId { get; set; }
         public FileSpecification FileSpecification { get; set; }
-        public string CurrentAssignee { get; set; }
+        public int? CurrentAssigneeId { get; set; }
+        public UserProfile CurrentAssignee { get; set; }
         public int CurrentReportId { get; internal set; }
 
         public Submission()
@@ -52,7 +53,7 @@ namespace AdenDemo.Web.Models
 
         }
 
-        public WorkItem Reopen(string currentUser, string message, string assignee, DateTime dueDate)
+        public WorkItem Reopen(string currentUser, string message, UserProfile assignee, DateTime dueDate)
         {
 
             //Create Audit record
@@ -94,7 +95,8 @@ namespace AdenDemo.Web.Models
 
             //Set Submission State and clear assignee
             SubmissionState = SubmissionState.NotStarted;
-            CurrentAssignee = string.Empty;
+
+            CurrentAssignee = null;
 
             var lastReport = Reports.LastOrDefault();
 
@@ -115,7 +117,7 @@ namespace AdenDemo.Web.Models
 
         }
 
-        public WorkItem Start(string assignee)
+        public WorkItem Start(UserProfile assignee)
         {
             //Change state
             SubmissionState = SubmissionState.AssignedForGeneration;
@@ -139,11 +141,11 @@ namespace AdenDemo.Web.Models
             return workItem;
         }
 
-        public void Reassign(string currentUser, WorkItem workItem, string assignee, string reason)
+        public void Reassign(string currentUser, WorkItem workItem, UserProfile assignee, string reason)
         {
 
             //Create Audit record
-            var message = $"{currentUser} reassigned from {workItem.AssignedUser} to {assignee}: {reason}";
+            var message = $"{currentUser} reassigned from {workItem.AssignedUser} to {assignee.FullName}: {reason}";
             var audit = new SubmissionAudit(Id, message);
             SubmissionAudits.Add(audit);
 
@@ -173,6 +175,7 @@ namespace AdenDemo.Web.Models
 
             report.ReportState = ReportState.AssignedForGeneration;
             report.Submission.SubmissionState = SubmissionState.AssignedForGeneration;
+
             report.Submission.CurrentAssignee = wi.AssignedUser;
 
             report.WorkItems.Add(wi);
@@ -180,23 +183,22 @@ namespace AdenDemo.Web.Models
             return wi;
         }
 
-        public WorkItem CompleteWork(WorkItem workItem, string nextAssignee, bool generateErrorTask = false)
+        public WorkItem CompleteWork(WorkItem workItem, UserProfile nextAssignee, bool generateErrorTask = false)
         {
             var report = Reports.FirstOrDefault(x => x.Id == CurrentReportId);
             workItem.CompletedDate = DateTime.Now;
             workItem.WorkItemState = WorkItemState.Completed;
 
             //Start new work item
-            var wi = new WorkItem() { WorkItemState = WorkItemState.NotStarted, AssignedDate = DateTime.Now };
-            LastUpdated = DateTime.Now;
-            wi.AssignedUser = nextAssignee;
-
+            var wi = new WorkItem() { WorkItemState = WorkItemState.NotStarted, AssignedDate = DateTime.Now, AssignedUser = nextAssignee};
+            
             if (generateErrorTask)
             {
                 wi.WorkItemAction = WorkItemAction.ReviewError;
                 report.ReportState = ReportState.CompleteWithError;
                 report.Submission.SubmissionState = SubmissionState.CompleteWithError;
                 report.SubmittedDate = DateTime.Now;
+                wi.AssignedUser = CurrentAssignee = nextAssignee;
                 report.WorkItems.Add(wi);
                 return wi;
             }
@@ -207,34 +209,45 @@ namespace AdenDemo.Web.Models
                     wi.WorkItemAction = WorkItemAction.Review;
                     report.ReportState = ReportState.AssignedForReview;
                     report.Submission.SubmissionState = SubmissionState.AssignedForReview;
+                    wi.AssignedUser = CurrentAssignee = workItem.AssignedUser;
                     break;
                 case WorkItemAction.Review:
                     wi.WorkItemAction = WorkItemAction.Approve;
-                    wi.AssignedUser = workItem.AssignedUser;
                     report.ReportState = ReportState.AwaitingApproval;
                     report.Submission.SubmissionState = SubmissionState.AwaitingApproval;
+                    wi.AssignedUser = CurrentAssignee = nextAssignee;
                     break;
                 case WorkItemAction.Approve:
                     wi.WorkItemAction = WorkItemAction.Submit;
                     report.ReportState = ReportState.AssignedForSubmission;
                     report.Submission.SubmissionState = SubmissionState.AssignedForSubmission;
                     report.ApprovedDate = DateTime.Now;
+                    wi.AssignedUser = CurrentAssignee = nextAssignee;
                     break;
                 case WorkItemAction.Submit:
                     report.ReportState = ReportState.Complete;
                     report.Submission.SubmissionState = SubmissionState.Complete;
                     report.SubmittedDate = DateTime.Now;
+                    wi.AssignedUser = CurrentAssignee = workItem.AssignedUser;
                     break;
                 case WorkItemAction.ReviewError:
                     wi.WorkItemAction = WorkItemAction.Generate;
                     report.ReportState = ReportState.AssignedForGeneration;
                     report.Submission.SubmissionState = SubmissionState.AssignedForGeneration;
+                    wi.AssignedUser = CurrentAssignee = nextAssignee;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
-            if (wi.WorkItemAction != 0) report.WorkItems.Add(wi);
+            //CurrentAssignee = wi.AssignedUser;
+            LastUpdated = DateTime.Now;
+
+            if (wi.WorkItemAction != 0)
+            {
+                report.WorkItems.Add(wi);
+                //CurrentAssignee = nextAssignee;
+            }
 
             return wi;
         }

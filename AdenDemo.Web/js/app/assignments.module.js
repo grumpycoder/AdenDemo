@@ -167,7 +167,6 @@
             success: function (data) {
                 $gridCurrent.refresh();
                 $gridComplete.refresh();
-                console.log('data', data);
                 toastr.success('Completed task for ' + data.fileName + ' (' + data.fileNumber + ')');
             },
             error: function (err) {

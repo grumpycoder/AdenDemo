@@ -19,7 +19,7 @@ namespace AdenDemo.Web.Services
 
         public void GenerateDocuments(Report report)
         {
-            var version = report.CurrentDocumentVersion + 1;
+            var version = report.CurrentDocumentVersion ?? 0 + 1;
             string filename;
 
             if (report.Submission.FileSpecification.IsSCH)

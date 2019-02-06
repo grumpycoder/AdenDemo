@@ -33,7 +33,7 @@ namespace AdenDemo.Web.ViewModels
         public string ApprovalUserGroup { get; set; }
         public string SubmissionUserGroup { get; set; }
 
-        public string CurrentAssignee { get; set; }
+        public string CurrentAssignment { get; set; }
 
         public bool IsSEA { get; set; }
         public bool IsLEA { get; set; }
