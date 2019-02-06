@@ -20,7 +20,7 @@
   {
     "outputFileName": "js/dx-bundle.js",
     "inputFiles": [
-      "node_modules/jszip/dist/jszip.js", 
+      "node_modules/jszip/dist/jszip.js",
       "node_modules/devextreme/dist/js/dx.all.js",
       "node_modules/devextreme-aspnet-data/js/dx.aspnet.data.js"
     ]
@@ -36,5 +36,35 @@
       "enabled": true,
       "adjustRelativePaths": false
     }
+  },
+  {
+    "outputFileName": "js/app/filespecification.module.min.js",
+    "inputFiles": [
+      "js/app/filespecification.module.js"
+    ]
+  },
+  {
+    "outputFileName": "js/app/submission.module.min.js",
+    "inputFiles": [
+      "js/app/submission.module.js"
+    ]
+  },
+  {
+    "outputFileName": "js/app/review.module.min.js",
+    "inputFiles": [
+      "js/app/review.module.js"
+    ]
+  },
+  {
+    "outputFileName": "js/app/app.module.min.js",
+    "inputFiles": [
+      "js/app/app.module.js"
+    ]
+  },
+  {
+    "outputFileName": "js/app/assignments.module.min.js",
+    "inputFiles": [
+      "js/app/assignments.module.js"
+    ]
   }
 ]

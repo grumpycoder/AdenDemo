@@ -33,6 +33,7 @@
                         $('<a/>').addClass('btn btn-default  btn-sm btn-grid')
                             .text('Review File')
                             .attr('href', '/review/' + options.data.dataYear + '/' + options.data.fileNumber)
+                            .attr('aria-label', 'Review generated file ' + options.data.fileName)
                             .attr('target', '_blank')
                             .appendTo(container);
                     }
@@ -40,6 +41,7 @@
 
                     $('<a/>').addClass('btn btn-success btn-sm btn-grid')
                         .text(options.data.actionName)
+                        .attr('aria-label', options.data.actionName +  ' ' + options.data.fileName)
                         .on('dxclick',
                             function (e) {
                                 complete($(this), options.data);
@@ -49,6 +51,7 @@
                     if (options.data.canReject) {
                         $('<a/>').addClass('btn btn-danger btn-sm btn-grid')
                             .text('Reject File')
+                            .attr('aria-label', 'Reject generated file ' + options.data.fileName)
                             .on('dxclick',
                                 function (e) {
                                     reject($(this), options.data);
@@ -59,6 +62,7 @@
                     if (options.data.canSubmit) {
                         $('<a/>').addClass('btn btn-danger btn-sm btn-grid')
                             .text('Report Errors')
+                            .attr('aria-label', 'Confirm file submitted ' + options.data.fileName)
                             .on('dxclick',
                                 function (e) {
                                     showReportErrors($(this), options.data);
@@ -68,6 +72,7 @@
                     if (options.data.canReviewError) {
                         $('<a/>').addClass('btn btn-danger btn-sm btn-grid')
                             .text('View Errors')
+                            .attr('aria-label', 'Review submission errors ' + options.data.fileName)
                             .on('dxclick',
                                 function (e) {
                                     showErrorDetails($(this), options.data);

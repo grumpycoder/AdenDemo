@@ -330,10 +330,25 @@
     <Content Include="img\sde-logo-transparent-50.png" />
     <Content Include="img\sde-logo-transparent-75.png" />
     <Content Include="js\app\app.module.js" />
+    <Content Include="js\app\app.module.min.js">
+      <DependentUpon>app.module.js</DependentUpon>
+    </Content>
     <Content Include="js\app\assignments.module.js" />
+    <Content Include="js\app\assignments.module.min.js">
+      <DependentUpon>assignments.module.js</DependentUpon>
+    </Content>
     <Content Include="js\app\filespecification.module.js" />
+    <Content Include="js\app\filespecification.module.min.js">
+      <DependentUpon>filespecification.module.js</DependentUpon>
+    </Content>
     <Content Include="js\app\review.module.js" />
+    <Content Include="js\app\review.module.min.js">
+      <DependentUpon>review.module.js</DependentUpon>
+    </Content>
     <Content Include="js\app\submission.module.js" />
+    <Content Include="js\app\submission.module.min.js">
+      <DependentUpon>submission.module.js</DependentUpon>
+    </Content>
     <Content Include="js\dx-bundle.js" />
     <Content Include="js\dx-bundle.min.js">
       <DependentUpon>dx-bundle.js</DependentUpon>
@@ -396,8 +411,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Submissions.cshtml" />
     <Content Include="Views\Home\_SubmissionWaiverAuditEntry.cshtml" />
     <Content Include="Views\Home\Review.cshtml" />

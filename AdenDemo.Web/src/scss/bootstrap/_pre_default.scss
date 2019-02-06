@@ -77,11 +77,14 @@ $gray: lighten($gray-base, 33.5%) !default; // #555
 $gray-light: lighten($gray-base, 70%) !default; // #999
 $gray-lighter: lighten($gray-base, 93.5%) !default; // #eee
 
-$brand-primary: #4582EC !default;
-$brand-success: #3FAD46 !default;
+/*$brand-primary: #4582EC !default;*/
+$brand-primary: #0b58de !default;
+/*$brand-success: #3FAD46 !default;*/
+$brand-success: #137c19 !default;
 $brand-info: #5bc0de !default;
 $brand-warning: #f0ad4e !default;
-$brand-danger: #d9534f !default;
+/*$brand-danger: #d9534f !default;*/
+$brand-danger: #ca2b27 !default;
 
 $text-color: $gray-dark !default;
 

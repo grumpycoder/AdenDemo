@@ -133,6 +133,7 @@
 
                     $('<a/>').addClass('btn btn-default btn-sm btn-grid')
                         .text('Edit')
+                        .attr('aria-label', 'Edit ' + options.data.fileName)
                         .on('dxclick',
                             function (e) {
                                 editFileSpecification($(this), options.data);
@@ -142,6 +143,7 @@
                     if (options.data.canRetire) {
                         $('<a/>').addClass('btn btn-default btn-sm btn-grid')
                             .text('Retire')
+                            .attr('aria-label', 'Retire ' + options.data.fileName)
                             .on('dxclick',
                                 function(e) {
                                     retire($(this), options.data);
@@ -151,6 +153,7 @@
                     if (options.data.canActivate) {
                         $('<a/>').addClass('btn btn-default btn-sm btn-grid')
                             .text('Activate')
+                            .attr('aria-label', 'Activate ' + options.data.fileName)
                             .on('dxclick',
                                 function (e) {
                                     activate($(this), options.data);

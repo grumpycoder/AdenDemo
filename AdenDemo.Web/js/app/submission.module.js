@@ -104,6 +104,7 @@
                     if (options.data.canStart) {
                         $('<a/>').addClass('btn btn-default btn-sm btn-grid')
                             .text('Start')
+                            .attr('aria-label', 'Start submission ' + options.data.fileName)
                             .on('dxclick',
                                 function (e) {
                                     startWorkFlow($(this), options.data);
@@ -114,6 +115,7 @@
                     if (options.data.canCancel) {
                         $('<a/>').addClass('btn btn-default btn-sm btn-grid')
                             .text('Cancel')
+                            .attr('aria-label', 'Cancel submission ' + options.data.fileName)
                             .on('dxclick',
                                 function () {
                                     cancelWorkFlow($(this), options.data);
@@ -124,6 +126,7 @@
                     if (options.data.canReview) {
                         $('<a/>').addClass('btn btn-default btn-sm btn-grid')
                             .text('Review File')
+                            .attr('aria-label', 'Review submission report file')
                             .attr('href', '/review/' + options.data.dataYear + '/' + options.data.fileNumber)
                             .attr('target', '_blank')
                             .appendTo(container);
@@ -132,6 +135,7 @@
                     if (options.data.canReopen) {
                         $('<a/>').addClass('btn btn-default btn-sm btn-grid')
                             .text('Reopen')
+                            .attr('aria-label', 'Repopen submission ' + options.data.fileName)
                             .on('dxclick',
                                 function (e) {
                                     reopenSubmission($(this), options.data);
@@ -142,6 +146,7 @@
                     if (options.data.canWaiver) {
                         $('<a/>').addClass('btn btn-default btn-sm btn-grid')
                             .text('Waiver')
+                            .attr('aria-label', 'Waive submission ' + options.data.fileName)
                             .on('dxclick',
                                 function (e) {
                                     waiverWorkFlow($(this), options.data);
