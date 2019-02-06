@@ -416,7 +416,7 @@ isstream@~0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
 
-jquery-serializejson@2.9.0:
+jquery-serializejson@^2.9.0:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/jquery-serializejson/-/jquery-serializejson-2.9.0.tgz#03e3764e3a4b42c1c5aae9f93d7f19320c5f35a6"
 
@@ -554,6 +554,10 @@ mime-types@^2.1.12, mime-types@~2.1.19:
 mimic-fn@^1.0.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/mimic-fn/-/mimic-fn-1.2.0.tgz#820c86a39334640e99516928bd03fca88057d022"
+
+moment@^2.24.0:
+  version "2.24.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
 
 npm-run-path@^2.0.0:
   version "2.0.2"

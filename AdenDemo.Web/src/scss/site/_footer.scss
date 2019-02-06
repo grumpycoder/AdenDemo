@@ -1,0 +1,28 @@
+﻿footer {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+    background-color: #4A71B5;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-weight: normal;
+    line-height: 25px;
+    font-size: 12px;
+}
+
+footer a {
+    color: #FFFFFF;
+    text-decoration: none;
+    font-family: Tahoma;
+}
+
+footer a:hover {
+    color: #FFD34F;
+    text-decoration: underline;
+}
+
+span#links {
+    margin-left: 7%;
+}

@@ -311,90 +311,36 @@
     <Compile Include="ViewModels\WorkItemViewDto.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="css\bootstrap-dialog.css" />
-    <Content Include="css\bootstrap-dialog.min.css">
-      <DependentUpon>bootstrap-dialog.css</DependentUpon>
-    </Content>
-    <Content Include="css\bootstrap.css" />
-    <Content Include="css\bootstrap.min.css">
-      <DependentUpon>bootstrap.css</DependentUpon>
-    </Content>
     <Content Include="css\dx-bundle.css" />
     <Content Include="css\dx-bundle.min.css">
       <DependentUpon>dx-bundle.css</DependentUpon>
     </Content>
-    <Content Include="css\dx.android5.light.css" />
-    <Content Include="css\dx.carmine.compact.css" />
-    <Content Include="css\dx.carmine.css" />
-    <Content Include="css\dx.common.css" />
-    <Content Include="css\dx.contrast.compact.css" />
-    <Content Include="css\dx.contrast.css" />
-    <Content Include="css\dx.dark.compact.css" />
-    <Content Include="css\dx.dark.css" />
-    <Content Include="css\dx.darkmoon.compact.css" />
-    <Content Include="css\dx.darkmoon.css" />
-    <Content Include="css\dx.darkviolet.compact.css" />
-    <Content Include="css\dx.darkviolet.css" />
-    <Content Include="css\dx.greenmist.compact.css" />
-    <Content Include="css\dx.greenmist.css" />
-    <Content Include="css\dx.ios7.default.css" />
-    <Content Include="css\dx.light.compact.css" />
-    <Content Include="css\dx.light.css" />
-    <Content Include="css\dx.material.blue.dark.css" />
-    <Content Include="css\dx.material.blue.light.css" />
-    <Content Include="css\dx.material.lime.dark.css" />
-    <Content Include="css\dx.material.lime.light.css" />
-    <Content Include="css\dx.material.orange.dark.css" />
-    <Content Include="css\dx.material.orange.light.css" />
-    <Content Include="css\dx.material.purple.dark.css" />
-    <Content Include="css\dx.material.purple.light.css" />
-    <Content Include="css\dx.material.teal.dark.css" />
-    <Content Include="css\dx.material.teal.light.css" />
-    <Content Include="css\dx.softblue.compact.css" />
-    <Content Include="css\dx.softblue.css" />
-    <Content Include="css\dx.spa.css" />
-    <Content Include="css\dx.win10.black.css" />
-    <Content Include="css\dx.win10.white.css" />
-    <Content Include="css\dx.win8.black.css" />
-    <Content Include="css\dx.win8.white.css" />
-    <Content Include="css\font-awesome.css" />
-    <Content Include="css\font-awesome.min.css" />
+    <Content Include="css\site-bundle.css" />
+    <Content Include="css\site-bundle.min.css">
+      <DependentUpon>site-bundle.css</DependentUpon>
+    </Content>
+    <Content Include="css\vendor-bundle.css" />
+    <Content Include="css\vendor-bundle.min.css">
+      <DependentUpon>vendor-bundle.css</DependentUpon>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
     <Content Include="img\sde-logo-transparent-25.png" />
     <Content Include="img\sde-logo-transparent-50.png" />
     <Content Include="img\sde-logo-transparent-75.png" />
-    <Content Include="js\app\app.js" />
-    <Content Include="js\app\app.min.js">
-      <DependentUpon>app.js</DependentUpon>
-    </Content>
     <Content Include="js\app\app.module.js" />
     <Content Include="js\app\assignments.module.js" />
     <Content Include="js\app\filespecification.module.js" />
     <Content Include="js\app\review.module.js" />
     <Content Include="js\app\submission.module.js" />
-    <Content Include="js\bootstrap-dialog.js" />
-    <Content Include="js\bootstrap-dialog.min.js" />
     <Content Include="js\dx-bundle.js" />
     <Content Include="js\dx-bundle.min.js">
       <DependentUpon>dx-bundle.js</DependentUpon>
     </Content>
-    <Content Include="js\dx.all.debug.js" />
-    <Content Include="js\dx.all.js" />
-    <Content Include="js\dx.aspnet.data.js" />
-    <Content Include="js\dx.mobile.debug.js" />
-    <Content Include="js\dx.mobile.js" />
-    <Content Include="js\dx.viz-web.debug.js" />
-    <Content Include="js\dx.viz-web.js" />
-    <Content Include="js\dx.viz.debug.js" />
-    <Content Include="js\dx.viz.js" />
-    <Content Include="js\dx.web.debug.js" />
-    <Content Include="js\dx.web.js" />
-    <Content Include="js\jquery.serializejson.min.js" />
-    <Content Include="js\vendor.js" />
-    <Content Include="js\vendor.min.js">
-      <DependentUpon>vendor.js</DependentUpon>
+    <Content Include="js\vendor-bundle.js" />
+    <Content Include="js\vendor-bundle.min.js">
+      <DependentUpon>vendor-bundle.js</DependentUpon>
     </Content>
     <Content Include="libman.json" />
     <Content Include="package.json" />
@@ -419,7 +365,6 @@
     <Content Include="css\icons\dxiconsmaterial.ttf" />
     <Content Include="css\icons\dxiconsmaterial.woff" />
     <Content Include="css\icons\dxiconsmaterial.woff2" />
-    <Content Include="css\font-awesome.css.map" />
     <Content Include="Alsde Logging Readme.md" />
     <None Include="fonts\fontawesome-webfont.eot" />
     <None Include="fonts\fontawesome-webfont.ttf" />
@@ -431,35 +376,12 @@
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
-    <Content Include="src\scss\bootstrap-dialog\bootstrap-dialog.css">
-      <DependentUpon>bootstrap-dialog.less</DependentUpon>
-    </Content>
-    <Content Include="src\scss\bootstrap-dialog\bootstrap-dialog.min.css">
-      <DependentUpon>bootstrap-dialog.css</DependentUpon>
-    </Content>
-    <Content Include="src\scss\bootstrap\bootstrap.css">
-      <DependentUpon>bootstrap.scss</DependentUpon>
-    </Content>
-    <Content Include="src\scss\bootstrap\bootstrap.min.css">
-      <DependentUpon>bootstrap.css</DependentUpon>
-    </Content>
+    <Content Include="src\js\global.js" />
     <Content Include="src\scss\devextreme\override.css">
       <DependentUpon>override.scss</DependentUpon>
     </Content>
     <Content Include="src\scss\devextreme\override.min.css">
       <DependentUpon>override.css</DependentUpon>
-    </Content>
-    <Content Include="src\scss\fontawesome\fontawesome.css">
-      <DependentUpon>fontawesome.scss</DependentUpon>
-    </Content>
-    <Content Include="src\scss\fontawesome\fontawesome.min.css">
-      <DependentUpon>fontawesome.css</DependentUpon>
-    </Content>
-    <Content Include="src\scss\main\main.css">
-      <DependentUpon>main.scss</DependentUpon>
-    </Content>
-    <Content Include="src\scss\main\main.min.css">
-      <DependentUpon>main.css</DependentUpon>
     </Content>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -494,22 +416,23 @@
     <Content Include="src\scss\bootstrap\_pre_default.scss" />
     <Content Include="src\scss\bootstrap\bootstrap_ext\_button.scss" />
     <Content Include="src\scss\vendor.scss" />
-    <Content Include="src\scss\bootstrap-dialog\bootstrap-dialog.less" />
+    <None Include="src\scss\bootstrap-dialog\bootstrap-dialog.scss" />
     <Content Include="NLog.config" />
+    <Content Include="js\vendor-bundle.min.js.map" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <None Include="src\scss\bootstrap-dialog\_pre_default.less" />
-    <Content Include="src\scss\main\main.scss" />
+    <None Include="src\scss\bootstrap-dialog\_pre_default.scss" />
+    <Content Include="src\scss\site\site.scss" />
     <Content Include="src\scss\devextreme\override.scss" />
     <Content Include="Templates\WorkItemSubmissionTemplate.cshtml" />
     <Content Include="src\scss\fontawesome\fontawesome.scss" />
     <Content Include="src\scss\fontawesome\_variables.scss" />
-    <Content Include="src\scss\main\_defaults.scss" />
-    <Content Include="src\scss\main\_footer.scss" />
+    <Content Include="src\scss\site\_defaults.scss" />
+    <Content Include="src\scss\site\_footer.scss" />
     <Content Include="src\scss\bootstrap\_variables.scss" />
-    <Content Include="src\scss\main\_statusbar.scss" />
+    <Content Include="src\scss\site\_statusbar.scss" />
     <None Include="Templates\WorkItemEmailTemplate.cshtml" />
     <Content Include="Templates\WorkItemCancelTemplate.cshtml" />
     <Content Include="Views\Shared\_NavBar.cshtml" />
@@ -526,9 +449,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="js\localization\" />
-    <Folder Include="js\vectormap-data\" />
-    <Folder Include="js\vectormap-utils\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

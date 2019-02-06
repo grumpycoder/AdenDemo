@@ -1,18 +1,15 @@
 [
   {
-    "outputFileName": "js/app/app.js",
-    "inputFiles": [
-      "js/app/assignments.module.js",
-      "js/app/filespecification.module.js",
-      "js/app/review.module.js",
-      "js/app/submission.module.js"
-    ]
-  },
-  {
-    "outputFileName": "js/vendor.js",
+    "outputFileName": "js/vendor-bundle.js",
     "inputFiles": [
       "node_modules/jquery/dist/jquery.js",
-      "node_modules/bootstrap/dist/js/bootstrap.bundle.js"
+      "node_modules/bootstrap-sass/assets/javascripts/bootstrap.js",
+      "node_modules/gasparesganga-jquery-loading-overlay/dist/loadingoverlay.js",
+      "node_modules/jquery-serializejson/jquery.serializejson.js",
+      "node_modules/bootstrap-3-typeahead/bootstrap3-typeahead.js",
+      "node_modules/bootstrap3-dialog/dist/js/bootstrap-dialog.js",
+      "node_modules/toastr/build/toastr.min.js",
+      "node_modules/moment/min/moment.min.js"
     ],
     "minify": {
       "enabled": true,
@@ -23,8 +20,9 @@
   {
     "outputFileName": "js/dx-bundle.js",
     "inputFiles": [
-      "js/dx.all.js",
-      "js/dx.aspnet.data.js"
+      "node_modules/jszip/dist/jszip.js", 
+      "node_modules/devextreme/dist/js/dx.all.js",
+      "node_modules/devextreme-aspnet-data/js/dx.aspnet.data.js"
     ]
   },
   {

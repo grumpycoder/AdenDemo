@@ -1,22 +1,10 @@
 ﻿[
   {
-    "outputFile": "src/scss/bootstrap/bootstrap.css",
-    "inputFile": "src/scss/bootstrap/bootstrap.scss"
+    "outputFile": "css/vendor-bundle.css",
+    "inputFile": "src/scss/vendor.scss"
   },
   {
-    "outputFile": "src/scss/bootstrap-dialog/bootstrap-dialog.css",
-    "inputFile": "src/scss/bootstrap-dialog/bootstrap-dialog.less"
-  },
-  {
-    "outputFile": "src/scss/devextreme/override.css",
-    "inputFile": "src/scss/devextreme/override.scss"
-  },
-  {
-    "outputFile": "src/scss/main/main.css",
-    "inputFile": "src/scss/main/main.scss"
-  },
-  {
-    "outputFile": "src/scss/fontawesome/fontawesome.css",
-    "inputFile": "src/scss/fontawesome/fontawesome.scss"
+    "outputFile": "css/site-bundle.css",
+    "inputFile": "src/scss/site/site.scss"
   }
 ]

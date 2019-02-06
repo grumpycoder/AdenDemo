@@ -154,9 +154,7 @@
                 }
             },
         ],
-        sortByGroupSummaryInfo: [{
-            summaryItem: "count"
-        }],
+        sortByGroupSummaryInfo: [{ summaryItem: "count" }],
         summary: {
             totalItems: [
                 {
@@ -175,6 +173,8 @@
 
             ]
         },
+        onRowPrepared: function (row) {
+        }, 
         onToolbarPreparing: function (e) {
             var dataGrid = e.component;
 
@@ -230,7 +230,7 @@
             );
         }
     }).dxDataGrid("instance");
-
+    
     function showHistory(e) {
         var title = 'History';
         var url = '/history/' + e.row.data.id;
