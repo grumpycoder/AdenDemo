@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 
-namespace AdenDemo.Web.Services
+namespace Aden.Web.Services
 {
     public class MembershipService
     {

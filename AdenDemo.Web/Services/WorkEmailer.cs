@@ -1,12 +1,11 @@
-﻿using Aden.Web;
-using AdenDemo.Web.Helpers;
+﻿using AdenDemo.Web.Helpers;
 using AdenDemo.Web.Models;
 using FluentEmail;
 using System;
 using System.Net.Mail;
 using System.Web;
 
-namespace AdenDemo.Web.Services
+namespace Aden.Web.Services
 {
     public static class WorkEmailer
     {

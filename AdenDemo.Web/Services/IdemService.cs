@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 
-namespace AdenDemo.Web.Services
+namespace Aden.Web.Services
 {
     public class IdemService
     {

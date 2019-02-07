@@ -1,5 +1,4 @@
-﻿using Aden.Web;
-using AdenDemo.Web.Data;
+﻿using AdenDemo.Web.Data;
 using AdenDemo.Web.Helpers;
 using AdenDemo.Web.Models;
 using System;
@@ -7,7 +6,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 
-namespace AdenDemo.Web.Services
+namespace Aden.Web.Services
 {
     public class DocumentService
     {
