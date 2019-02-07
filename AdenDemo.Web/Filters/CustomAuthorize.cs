@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace AdenDemo.Web.Filters
+namespace Aden.Web.Filters
 {
     public class CustomAuthorize : AuthorizeAttribute
     {
