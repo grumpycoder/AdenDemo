@@ -1,13 +1,13 @@
+using AdenDemo.Web;
 using AdenDemo.Web.Controllers;
 using AdenDemo.Web.Helpers;
-using AutoMapper;
 using System;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace AdenDemo.Web
+namespace Aden.Web
 {
     public class MvcApplication : System.Web.HttpApplication
     {
