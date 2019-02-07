@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 
-namespace AdenDemo.Web.Controllers.api
+namespace Aden.Web.Controllers.api
 {
     [RoutePrefix("api/audit")]
     [Authorize(Roles = "AdenAppUsers")]

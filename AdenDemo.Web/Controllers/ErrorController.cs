@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace AdenDemo.Web.Controllers
+namespace Aden.Web.Controllers
 {
     public class ErrorController : Controller
     {

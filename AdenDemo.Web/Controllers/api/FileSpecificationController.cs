@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Z.EntityFramework.Plus;
 
-namespace AdenDemo.Web.Controllers.api
+namespace Aden.Web.Controllers.api
 {
     [RoutePrefix("api/filespecification")]
     [Authorize(Roles = "AdenAppUsers")]

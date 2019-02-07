@@ -1,5 +1,4 @@
-﻿using Aden.Web;
-using AdenDemo.Web.Data;
+﻿using AdenDemo.Web.Data;
 using AdenDemo.Web.Filters;
 using AdenDemo.Web.Helpers;
 using AdenDemo.Web.Models;
@@ -14,7 +13,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace AdenDemo.Web.Controllers
+namespace Aden.Web.Controllers
 {
     [CustomAuthorize(Roles = "AdenAppUsers")]
     public class HomeController : Controller

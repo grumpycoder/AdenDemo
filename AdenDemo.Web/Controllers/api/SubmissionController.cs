@@ -4,7 +4,6 @@ using AdenDemo.Web.Services;
 using AdenDemo.Web.ViewModels;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using CSharpFunctionalExtensions;
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
 using System.Data.Entity;
@@ -14,7 +13,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 
-namespace AdenDemo.Web.Controllers.api
+namespace Aden.Web.Controllers.api
 {
     [RoutePrefix("api/submission")]
     [Authorize(Roles = "AdenAppUsers")]

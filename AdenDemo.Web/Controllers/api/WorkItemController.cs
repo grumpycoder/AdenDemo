@@ -4,10 +4,8 @@ using AdenDemo.Web.Services;
 using AdenDemo.Web.ViewModels;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using CSharpFunctionalExtensions;
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Claims;
@@ -15,7 +13,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 
-namespace AdenDemo.Web.Controllers.api
+namespace Aden.Web.Controllers.api
 {
     [RoutePrefix("api/workitem")]
     [Authorize(Roles = "AdenAppUsers")]
@@ -103,7 +101,7 @@ namespace AdenDemo.Web.Controllers.api
         [HttpPost, Route("complete/{id}")]
         public async Task<object> Complete(int id)
         {
-            
+
             var workItem = await _context.WorkItems
                 .Include(x => x.AssignedUser)
                 .Include(x => x.Report.Submission)
@@ -117,7 +115,7 @@ namespace AdenDemo.Web.Controllers.api
                 .Include(f => f.FileSpecification.ApprovalGroup.Users)
                 .Include(f => f.FileSpecification.SubmissionGroup.Users)
                 .FirstOrDefault(x => x.Id == workItem.Report.SubmissionId);
-            
+
             var currentReport = submission.Reports.FirstOrDefault(x => x.Id == submission.CurrentReportId);
 
             Group group = submission.FileSpecification.GenerationGroup;
@@ -145,13 +143,13 @@ namespace AdenDemo.Web.Controllers.api
             {
                 _documentService.GenerateDocuments(currentReport);
             }
-            
+
             var wi = submission.CompleteWork(workItem, assignee);
 
             WorkEmailer.Send(wi, submission);
 
             _context.SaveChanges();
-            
+
             var dto = Mapper.Map<WorkItemViewDto>(workItem);
 
             return Ok(dto);

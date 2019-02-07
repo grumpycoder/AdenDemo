@@ -1,12 +1,11 @@
-﻿using Aden.Web;
-using Alsde.Extensions;
+﻿using Alsde.Extensions;
 using Alsde.Security.Identity;
 using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Web.Mvc;
 
-namespace AdenDemo.Web.Controllers
+namespace Aden.Web.Controllers
 {
     public class AccountController : Controller
     {

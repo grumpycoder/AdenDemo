@@ -1,12 +1,11 @@
-﻿using System.Data.Entity;
-using AdenDemo.Web.Data;
-using ALSDE.Services;
-using System.Linq;
-using System.Web.Http;
+﻿using AdenDemo.Web.Data;
 using AdenDemo.Web.ViewModels;
 using AutoMapper.QueryableExtensions;
+using System.Data.Entity;
+using System.Linq;
+using System.Web.Http;
 
-namespace AdenDemo.Web.Controllers.api
+namespace Aden.Web.Controllers.api
 {
     [RoutePrefix("api/demo")]
     public class DemoController : ApiController
