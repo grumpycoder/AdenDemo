@@ -1,9 +1,8 @@
 ﻿using Aden.Web.ViewModels;
 using AdenDemo.Web.Models;
-using AdenDemo.Web.ViewModels;
 using AutoMapper;
 
-namespace AdenDemo.Web.Data.Profiles
+namespace Aden.Web.Data.Profiles
 {
     public class ReportProfile : Profile
     {

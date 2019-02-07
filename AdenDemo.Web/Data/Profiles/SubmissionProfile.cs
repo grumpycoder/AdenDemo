@@ -2,7 +2,7 @@
 using AdenDemo.Web.Models;
 using AutoMapper;
 
-namespace AdenDemo.Web.Data.Profiles
+namespace Aden.Web.Data.Profiles
 {
     public class SubmissionProfile : Profile
     {
