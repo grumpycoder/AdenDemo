@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AdenDemo.Web.Models
+namespace Aden.Web.Models
 {
     public enum WorkItemAction
     {
