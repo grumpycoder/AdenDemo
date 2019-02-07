@@ -1,7 +1,7 @@
 ﻿using AdenDemo.Web.Models;
 using System.Data.Entity.ModelConfiguration;
 
-namespace AdenDemo.Web.Data.Configuration
+namespace Aden.Web.Data.Configuration
 {
     public class SubmissionConfiguration : EntityTypeConfiguration<Submission>
     {
