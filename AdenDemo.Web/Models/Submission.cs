@@ -1,9 +1,9 @@
-﻿using Aden.Web.Models;
+﻿using AdenDemo.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AdenDemo.Web.Models
+namespace Aden.Web.Models
 {
     public class Submission
     {

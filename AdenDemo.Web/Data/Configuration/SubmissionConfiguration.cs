@@ -1,4 +1,4 @@
-﻿using AdenDemo.Web.Models;
+﻿using Aden.Web.Models;
 using System.Data.Entity.ModelConfiguration;
 
 namespace Aden.Web.Data.Configuration

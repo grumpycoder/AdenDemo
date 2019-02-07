@@ -1,5 +1,5 @@
-﻿using Aden.Web.ViewModels;
-using AdenDemo.Web.Models;
+﻿using Aden.Web.Models;
+using Aden.Web.ViewModels;
 using AutoMapper;
 
 namespace Aden.Web.Data.Profiles

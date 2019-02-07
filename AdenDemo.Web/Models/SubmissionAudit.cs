@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AdenDemo.Web.Models
+namespace Aden.Web.Models
 {
     public class SubmissionAudit
     {
