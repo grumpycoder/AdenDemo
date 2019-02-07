@@ -1,4 +1,5 @@
-﻿using AdenDemo.Web.Models;
+﻿using Aden.Web.ViewModels;
+using AdenDemo.Web.Models;
 using AdenDemo.Web.ViewModels;
 using AutoMapper;
 using Humanizer;

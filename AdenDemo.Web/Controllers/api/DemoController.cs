@@ -1,5 +1,5 @@
-﻿using AdenDemo.Web.Data;
-using AdenDemo.Web.ViewModels;
+﻿using Aden.Web.ViewModels;
+using AdenDemo.Web.Data;
 using AutoMapper.QueryableExtensions;
 using System.Data.Entity;
 using System.Linq;
