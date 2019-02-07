@@ -14,5 +14,10 @@ namespace Aden.Web.Helpers
                 httpStatus = httpEx.GetHttpCode();
             }
         }
+
+        public static bool IsDev()
+        {
+            return AppSettings.Get<string>("ASPNET_ENV") == "Dev";
+        }
     }
 }

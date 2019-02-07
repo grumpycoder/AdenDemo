@@ -23,7 +23,12 @@
 
     <div class="row">
         <div class="col-md-12">
-            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" hidden="@User.IsInRole(Constants.GlobalAdministratorGroup) || @Helper.IsDev()">
+            <button class="btn btn-primary" type="button" 
+                    data-toggle="collapse" 
+                    data-target="#collapseExample" 
+                    aria-expanded="false" 
+                    aria-controls="collapseExample" 
+                    hidden="@User.IsInRole(Constants.GlobalAdministrators) || @MvcWebHelpers.IsDev()">
                 Exception Details
             </button>
 

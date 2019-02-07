@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using Alsde.Mvc.Logging.Attributes;
 
 namespace Aden.Web
 {
@@ -7,6 +8,8 @@ namespace Aden.Web
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            filters.Add(new TrackPerformanceAttribute(Constants.ApplicationName,
+                Constants.LayerName));
         }
     }
 }

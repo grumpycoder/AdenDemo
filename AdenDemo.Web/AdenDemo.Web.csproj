@@ -262,6 +262,9 @@
     <Compile Include="Data\Profiles\WorkItemProfile.cs" />
     <Compile Include="Filters\CustomAuthorize.cs" />
     <Compile Include="Filters\HandleUnauthorized.cs" />
+    <Compile Include="Filters\TraceExceptionLogger.cs" />
+    <Compile Include="Filters\TrackViewName.cs" />
+    <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

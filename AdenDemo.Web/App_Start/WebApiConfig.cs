@@ -5,6 +5,8 @@ using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using Aden.Web.Filters;
+using Alsde.Mvc.Logging.Attributes;
 
 namespace Aden.Web
 {
@@ -33,7 +35,9 @@ namespace Aden.Web
             var cors = new EnableCorsAttribute("*", "*", "*");
             config.EnableCors(cors);
 
-
+            config.Filters.Add(new ValidateModelAttribute());
+            config.Filters.Add(new TrackApiPerformanceAttribute(Constants.ApplicationName, Constants.WebApiLayerName));
+            config.Filters.Add(new TraceExceptionLogger());
 
             //// Web API configuration and services
             //var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
