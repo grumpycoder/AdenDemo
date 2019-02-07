@@ -3,8 +3,8 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
 
-[assembly: OwinStartup(typeof(AdenDemo.Web.Startup))]
-namespace AdenDemo.Web
+[assembly: OwinStartup(typeof(Aden.Web.Startup))]
+namespace Aden.Web
 {
 
     public class Startup
