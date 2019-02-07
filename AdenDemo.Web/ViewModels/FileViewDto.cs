@@ -3,7 +3,7 @@ using Nortal.Utilities.Csv;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AdenDemo.Web.ViewModels
+namespace Aden.Web.ViewModels
 {
     public class FileViewDto
     {
