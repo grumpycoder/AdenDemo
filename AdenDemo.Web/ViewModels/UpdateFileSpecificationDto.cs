@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using AdenDemo.Web.Models;
+﻿using AdenDemo.Web.Models;
+using System.ComponentModel.DataAnnotations;
 
-namespace AdenDemo.Web.ViewModels
+namespace Aden.Web.ViewModels
 {
     public class UpdateFileSpecificationDto
     {
