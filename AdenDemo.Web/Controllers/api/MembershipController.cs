@@ -1,6 +1,6 @@
 ﻿using Aden.Web.Data;
+using Aden.Web.Models;
 using Aden.Web.Services;
-using AdenDemo.Web.Models;
 using System;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;

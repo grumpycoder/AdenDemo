@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Aden.Web.Models;
+using System.Collections.Generic;
 
 namespace AdenDemo.Web.Models
 {
