@@ -1,7 +1,6 @@
 ﻿using Aden.Web.Helpers;
 using Aden.Web.Models;
 using Aden.Web.ViewModels;
-using AdenDemo.Web.ViewModels;
 using AutoMapper;
 
 namespace Aden.Web.Data.Profiles

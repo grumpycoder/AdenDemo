@@ -1,12 +1,11 @@
-﻿using Aden.Web;
-using Aden.Web.Helpers;
+﻿using Aden.Web.Helpers;
 using Aden.Web.Models;
 using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Web;
 
-namespace AdenDemo.Web.ViewModels
+namespace Aden.Web.ViewModels
 {
     public class WorkItemHistoryDto
     {
