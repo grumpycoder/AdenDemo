@@ -275,7 +275,7 @@
     <Compile Include="Helpers\HtmlHelper.cs" />
     <Compile Include="Helpers\ImageHelpers.cs" />
     <Compile Include="Helpers\StringExtensions.cs" />
-    <Compile Include="Helpers\WebHelpers.cs" />
+    <Compile Include="Helpers\MvcWebHelpers.cs" />
     <Compile Include="Models\FileSpecification.cs" />
     <Compile Include="Models\Report.cs" />
     <Compile Include="Models\ReportDocument.cs" />

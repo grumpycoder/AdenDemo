@@ -1,6 +1,5 @@
 using Aden.Web.Controllers;
 using Aden.Web.Helpers;
-using AdenDemo.Web.Helpers;
 using System;
 using System.Web;
 using System.Web.Http;
@@ -29,7 +28,7 @@ namespace Aden.Web
 
             string errorControllerAction;
 
-            WebHelpers.GetHttpStatus(ex, out var httpStatus);
+            MvcWebHelpers.GetHttpStatus(ex, out var httpStatus);
             switch (httpStatus)
             {
                 case 404:

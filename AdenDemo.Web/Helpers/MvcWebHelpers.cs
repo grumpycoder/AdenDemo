@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Web;
 
-namespace AdenDemo.Web.Helpers
+namespace Aden.Web.Helpers
 {
-    public static class WebHelpers
+    public static class MvcWebHelpers
     {
         public static void GetHttpStatus(Exception ex, out int httpStatus)
         {
