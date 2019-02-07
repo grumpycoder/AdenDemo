@@ -1,11 +1,9 @@
 ﻿@model Aden.Web.ViewModels.HistoryViewDto
 
-<h3>History</h3>
-<div id="gridHistory">
+<span class="lead">History</span>
+<div id="gridHistory"></div>
 
-</div>
-
-<h3>Audit Log</h3>
+<span class="lead">Audit Log</span>
 <div id="gridAudit"></div>
 
 <script>
@@ -16,16 +14,16 @@
         {
             dataSource: DevExpress.data.AspNet.createStore({
                 key: 'id',
-                loadUrl: historyUri,
+                loadUrl: historyUri
             }),
             remoteOperations: true,
             allowColumnResizing: true,
-            noDataText: 'No History', 
+            noDataText: 'No History',
             showBorders: true,
             columnResizingMode: "nextColumn",
             columnMinWidth: 50,
             columnAutoWidth: true,
-            height: 200, 
+            height: 200,
             columns: [
                 { dataField: 'actionDescription', caption: 'Task' },
                 { dataField: 'assignedDate', caption: 'Assigned Date', dataType: 'datetime' },
@@ -71,12 +69,12 @@
             }),
             remoteOperations: true,
             allowColumnResizing: true,
-            noDataText: 'No Audits', 
+            noDataText: 'No Audits',
             showBorders: true,
             columnResizingMode: "nextColumn",
             columnMinWidth: 50,
             columnAutoWidth: true,
-            height: 200, 
+            height: 200,
             wordWrapEnabled: true,
             scrolling: { mode: "virtual", rowRenderingMode: "virtual" },
             columns: [
@@ -100,7 +98,7 @@
                     title: title,
                     message: $('<div></div>').load(url, function (resp, status, xhr) {
                         if (status === 'error') {
-                            toastr.error('Error showing history'); 
+                            toastr.error('Error showing history');
                         }
                     }),
                     buttons: [
@@ -114,7 +112,7 @@
                             label: 'Save',
                             cssClass: 'btn-primary',
                             action: function (dialogRef) {
-                              
+
                                 window.$showModalWorking();
                                 var formData = $('form').serialize();
                                 $.ajax({
@@ -126,7 +124,7 @@
                                     $gridAudit.refresh();
                                     $gridHistory.refresh();
                                     $gridAudit.refresh();
-                                    window.assignmentUpdated = true; 
+                                    window.assignmentUpdated = true;
                                 }).fail(function (err) {
                                     toastr.error('Failed to reassign task. ');
                                 }).always(function () {
@@ -156,7 +154,7 @@
             title: title,
             message: $('<div></div>').load(url, function (resp, status, xhr) {
                 if (status === 'error') {
-                    toastr.error('Error showing report error images'); 
+                    toastr.error('Error showing report error images');
                 }
             }),
             buttons: [

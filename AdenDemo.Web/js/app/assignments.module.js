@@ -38,10 +38,12 @@
                             .appendTo(container);
                     }
 
+                    var actionName = options.data.actionName;
+                    if (options.data.isManualUpload && options.data.canGenerate) actionName = 'Manual';
 
-                    $('<a/>').addClass('btn btn-success btn-sm btn-grid')
-                        .text(options.data.actionName)
-                        .attr('aria-label', options.data.actionName +  ' ' + options.data.fileName)
+                    $('<a/>').addClass('btn btn-primary btn-sm btn-grid')
+                        .text(actionName)
+                        .attr('aria-label', options.data.actionName + ' ' + options.data.fileName)
                         .on('dxclick',
                             function (e) {
                                 complete($(this), options.data);
@@ -69,6 +71,7 @@
                                 })
                             .appendTo(container);
                     }
+
                     if (options.data.canReviewError) {
                         $('<a/>').addClass('btn btn-danger btn-sm btn-grid')
                             .text('View Errors')
@@ -90,10 +93,10 @@
                 {
                     location: "after",
                     widget: "dxButton",
-                  
+
                     options: {
                         icon: "refresh",
-                        hint: 'Refresh', 
+                        hint: 'Refresh',
                         onClick: function () {
                             currentGrid.refresh();
                         }
@@ -148,10 +151,10 @@
                 {
                     location: "after",
                     widget: "dxButton",
-                  
+
                     options: {
                         icon: "refresh",
-                        hint: 'Refresh', 
+                        hint: 'Refresh',
                         onClick: function () {
                             historyGrid.refresh();
                         }
@@ -164,27 +167,35 @@
 
     function complete(container, data) {
         var uri = '/api/workitem/complete/' + data.id;
-        $toggleWorkingButton(container);
-
-        $.ajax({
-            url: uri,
-            type: 'POST',
-            success: function (data) {
-                $gridCurrent.refresh();
-                $gridComplete.refresh();
-                toastr.success('Completed task for ' + data.fileName + ' (' + data.fileNumber + ')');
-            },
-            error: function (err) {
-                toastr.error('Error completing task');
-            }
-        }).always(function () {
+        if (data.isManualUpload && data.canGenerate) {
+            showUpload(container, data);
+        }
+        else {
+            // Generate files from defined report action
             $toggleWorkingButton(container);
-        });
+
+            $.ajax({
+                url: uri,
+                type: 'POST',
+                success: function (data) {
+                    $gridCurrent.refresh();
+                    $gridComplete.refresh();
+                    toastr.success('Completed task for ' + data.fileName + ' (' + data.fileNumber + ')');
+                },
+                error: function (err) {
+                    toastr.error('Error completing task');
+                }
+            }).always(function () {
+                $toggleWorkingButton(container);
+            });
+
+        }
+
     }
 
     function reject(container, data) {
         var uri = '/api/workitem/reject/' + data.id;
-  
+
         BootstrapDialog.confirm('Reject File, are you sure?', function (result) {
             if (result) {
                 window.$showModalWorking();
@@ -315,7 +326,71 @@
         });
 
     }
+    
+    function showUpload(container, data) {
+        var loadUrl = '/uploadreport/' + data.id;
+        var postUrl = '/api/workitem/submitreport/' + data.id;
+        var title = 'File Upload';
 
+        BootstrapDialog.show({
+            size: window.BootstrapDialog.SIZE_WIDE,
+            draggable: true,
+            title: title,
+            message: $('<div></div>').load(loadUrl, function (resp, status, xhr) {
+                if (status === 'error') {
+                    toastr.error('Error retrieving reporting errors form');
+                }
+            }),
+            buttons: [
+                {
+                    label: 'Close',
+                    action: function (dialogRef) {
+                        dialogRef.close();
+                    }
+                },
+                {
+                    label: 'Save',
+                    cssClass: 'btn-primary',
+                    action: function (dialogRef) {
+                        dialogRef.enableButtons(false);
+                        dialogRef.setClosable(false);
+                        $showModalWorking($('.panel-body'));
+
+                        $('#errorMessage').text('');
+
+                        var formData = new FormData($('form')[0]);
+
+                        if (files.length > 0) {
+                            for (var i = 0; i < files.length; i++) {
+                                formData.append('file', files[i]);
+                            }
+                        }
+                        $.ajax({
+                            type: "POST",
+                            url: postUrl,
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            success: function (response) {
+                                $gridCurrent.refresh();
+                                $gridComplete.refresh();
+                                dialogRef.close();
+                                toastr.success('Saved errors and created task for ' + data.fileName + ' (' + data.fileNumber + ')');
+                            },
+                            error: function (error) {
+                                toastr.error('Error saving reporting errors for ' + data.fileName + ' (' + data.fileNumber + ')');
+                            },
+                            complete: function () {
+                                dialogRef.close();
+                            }
+                        });
+
+                    }
+                }
+            ]
+        });
+
+    }
 
 })();
 

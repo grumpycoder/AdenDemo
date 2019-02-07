@@ -298,6 +298,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AssignmentDto.cs" />
     <Compile Include="ViewModels\FileViewDto.cs" />
+    <Compile Include="ViewModels\WorkItemUploadDto.cs" />
     <Compile Include="ViewModels\ReportDocumentViewDto.cs" />
     <Compile Include="ViewModels\ReportViewDto.cs" />
     <Compile Include="ViewModels\SubmissionErrorDto.cs" />
@@ -459,6 +460,7 @@
     <Content Include="Views\Error\Index.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\Shared\Unauthorized.cshtml" />
+    <Content Include="Views\Home\_ReportUploadForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

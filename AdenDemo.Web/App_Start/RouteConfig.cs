@@ -51,6 +51,12 @@ namespace Aden.Web
             );
 
             routes.MapRoute(
+                name: "UploadReportActions",
+                url: "uploadreport/{id}",
+                defaults: new { controller = "Home", action = "UploadReport", Id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Submissions", id = UrlParameter.Optional }

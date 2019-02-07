@@ -48,6 +48,13 @@ namespace Aden.Web.Data.Profiles
                 .ForMember(d => d.FileName, opt => opt.MapFrom(s => s.Report.Submission.FileSpecification.FileName))
                 .ForMember(d => d.FileNumber, opt => opt.MapFrom(s => s.Report.Submission.FileSpecification.FileNumber))
                 .ForAllOtherMembers(d => d.Ignore());
+
+            CreateMap<WorkItem, WorkItemUploadDto>()
+                .ForMember(d => d.FileName,
+                    opt => opt.MapFrom(s => s.Report.Submission.FileSpecification.FileDisplayName))
+                ;
+
+
         }
     }
 }

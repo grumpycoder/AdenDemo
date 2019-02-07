@@ -8,6 +8,10 @@ namespace Aden.Web
         public const string LayerName = "WebApp";
         public const string WebApiLayerName = "WebApi";
 
+        public const string SchoolKey = "SCH";
+        public const string LeaKey = "LEA";
+        public const string StateKey = "SEA";
+
         public static string TpaAccessKey => AppSettings.Get<string>("TPA_AccessKey");
         public static string DatabaseContextName => "AdenContext";
         public static string Environment => AppSettings.Get<string>("ASPNET_ENV");

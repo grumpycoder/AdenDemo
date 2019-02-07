@@ -1,0 +1,29 @@
+﻿@model WorkItemUploadDto
+
+
+@Html.AntiForgeryToken()
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-12">
+            <p class="lead">
+                @Model.FileName Submission
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <form role="form" enctype="multipart/form-data">
+
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <input type="file" id="files" name="files" multiple="multiple" class="form-control" />
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+</div>

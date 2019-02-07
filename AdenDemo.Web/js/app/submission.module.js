@@ -237,7 +237,7 @@
     }).dxDataGrid("instance");
     
     function showHistory(e) {
-        var title = 'History';
+        var title = 'Submission History - [' + e.row.data.fileName + ']';
         var url = '/history/' + e.row.data.id;
 
         BootstrapDialog.show({

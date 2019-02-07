@@ -215,5 +215,13 @@ namespace Aden.Web.Controllers
             var dto = _context.Groups.Include(u => u.Users).FirstOrDefault(x => x.Id == id);
             return PartialView("_GroupMembershipEditForm", dto);
         }
+
+        public async Task<ActionResult> UploadReport(int id)
+        {
+            var wi = await _context.WorkItems.Include(r => r.Report.Submission.FileSpecification).FirstOrDefaultAsync(x => x.Id == id);
+
+            var model = Mapper.Map<WorkItemUploadDto>(wi);
+            return PartialView("_ReportUploadForm", model);
+        }
     }
 }

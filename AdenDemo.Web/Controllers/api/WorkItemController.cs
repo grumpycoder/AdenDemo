@@ -7,11 +7,13 @@ using AutoMapper.QueryableExtensions;
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using Aden.Web.Helpers;
 
 namespace Aden.Web.Controllers.api
 {
@@ -182,5 +184,62 @@ namespace Aden.Web.Controllers.api
             return Ok(dto);
         }
 
+        [HttpPost, Route("submitreport/{id}")]
+        public async Task<object> SubmitReport(int id)
+        {
+            //TODO: Refactor.. too messy
+
+            //get work item
+            var workItem = await _context.WorkItems.Include(x => x.AssignedUser).Include(x => x.Report).FirstOrDefaultAsync(x => x.Id == id);
+
+            //get report
+            var report = workItem.Report;
+
+            var submission = _context.Submissions.Include(f => f.FileSpecification.GenerationGroup.Users).FirstOrDefault(x => x.CurrentReportId == report.Id);
+
+            //Retrieve file from file parameter
+            foreach (string filename in HttpContext.Current.Request.Files)
+            {
+                var f = HttpContext.Current.Request.Files[filename];
+
+                //Checking file is available to save.  
+                if (f == null) continue;
+
+                var reportLevel = ReportLevel.SCH;
+                //TODO: Refactor Constants to use ReportLevel Value
+                if (f.FileName.ToLower().Contains(Constants.SchoolKey)) reportLevel = ReportLevel.SCH;
+                if (f.FileName.ToLower().Contains(Constants.LeaKey)) reportLevel = ReportLevel.LEA;
+                if (f.FileName.ToLower().Contains(Constants.StateKey)) reportLevel = ReportLevel.SEA;
+
+                var version = report.CurrentDocumentVersion ?? 0 + 1;
+
+                var documentName = submission.FileSpecification.FileNameFormat.Replace("{level}", reportLevel.GetDisplayName()).Replace("{version}", string.Format("v{0}.csv", version)); 
+
+                var br = new BinaryReader(f.InputStream);
+                var data = br.ReadBytes((f.ContentLength));
+                var doc = new ReportDocument() {
+                    FileData = data,
+                    ReportLevel = reportLevel,
+                    Filename = documentName,
+                    FileSize = data.Length,
+                    Version = version };
+                
+                //attach report documents
+                report.Documents.Add(doc);
+            }
+
+            
+            //finish work item
+            var wi = submission.CompleteWork(workItem, workItem.AssignedUser);
+            
+            WorkEmailer.Send(wi, submission);
+
+            _context.SaveChanges();
+
+            var dto = Mapper.Map<WorkItemViewDto>(workItem);
+
+            return Ok(dto);
+
+        }
     }
 }
