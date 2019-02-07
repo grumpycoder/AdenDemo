@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace AdenDemo.Web
+namespace Aden.Web
 {
     public class FilterConfig
     {

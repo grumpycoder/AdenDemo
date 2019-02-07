@@ -1,8 +1,9 @@
-﻿using AutoMapper;
+﻿using Aden.Web;
+using AutoMapper;
 using System.Reflection;
 
-[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(AdenDemo.Web.AutoMapperConfig), "Configure")]
-namespace AdenDemo.Web
+[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(AutoMapperConfig), "Configure")]
+namespace Aden.Web
 {
     public static class AutoMapperConfig
     {

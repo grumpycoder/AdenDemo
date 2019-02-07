@@ -6,7 +6,7 @@ using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
-namespace AdenDemo.Web
+namespace Aden.Web
 {
     public static class WebApiConfig
     {
