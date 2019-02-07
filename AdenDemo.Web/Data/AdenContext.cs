@@ -1,4 +1,5 @@
 ﻿using Aden.Web.Data.Configuration;
+using Aden.Web.Models;
 using AdenDemo.Web.Models;
 using System;
 using System.Data.Entity;
