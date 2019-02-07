@@ -1,4 +1,5 @@
 ﻿using Aden.Web.Data;
+using Aden.Web.Helpers;
 using Aden.Web.Models;
 using Aden.Web.Services;
 using Aden.Web.ViewModels;
@@ -13,7 +14,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using Aden.Web.Helpers;
 
 namespace Aden.Web.Controllers.api
 {
@@ -134,6 +134,8 @@ namespace Aden.Web.Controllers.api
                     break;
             }
 
+            if (group == null) return BadRequest($"No group defined for next task");
+
             //If current workitem is a generation task, the review task should return to same user
             var assignee = workItem.AssignedUser;
             if (workItem.WorkItemAction != WorkItemAction.Generate || workItem.WorkItemAction == WorkItemAction.Submit) assignee = _membershipService.GetAssignee(group);
@@ -213,25 +215,27 @@ namespace Aden.Web.Controllers.api
 
                 var version = report.CurrentDocumentVersion ?? 0 + 1;
 
-                var documentName = submission.FileSpecification.FileNameFormat.Replace("{level}", reportLevel.GetDisplayName()).Replace("{version}", string.Format("v{0}.csv", version)); 
+                var documentName = submission.FileSpecification.FileNameFormat.Replace("{level}", reportLevel.GetDisplayName()).Replace("{version}", string.Format("v{0}.csv", version));
 
                 var br = new BinaryReader(f.InputStream);
                 var data = br.ReadBytes((f.ContentLength));
-                var doc = new ReportDocument() {
+                var doc = new ReportDocument()
+                {
                     FileData = data,
                     ReportLevel = reportLevel,
                     Filename = documentName,
                     FileSize = data.Length,
-                    Version = version };
-                
+                    Version = version
+                };
+
                 //attach report documents
                 report.Documents.Add(doc);
             }
 
-            
+
             //finish work item
             var wi = submission.CompleteWork(workItem, workItem.AssignedUser);
-            
+
             WorkEmailer.Send(wi, submission);
 
             _context.SaveChanges();
