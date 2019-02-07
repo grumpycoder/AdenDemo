@@ -1,7 +1,6 @@
-﻿using Aden.Web.ViewModels;
-using AdenDemo.Web.Data;
+﻿using Aden.Web.Data;
+using Aden.Web.ViewModels;
 using AdenDemo.Web.Models;
-using AdenDemo.Web.ViewModels;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using DevExtreme.AspNet.Data;

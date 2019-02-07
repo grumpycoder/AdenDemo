@@ -1,7 +1,7 @@
 ﻿using System.Data.Entity;
 using System.Diagnostics;
 
-namespace AdenDemo.Web.Data
+namespace Aden.Web.Data
 {
     public class IdemContext : DbContext
     {

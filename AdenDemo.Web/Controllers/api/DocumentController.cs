@@ -1,5 +1,5 @@
-﻿using Aden.Web.ViewModels;
-using AdenDemo.Web.Data;
+﻿using Aden.Web.Data;
+using Aden.Web.ViewModels;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
