@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Aden.Web.Models;
+using System;
 using System.Collections.Generic;
 
 namespace AdenDemo.Web.Models
@@ -27,7 +28,7 @@ namespace AdenDemo.Web.Models
         {
             WorkItem other = (WorkItem)this.MemberwiseClone();
             other.AssignedUser = AssignedUser;
-            
+
             return other;
         }
 

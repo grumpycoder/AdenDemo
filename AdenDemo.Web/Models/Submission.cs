@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Aden.Web.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -106,12 +107,12 @@ namespace AdenDemo.Web.Models
 
                 if (lastReport.ReportState == ReportState.Waived) SubmissionState = SubmissionState.Waived;
             }
-            
+
             //Create Audit record
             var msg = $"{currentUser} cancelled submission";
             var audit = new SubmissionAudit(Id, msg);
             SubmissionAudits.Add(audit);
-            
+
         }
 
         public WorkItem Start(UserProfile assignee)
@@ -187,8 +188,8 @@ namespace AdenDemo.Web.Models
             workItem.WorkItemState = WorkItemState.Completed;
 
             //Start new work item
-            var wi = new WorkItem() { WorkItemState = WorkItemState.NotStarted, AssignedDate = DateTime.Now, AssignedUser = nextAssignee};
-            
+            var wi = new WorkItem() { WorkItemState = WorkItemState.NotStarted, AssignedDate = DateTime.Now, AssignedUser = nextAssignee };
+
             if (generateErrorTask)
             {
                 wi.WorkItemAction = WorkItemAction.ReviewError;
