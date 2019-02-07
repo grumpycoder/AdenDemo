@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace AdenDemo.Web.Helpers
+namespace Aden.Web.Helpers
 {
     public static class ExceptionHelper
     {

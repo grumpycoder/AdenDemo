@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace AdenDemo.Web.Helpers
+namespace Aden.Web.Helpers
 {
     /// <summary>
     ///   Extensions for retrieving assembly attribute information 

@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Configuration;
 
-namespace AdenDemo.Web.Helpers
+namespace Aden.Web.Helpers
 {
     internal static class AppSettings
     {

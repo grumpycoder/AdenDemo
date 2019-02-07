@@ -1,4 +1,4 @@
-﻿using Aden.Web;
+﻿using AdenDemo.Web.Helpers;
 using Humanizer;
 using System;
 using System.Data.SqlClient;
@@ -6,8 +6,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 
-
-namespace AdenDemo.Web.Helpers
+namespace Aden.Web.Helpers
 {
     public static class HtmlHelpers
     {

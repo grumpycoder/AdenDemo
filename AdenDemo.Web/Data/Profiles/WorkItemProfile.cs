@@ -1,5 +1,5 @@
-﻿using Aden.Web.ViewModels;
-using AdenDemo.Web.Helpers;
+﻿using Aden.Web.Helpers;
+using Aden.Web.ViewModels;
 using AdenDemo.Web.Models;
 using AdenDemo.Web.ViewModels;
 using AutoMapper;

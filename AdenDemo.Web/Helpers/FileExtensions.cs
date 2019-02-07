@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AdenDemo.Web.Helpers
+namespace Aden.Web.Helpers
 {
     public static class FileExtensions
     {

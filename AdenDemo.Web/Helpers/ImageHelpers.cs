@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Web;
 
-namespace AdenDemo.Web.Helpers
+namespace Aden.Web.Helpers
 {
     public static class ImageHelpers
     {
