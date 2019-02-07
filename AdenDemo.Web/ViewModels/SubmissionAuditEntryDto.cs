@@ -1,4 +1,4 @@
-﻿namespace AdenDemo.Web.ViewModels
+﻿namespace Aden.Web.ViewModels
 {
     public class SubmissionWaiveAuditEntryDto
     {
@@ -12,7 +12,7 @@
 
         private SubmissionWaiveAuditEntryDto()
         {
-            
+
         }
     }
 }
