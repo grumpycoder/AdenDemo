@@ -1,6 +1,6 @@
 ﻿using AdenDemo.Web.Helpers;
 
-namespace AdenDemo.Web
+namespace Aden.Web
 {
     public static class Constants
     {
