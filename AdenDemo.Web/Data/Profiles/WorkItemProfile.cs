@@ -1,6 +1,6 @@
 ﻿using Aden.Web.Helpers;
+using Aden.Web.Models;
 using Aden.Web.ViewModels;
-using AdenDemo.Web.Models;
 using AdenDemo.Web.ViewModels;
 using AutoMapper;
 
