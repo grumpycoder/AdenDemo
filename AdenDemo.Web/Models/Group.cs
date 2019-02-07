@@ -1,7 +1,6 @@
-﻿using Aden.Web.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace AdenDemo.Web.Models
+namespace Aden.Web.Models
 {
     public class Group
     {

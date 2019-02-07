@@ -1,4 +1,4 @@
-﻿using AdenDemo.Web.Models;
+﻿using Aden.Web.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace Aden.Web.ViewModels
