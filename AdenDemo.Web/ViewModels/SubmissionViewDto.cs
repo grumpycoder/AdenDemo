@@ -1,5 +1,5 @@
 ﻿using Aden.Web.Helpers;
-using AdenDemo.Web.Models;
+using Aden.Web.Models;
 using Humanizer;
 using System;
 
