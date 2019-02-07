@@ -70,7 +70,7 @@
                     if (cellInfo.value) return 'Yes';
 
                     return 'No';
-                },
+                }
             },
             {
                 dataField: 'isLEA', caption: 'LEA', dataType: 'boolean',
@@ -82,7 +82,7 @@
                     if (cellInfo.value) return 'Yes';
 
                     return 'No';
-                },
+                }
             },
             {
                 dataField: 'isSCH', caption: 'SCH',
@@ -95,7 +95,7 @@
                     if (cellInfo.value) return 'Yes';
 
                     return 'No';
-                },
+                }
             },
             {
                 width: 200,
@@ -157,7 +157,7 @@
 
 
                 }
-            },
+            }
         ],
         sortByGroupSummaryInfo: [{ summaryItem: "count" }],
         summary: {
@@ -168,13 +168,13 @@
                     summaryType: 'count',
                     showInGroupFooter: true,
                     showInColumn: 'FileNumber'
-                },
+                }
             ],
             groupItems: [
                 {
                     summaryType: "count",
                     displayFormat: '{0} Submissions',
-                },
+                }
 
             ]
         },
@@ -290,22 +290,26 @@
 
     function cancelWorkFlow(container, data) {
         var id = data.id;
-        $toggleWorkingButton(container);
-        $.ajax({
-            url: '/api/submission/cancel/' + id,
-            type: 'POST',
-            success: function (response) {
-                toastr.warning('Cancelled submission process for ' + response.fileName + ' (' + response.fileNumber + ')');
-                $grid.refresh();
-            },
-            error: function (error) {
-                toastr.error('Error cancelling submission process');
-            },
-            complete: function (status) {
-                $toggleWorkingButton(container);
+        
+        BootstrapDialog.confirm('Cancel Submission, are you sure?', function (result) {
+            if (result) {
+                window.$showModalWorking();
+                $.ajax({
+                    url: '/api/submission/cancel/' + id,
+                    type: 'POST',
+                    success: function (response) {
+                        toastr.warning('Cancelled submission process for ' + response.fileName + ' (' + response.fileNumber + ')');
+                        $grid.refresh();
+                    },
+                    error: function (error) {
+                        toastr.error('Error cancelling submission process');
+                    },
+                    complete: function (status) {
+                        window.$hideModalWorking();
+                    }
+                });
             }
         });
-
     }
 
     function reopenSubmission(container, data) {

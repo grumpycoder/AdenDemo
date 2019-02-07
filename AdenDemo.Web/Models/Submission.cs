@@ -23,7 +23,7 @@ namespace Aden.Web.Models
         public FileSpecification FileSpecification { get; set; }
         public int? CurrentAssigneeId { get; set; }
         public UserProfile CurrentAssignee { get; set; }
-        public int CurrentReportId { get; internal set; }
+        public int? CurrentReportId { get; internal set; }
 
         public Submission()
         {

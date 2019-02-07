@@ -184,22 +184,26 @@
 
     function reject(container, data) {
         var uri = '/api/workitem/reject/' + data.id;
-        $toggleWorkingButton(container);
+  
+        BootstrapDialog.confirm('Reject File, are you sure?', function (result) {
+            if (result) {
+                window.$showModalWorking();
+                $.ajax({
+                    url: uri,
+                    type: 'POST',
+                    success: function (data) {
+                        $gridCurrent.refresh();
+                        $gridComplete.refresh();
+                        toastr.warning('Rejected file for ' + data.fileName + ' (' + data.fileNumber + ')');
 
-        $.ajax({
-            url: uri,
-            type: 'POST',
-            success: function (data) {
-                $gridCurrent.refresh();
-                $gridComplete.refresh();
-                toastr.warning('Rejected file for ' + data.fileName + ' (' + data.fileNumber + ')');
-
-            },
-            error: function (err) {
-                toastr.error('Error rejecting file');
+                    },
+                    error: function (err) {
+                        toastr.error('Error rejecting file');
+                    }
+                }).always(function () {
+                    window.$hideModalWorking();
+                });
             }
-        }).always(function () {
-            $toggleWorkingButton(container);
         });
     }
 

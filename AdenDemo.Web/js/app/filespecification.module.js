@@ -49,12 +49,13 @@
                     if (cellInfo.value) return 'Yes';
 
                     return 'No';
-                },
+                }
             },
             { dataField: 'section', caption: 'Section', dataType: 'string' },
             { dataField: 'supportGroup', caption: 'Support Group', dataType: 'string' },
             { dataField: 'application', caption: 'Application', dataType: 'string'},
             { dataField: 'collection', caption: 'Collection', dataType: 'string' },
+            { dataField: 'reportAction', caption: 'Report Action', dataType: 'string', visible: false },
             { dataField: 'generationGroup', caption: 'Generation Group', dataType: 'string', visible: false },
             { dataField: 'approvalGroup', caption: 'Approval Group', dataType: 'string', visible: false },
             { dataField: 'submissionGroup', caption: 'Submission Group', dataType: 'string', visible: false },
@@ -99,7 +100,7 @@
                     if (cellInfo.value) return 'Yes';
 
                     return 'No';
-                },
+                }
             },
             {
                 dataField: 'isLEA', caption: 'LEA', dataType: 'boolean',
@@ -111,7 +112,7 @@
                     if (cellInfo.value) return 'Yes';
 
                     return 'No';
-                },
+                }
             },
             {
                 dataField: 'isSCH', caption: 'SCH',
@@ -124,7 +125,7 @@
                     if (cellInfo.value) return 'Yes';
 
                     return 'No';
-                },
+                }
             },
             {
                 width: 120,
@@ -177,13 +178,13 @@
                     summaryType: 'count',
                     showInGroupFooter: true,
                     showInColumn: 'FileNumber'
-                },
+                }
             ],
             groupItems: [
                 {
                     summaryType: "count",
                     displayFormat: '{0} File Specifications',
-                },
+                }
             ]
         },
         onToolbarPreparing: function (e) {
@@ -245,40 +246,48 @@
 
     function activate(container, data) {
         var id = data.id;
-        $toggleWorkingButton(container);
-
-        $.ajax({
-            url: '/api/filespecification/activate/' + id,
-            type: 'POST',
-            success: function (data) {
-                $grid.refresh();
-                toastr.success('Activated file for ' + data.fileName + ' (' + data.fileNumber + ')');
-            },
-            error: function (err) {
-                toastr.error('Error activating file');
-            }
-        }).always(function () {
-            $toggleWorkingButton(container);
+        BootstrapDialog.confirm('Retire File Specification, are you sure?', function (result) {
+            if (result) {
+                window.$showModalWorking();
+                $.ajax({
+                    url: '/api/filespecification/activate/' + id,
+                    type: 'POST',
+                    success: function (data) {
+                        $grid.refresh();
+                        toastr.success('Activated file for ' + data.fileName + ' (' + data.fileNumber + ')');
+                    },
+                    error: function (err) {
+                        toastr.error('Error activating file');
+                    }
+                }).always(function () {
+                    window.$hideModalWorking();
+                });
+            } 
         });
     }
 
     function retire(container, data) {
         var id = data.id; 
-        $toggleWorkingButton(container);
-
-        $.ajax({
-            url: '/api/filespecification/retire/' + id,
-            type: 'POST',
-            success: function (data) {
-                toastr.warning('Retired file for ' + data.fileName + ' (' + data.fileNumber + ')');
-                $grid.refresh();
-            },
-            error: function (err) {
-                toastr.error('Error retiring file');
-            }
-        }).always(function () {
-            $toggleWorkingButton(container);
+        BootstrapDialog.confirm('Retire File Specification, are you sure?', function (result) {
+            if (result) {
+                window.$showModalWorking();
+                $.ajax({
+                    url: '/api/filespecification/retire/' + id,
+                    type: 'POST',
+                    success: function (data) {
+                        toastr.warning('Retired file for ' + data.fileName + ' (' + data.fileNumber + ')');
+                        $grid.refresh();
+                    },
+                    error: function (err) {
+                        toastr.error('Error retiring file');
+                    }
+                }).always(function () {
+                    window.$hideModalWorking();
+                });
+            } 
         });
+
+       
     }
 
     function editFileSpecification(container, data) {

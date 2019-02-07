@@ -1,13 +1,11 @@
-﻿using Aden.Web;
-using System;
+﻿using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
-using Environment = Aden.Web.Helpers.Environment;
 
-namespace AdenDemo.Web.Helpers
+namespace Aden.Web.Helpers
 {
     public static class AlsdeHtmlHelper
     {

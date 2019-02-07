@@ -159,7 +159,7 @@ namespace Aden.Web.Controllers.api
         [HttpPost, Route("reject/{id}")]
         public async Task<object> Reject(int id)
         {
-            var workItem = await _context.WorkItems.FindAsync(id);
+            var workItem = await _context.WorkItems.Include(u => u.AssignedUser).FirstOrDefaultAsync(x => x.Id == id);
 
             if (workItem == null) return NotFound();
 
