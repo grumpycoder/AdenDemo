@@ -1,4 +1,6 @@
-﻿namespace AdenDemo.Web.Models
+﻿using AdenDemo.Web.Models;
+
+namespace Aden.Web.Models
 {
     public class ReportDocument
     {
