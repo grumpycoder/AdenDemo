@@ -3,7 +3,7 @@ using AdenDemo.Web.Models;
 using Humanizer;
 using System;
 
-namespace AdenDemo.Web.ViewModels
+namespace Aden.Web.ViewModels
 {
     public class SubmissionViewDto
     {
