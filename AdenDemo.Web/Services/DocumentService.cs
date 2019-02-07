@@ -1,7 +1,6 @@
 ﻿using Aden.Web.Data;
 using Aden.Web.Helpers;
 using Aden.Web.Models;
-using AdenDemo.Web.Models;
 using System;
 using System.Data;
 using System.Data.SqlClient;

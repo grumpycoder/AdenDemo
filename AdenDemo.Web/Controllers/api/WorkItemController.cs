@@ -2,7 +2,6 @@
 using Aden.Web.Models;
 using Aden.Web.Services;
 using Aden.Web.ViewModels;
-using AdenDemo.Web.Models;
 using AdenDemo.Web.ViewModels;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
