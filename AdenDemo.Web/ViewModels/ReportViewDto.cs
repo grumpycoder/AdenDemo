@@ -3,7 +3,7 @@ using AdenDemo.Web.Models;
 using System;
 using System.Collections.Generic;
 
-namespace AdenDemo.Web.ViewModels
+namespace Aden.Web.ViewModels
 {
     public class ReportViewDto
     {
