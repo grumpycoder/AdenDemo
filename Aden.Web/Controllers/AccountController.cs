@@ -1,4 +1,5 @@
-﻿using Alsde.Extensions;
+﻿using Aden.Web.Data;
+using Aden.Web.Services;
 using Alsde.Security.Identity;
 using System;
 using System.Linq;
@@ -9,6 +10,15 @@ namespace Aden.Web.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly AdenContext _context;
+        private readonly MembershipService _membershipService;
+
+        public AccountController()
+        {
+            _context = new AdenContext();
+            _membershipService = new MembershipService(_context);
+        }
+
         //Callback url from TPA login
         public ActionResult LoginCallback(string token)
         {
@@ -26,29 +36,14 @@ namespace Aden.Web.Controllers
             var identity = result.Value;
             if (identity == null) throw new Exception("No identity returned from Token signin");
 
-            // Add custom claims to User to store Section information
-            var claims = identity.Claims.ToList();
-
-            //TODO: Remove magic strings
-            var claim = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role && c.Value.ToLower().Contains("section"));
-            var isAdministrator = claims.Exists(c => c.Type == ClaimTypes.Role && c.Value.ToLower().StartsWith("adenapp") && c.Value.ToLower().EndsWith("administrators"));
-            //claims.Any(c => c.Value.ToLower().Contains("administrator"));
-
-            if (claim != null)
+            var groups = _membershipService.GetUserGroups(identity.Name);
+            foreach (var @group in groups)
             {
-                var section = claim.Value.SplitCamelCase().Split(' ').ToList();
-                var idxSection = section.IndexOf("Section");
-                var idxApp = section.IndexOf("App");
-
-                var sectionName = string.Join(" ", section.Skip(idxApp + 1).Take(idxSection - idxApp - 1).ToList());
-                identity.AddClaim(new Claim("Section", sectionName));
-                //identity.AddClaim(new Claim(ClaimTypes.Role, "AdenAppUsers"));
+                identity.AddClaim(new Claim(ClaimTypes.Role, @group.Name));
+                identity.AddClaim(new Claim(ClaimsIdentity.DefaultNameClaimType, @group.Name));
             }
 
-            if (isAdministrator) return RedirectToAction("Submissions", "Home");
-
-            return RedirectToAction("Assignments", "Home");
-
+            return RedirectToAction(identity.Claims.Any(x => x.Type == ClaimTypes.Role && x.Value.Contains("Administrators")) ? "Submissions" : "Assignments", "Home");
         }
 
 

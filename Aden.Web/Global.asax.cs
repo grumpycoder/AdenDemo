@@ -12,6 +12,10 @@ namespace Aden.Web
     {
         protected void Application_Start()
         {
+            // set drop folder for mail
+            if (MailHelper.IsUsingPickupDirectory)
+                MailHelper.SetRelativePickupDirectoryLocation(@"App_Data");
+
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

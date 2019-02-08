@@ -2,6 +2,8 @@
 using Aden.Web.Models;
 using FluentEmail;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Mail;
 using System.Web;
 
@@ -9,7 +11,7 @@ namespace Aden.Web.Services
 {
     public static class WorkEmailer
     {
-        public static void Send(WorkItem workItem, Submission submission, HttpPostedFileBase[] files = null)
+        public static void Send(WorkItem workItem, Submission submission, HttpPostedFileBase[] files = null, List<UserProfile> additionalRecipients = null)
         {
 
             Email.DefaultRenderer = new RazorRenderer();
@@ -57,6 +59,12 @@ namespace Aden.Web.Services
                     .Body("")
                     .UsingTemplateFromFile(templatePath, model);
 
+            if (additionalRecipients != null)
+                foreach (var address in additionalRecipients.ToList())
+                {
+                    email.CC(address.EmailAddress, address.FullName);
+                }
+
             if (files != null)
             {
                 foreach (var file in files)
@@ -66,6 +74,10 @@ namespace Aden.Web.Services
                 }
             }
 
+            //var smtpClient = new SmtpClient();
+            //smtpClient.PickupDirectoryLocation = @"~\App_Data"; 
+
+            //email.UsingClient(smtpClient); 
             email.Send();
 
         }

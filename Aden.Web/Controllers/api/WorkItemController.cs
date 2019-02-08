@@ -7,6 +7,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
@@ -21,12 +22,12 @@ namespace Aden.Web.Controllers.api
     [Authorize(Roles = "AdenAppUsers")]
     public class WorkItemController : ApiController
     {
-        private AdenContext _context;
-        private MembershipService _membershipService;
-        private IdemService _idemService;
-        private DocumentService _documentService;
-        private string _currentUserFullName;
-        private string _currentUsername;
+        private readonly AdenContext _context;
+        private readonly MembershipService _membershipService;
+        private readonly IdemService _idemService;
+        private readonly DocumentService _documentService;
+        private readonly string _currentUserFullName;
+        private readonly string _currentUsername;
 
         public WorkItemController()
         {
@@ -142,7 +143,7 @@ namespace Aden.Web.Controllers.api
 
             if (assignee == null) return BadRequest($"No members in {group.Name} to assign next task");
 
-            //TODO Move to comeplet work method
+            //TODO Move to completed work method
             if (workItem.WorkItemAction == WorkItemAction.Generate)
             {
                 _documentService.GenerateDocuments(currentReport);
@@ -150,7 +151,10 @@ namespace Aden.Web.Controllers.api
 
             var wi = submission.CompleteWork(workItem, assignee);
 
-            WorkEmailer.Send(wi, submission);
+            var additionalRecipients = new List<UserProfile>();
+            if (wi.WorkItemAction == 0) additionalRecipients = _membershipService.GetGroupMembers(Constants.GlobalAdministrators);
+
+            WorkEmailer.Send(wi, submission, null, additionalRecipients);
 
             _context.SaveChanges();
 

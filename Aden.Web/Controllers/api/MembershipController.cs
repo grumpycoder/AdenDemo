@@ -1,12 +1,12 @@
 ﻿using Aden.Web.Data;
 using Aden.Web.Models;
 using Aden.Web.Services;
-using System;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Aden.Web.ViewModels;
 
 namespace Aden.Web.Controllers.api
 {
@@ -83,12 +83,6 @@ namespace Aden.Web.Controllers.api
 
             return Ok($"Deleted {user.FullName} to {group.Name}");
         }
-    }
-
-    public class UpdateGroupMemberDto
-    {
-        public int GroupId { get; set; }
-        public Guid IdentityGuid { get; set; }
     }
 
     public class UserModel

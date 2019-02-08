@@ -1,6 +1,7 @@
 ﻿using Aden.Web.Data;
 using Aden.Web.Filters;
 using Aden.Web.Helpers;
+using Aden.Web.MailMessage;
 using Aden.Web.Models;
 using Aden.Web.Services;
 using Aden.Web.ViewModels;
@@ -8,9 +9,12 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
+using System.Web.Hosting;
 using System.Web.Mvc;
 
 namespace Aden.Web.Controllers
@@ -33,7 +37,7 @@ namespace Aden.Web.Controllers
             return View();
         }
 
-        [CustomAuthorize(Roles = Constants.FileSpecificationAdministratorGroup)]
+        [CustomAuthorize(Roles = "AppGlobalAdministrator, AppAdministrators")]
         public ActionResult FileSpecifications()
         {
             return View();
@@ -222,6 +226,79 @@ namespace Aden.Web.Controllers
 
             var model = Mapper.Map<WorkItemUploadDto>(wi);
             return PartialView("_ReportUploadForm", model);
+        }
+
+        [TrackViewName]
+        public ActionResult Mail()
+        {
+            MimeReader mime = new MimeReader();     
+
+            var vm = new List<MailViewModel>();
+            var path = HostingEnvironment.MapPath(@"/App_Data");
+            foreach (var file in Directory.GetFiles($@"{path}", "*.eml"))
+            {
+                RxMailMessage msg = mime.GetEmail(file);
+
+
+                vm.Add(new MailViewModel()
+                {
+                    Id = Path.GetFileNameWithoutExtension(file),
+                    Sent = msg.DeliveryDate,
+                    To = msg.To.Select(s => s.Address.ToString()),
+                    CC = msg.CC.Select(s => s.Address.ToString()),
+
+                    From = msg.From.Address,
+                    Subject = msg.Subject.Replace("(Trial Version)", ""),
+                    Body = msg.Body,
+                    Attachments = msg.Attachments.ToList()
+                });
+            }
+
+            return View(vm.OrderByDescending(x => x.Sent));
+        }
+
+
+
+        private string GetPlainText(RxMailMessage mm)
+        {
+            // check for plain text in body
+            if (!mm.IsBodyHtml && !string.IsNullOrEmpty(mm.Body))
+                return mm.Body;
+
+            string sText = string.Empty;
+            foreach (AlternateView av in mm.AlternateViews)
+            {
+                // check for plain text
+                if (string.Compare(av.ContentType.MediaType, "text/plain", true) == 0)
+                    continue;// return StreamToString(av.ContentStream);
+
+                // check for HTML text
+                if (string.Compare(av.ContentType.MediaType, "text/html", true) == 0)
+                    sText = StreamToString(av.ContentStream);
+            }
+
+            // HTML is our only hope
+            if (sText == string.Empty && mm.IsBodyHtml && !string.IsNullOrEmpty(mm.Body))
+                sText = mm.Body;
+
+            if (sText == string.Empty)
+                return string.Empty;
+
+            // need to convert the HTML to plaintext
+            return sText;
+        }
+
+        private static string StreamToString(Stream stream)
+        {
+            string sText = string.Empty;
+            using (StreamReader sr = new StreamReader(stream))
+            {
+                sText = sr.ReadToEnd();
+                stream.Seek(0, SeekOrigin.Begin);   // leave the stream the way we found it
+                stream.Close();
+            }
+
+            return sText;
         }
     }
 }

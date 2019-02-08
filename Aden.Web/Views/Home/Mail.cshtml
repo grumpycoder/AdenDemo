@@ -1,0 +1,116 @@
+﻿@model IEnumerable<MailViewModel>
+@{
+    ViewBag.Title = "Mail Messages";
+}
+<style>
+    .panel-heading a:after {
+        font-family: 'Font Awesome\ 5 Free';
+        content: "\f078";
+        float: right;
+        color: grey;
+        font-weight: 900;
+    }
+
+    .panel-heading a.collapsed:after {
+        content: "\f054";
+    }
+</style>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <span class="panel-title">Mail Messages</span>
+            </div>
+            
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12">
+
+
+                        <div class="panel-group" id="accordion">
+                            @if (!Model.Any())
+                            {
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">No Messages</h4>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+
+
+                                foreach (var message in Model)
+                                {
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" class="collapsed" data-parent="#accordion" href="#@message.Id">
+                                                    @message.Subject (@message.Sent)
+                                                </a>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <strong>TO:</strong> @string.Join(", ", message.To)
+                                            </div>
+
+                                            <div class="col-sm-4">
+                                                <strong>CC:</strong> @string.Join(", ", message.CC)
+
+                                            </div>
+                                            
+                                            <div class="col-sm-4">
+
+                                                <span class="pull-right">
+                                                    <button class="btn" data-message-id="@message.Id" data-toggle="tooltip" title="Delete message"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>
+                                                </span>
+                                            </div>
+
+
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <b class="text-primary">Subject: </b> @message.Subject
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+
+                                            <div class="col-sm-12">
+                                                <span>@Html.Raw(@message.Body)</span>
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+
+                                }
+                            }
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+
+    </div>
+
+</section>
+
+@section scripts
+{
+    <script src="~/js/app/app.module.min.js"></script>
+    <script src="~/js/app/mail.module.js"></script>
+
+
+}

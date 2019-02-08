@@ -47,32 +47,19 @@ namespace Aden.Web.Services
                     Count = n.Count()
                 }).OrderBy(x => x.Count).FirstOrDefault();
 
-
-            //var nextAvailable = _context.WorkItems.AsNoTracking()
-            //    .Where(u => members.Contains(u.AssignedUser.EmailAddress)).ToList()
-            //    .GroupBy(u => u.AssignedUser.EmailAddress).Select(n => new
-            //    {
-            //        n.Key,
-            //        Count = n.Count()
-            //    }).OrderBy(x => x.Count).FirstOrDefault();
-
-
             return nextAvailable == null ? null : group.Users.FirstOrDefault(x => x.EmailAddress == nextAvailable.Key);
 
         }
 
-        public Result<List<string>> GetGroupMembers(string groupName)
+        public List<UserProfile> GetGroupMembers(string groupName)
         {
-            if (string.IsNullOrWhiteSpace(groupName)) return Result.Fail<List<string>>("Group name should not be empty");
+            if (string.IsNullOrWhiteSpace(groupName)) return null;
 
-            var groupService = new IdemGroupService();
-            var members = groupService.GetGroupUsers(groupName);
+            var group = _context.Groups.Include(u => u.Users).FirstOrDefault(x => x.Name == groupName);
 
+            var users = group.Users;
 
-            if (members == null) return Result.Fail<List<string>>($"No members defined in group {groupName}");
-
-            var list = members.Select(m => m.EmailAddress).ToList();
-            return Result.Ok(list);
+            return users;
         }
 
         public bool GroupExists(string groupName)
@@ -81,5 +68,13 @@ namespace Aden.Web.Services
             return groupService.GroupExists(groupName);
 
         }
+
+        public List<Group> GetUserGroups(string username)
+        {
+            var _user = _context.Users.Include(x => x.Groups).FirstOrDefault(x => x.EmailAddress == username);
+
+            return _user.Groups;
+        }
+
     }
 }

@@ -239,11 +239,15 @@
     <Compile Include="Controllers\api\DemoController.cs" />
     <Compile Include="Controllers\api\DocumentController.cs" />
     <Compile Include="Controllers\api\FileSpecificationController.cs" />
+    <Compile Include="Controllers\api\MailController.cs" />
     <Compile Include="Controllers\api\MembershipController.cs" />
     <Compile Include="Controllers\api\SubmissionController.cs" />
+    <Compile Include="ViewModels\UpdateGroupMemberDto.cs" />
     <Compile Include="Controllers\api\WorkItemController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Helpers\MailHelper.cs" />
+    <Compile Include="ViewModels\MailViewModel.cs" />
     <Compile Include="Data\IdemContext.cs" />
     <Compile Include="Data\AdenContext.cs" />
     <Compile Include="Data\Configuration\FileSpecificationConfiguration.cs" />
@@ -279,6 +283,9 @@
     <Compile Include="Helpers\ImageHelpers.cs" />
     <Compile Include="Helpers\StringExtensions.cs" />
     <Compile Include="Helpers\MvcWebHelpers.cs" />
+    <Compile Include="MailMessage\MimeReader.cs" />
+    <Compile Include="MailMessage\QuotedPrintable.cs" />
+    <Compile Include="MailMessage\RxMailMessage.cs" />
     <Compile Include="Models\FileSpecification.cs" />
     <Compile Include="Models\Report.cs" />
     <Compile Include="Models\ReportDocument.cs" />
@@ -345,6 +352,8 @@
     <Content Include="js\app\filespecification.module.min.js">
       <DependentUpon>filespecification.module.js</DependentUpon>
     </Content>
+    <Content Include="js\app\mail.module.js" />
+    <Content Include="js\app\mail.module.min.js" />
     <Content Include="js\app\review.module.js" />
     <Content Include="js\app\review.module.min.js">
       <DependentUpon>review.module.js</DependentUpon>
@@ -466,6 +475,7 @@
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\Shared\Unauthorized.cshtml" />
     <Content Include="Views\Home\_ReportUploadForm.cshtml" />
+    <Content Include="Views\Home\Mail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

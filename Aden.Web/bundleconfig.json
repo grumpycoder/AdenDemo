@@ -66,5 +66,11 @@
     "inputFiles": [
       "js/app/assignments.module.js"
     ]
+  },
+  {
+    "outputFileName": "js/app/mail.module.min.js",
+    "inputFiles": [
+      "js/app/mail.module.js"
+    ]
   }
 ]

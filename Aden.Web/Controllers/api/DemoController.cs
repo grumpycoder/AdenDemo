@@ -1,4 +1,5 @@
 ﻿using Aden.Web.Data;
+using Aden.Web.MailMessage;
 using Aden.Web.ViewModels;
 using AutoMapper.QueryableExtensions;
 using System.Data.Entity;
@@ -19,6 +20,12 @@ namespace Aden.Web.Controllers.api
 
         public object Get()
         {
+            MimeReader mime = new MimeReader();     // this class processes the .EML mime content
+
+            // this get's the MailMessage into Peter's RxMailMessage class
+            // which is derived from the MS MailMessage class
+            string sEmlPath = @"C:\Temp\emails\approve-task.eml";
+            RxMailMessage mm = mime.GetEmail(sEmlPath);
             var dto = _context.Users.Include(g => g.Groups).ToList();
             return Ok(dto);
         }
